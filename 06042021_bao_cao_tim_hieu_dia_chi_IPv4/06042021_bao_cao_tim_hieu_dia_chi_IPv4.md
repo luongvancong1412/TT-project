@@ -26,7 +26,7 @@
 
 \+ Host ID (hay Host Address) là địa chỉ của máy trong mạng.
 
-![](Aspose.Words.5e65c574-daf7-4d0d-a179-9af8ce8307a3.001.png)
+![](/image/Aspose.Words.5e65c574-daf7-4d0d-a179-9af8ce8307a3.001.png)
 
 \- Quy tắc đặt IPv4:
 
