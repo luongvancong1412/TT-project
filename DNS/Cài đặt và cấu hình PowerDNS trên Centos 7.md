@@ -20,6 +20,7 @@
 - Trong bài này sử dụng hiên bản hiện có trong kho EPEL là 3.4.3 . 
 ### 2.1 Cài đặt PowerDNS với MariaDB Backend
 - Trước tiên,tải kho EPEL cho máy chủ, sử dụng lệnh:
+
 ```# yum install epel-release.noarch -y```
 
 ![](/DNS/image/002.png)
@@ -36,6 +37,7 @@
 - Tiếp theo, chúng ta sẽ cấu hình MySQL để kích hoạt và khởi động khi khởi động hệ thống:
 
 ```# systemctl enable mariadb.service```
+
 ```# systemctl start mariadb.service```
 
 ![](/DNS/image/004.png)
@@ -46,6 +48,7 @@
 - Tiếp theo bảo thiết lập mật khẩu cho MariaDB:
 
 ```# mysql_secure_installation```
+
 - Nhập mật khẩu hiện tại(không có mật khẩu nhấn enter)
 
 ![](/DNS/image/005.png)
@@ -84,6 +87,7 @@ Reload bảng privilege bây giờ : ```y```
 
 
 ```#mysql -u root -p```
+
 ```MariaDB [(none)]> CREATE DATABASE powerdns;```
 
 ![](/DNS/image/012.png)
@@ -93,6 +97,7 @@ Reload bảng privilege bây giờ : ```y```
 - Tạo một người dùng ```powerdns``` cho cơ sở dữ liệu:
 
 ```MariaDB [(none)]> GRANT ALL ON powerdns.* TO 'powerdns'@'localhost' IDENTIFIED BY 'conglab';```
+
 ```MariaDB [(none)]> FLUSH PRIVILEGES;```
 
 ![](/DNS/image/013.png)
@@ -189,16 +194,18 @@ MariaDB [(none)]> quit;
 ```# vi /etc/pdns/pdns.conf```
 
 - Thêm các dòng sau vào cuối file ```/etc/pdns/pdns.conf```.
-    #Cau hinh sql
-    launch=gmysql
-    #gmysql parameters
-    gmysql-host=localhost
-    gmysql-dbname=powerdns
-    gmysql-user=powerdns
-    mysql-password=conglab
+
+  - #Cau hinh sql
+  - launch=gmysql
+  - #gmysql parameters
+  - gmysql-host=localhost
+  - gmysql-dbname=powerdns
+  - gmysql-user=powerdns
+  - mysql-password=conglab
 - Bật dịch vụ và tự khởi động cùng hệ thống:
 
 ```#systemctl enable pdns```
+
 ```#systemctl start pdns```
 
 ![](/DNS/image/022.png)
