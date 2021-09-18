@@ -361,5 +361,17 @@ Hình dưới là các tệp vùng mới được thêm vào.
 
 ![](/DNS/image/047.png)
 
+**Kết quả**
+Trên Web server:
+
+![](image/Screenshot_3.png)
+
+Trên Client:
+
+![](image/Screenshot_1.png)
+
+![](image/Screenshot_2.png)
+
+
 # Link tham khảo:
 1. https://www.tecmint.com/install-powerdns-poweradmin-mariadb-in-centos-rhel/
