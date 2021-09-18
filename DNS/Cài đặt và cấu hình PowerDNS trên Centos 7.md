@@ -1,5 +1,16 @@
 ﻿# Cài đặt và cấu hình PowerDNS trên Centos 7
 
+- [Cài đặt và cấu hình PowerDNS trên Centos 7](#cài-đặt-và-cấu-hình-powerdns-trên-centos-7)
+  - [1. Mô hình mạng](#1-mô-hình-mạng)
+  - [2. Cài đặt PowerDNS trên DNS server](#2-cài-đặt-powerdns-trên-dns-server)
+    - [2.1 Cài đặt PowerDNS với MariaDB Backend](#21-cài-đặt-powerdns-với-mariadb-backend)
+    - [2.2. Cấu hình PowerDNS: ```/etc/pdns/pdns.conf```](#22-cấu-hình-powerdns-etcpdnspdnsconf)
+    - [2.3 Cài đặt PowerAdmin](#23-cài-đặt-poweradmin)
+    - [2.4 Thêm, chỉnh sửa và xóa zone DNS trong PowerDNS](#24-thêm-chỉnh-sửa-và-xóa-zone-dns-trong-powerdns)
+      - [2.4.1 Để thêm zone mới, nhấp vào “**Add master zone**”:](#241-để-thêm-zone-mới-nhấp-vào-add-master-zone)
+      - [2.4.2 Thêm các loại Bản ghi DNS:](#242-thêm-các-loại-bản-ghi-dns)
+- [Link tham khảo:](#link-tham-khảo)
+
 ## 1. Mô hình mạng
 ![](/DNS/image/001.png)
 ## 2. Cài đặt PowerDNS trên DNS server
@@ -12,6 +23,7 @@
 ```# yum install epel-release.noarch -y```
 
 ![](/DNS/image/002.png)
+
 *Tải kho lưu trữ epel*
 
 - Bước tiếp theo là cài đặt MariaDB bằng cách chạy lệnh sau:
@@ -27,6 +39,7 @@
 ```# systemctl start mariadb.service```
 
 ![](/DNS/image/004.png)
+
 *Bật Khởi động Khởi động Hệ thống MariaDB*
 
 - Bây giờ dịch vụ MySQL đang chạy
@@ -63,6 +76,7 @@ Reload bảng privilege bây giờ : ```y```
 ```#yum -y install pdns pdns-backend-mysql```
 
 ![](/DNS/image/011.png)
+
 *Cài đặt PowerDNS với MariaDB Backend*
 
 - Tiếp theo, thiết lập cơ sở dữ liệu MySQL cho dịch vụ PowerDNS . 
@@ -73,6 +87,7 @@ Reload bảng privilege bây giờ : ```y```
 ```MariaDB [(none)]> CREATE DATABASE powerdns;```
 
 ![](/DNS/image/012.png)
+
 *Tạo cơ sở dữ liệu PowerDNS*
 
 - Tạo một người dùng ```powerdns``` cho cơ sở dữ liệu:
@@ -81,11 +96,12 @@ Reload bảng privilege bây giờ : ```y```
 ```MariaDB [(none)]> FLUSH PRIVILEGES;```
 
 ![](/DNS/image/013.png)
+
 *Tạo người dùng PowerDNS*
 
 - Trong đó:
-- - Powerdns là user
-- - Conglab là password
+   - Powerdns là user
+   - Conglab là password
 
 - Tạo các bảng ```domains```, ```records``` và ```supermasters ``` trong CSDL ```powerdns```. 
 
