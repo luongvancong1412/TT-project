@@ -1,5 +1,6 @@
 ﻿# Cài đặt và cấu hình PowerDNS trên Centos 7
 
+**Mục lục**
 - [Cài đặt và cấu hình PowerDNS trên Centos 7](#cài-đặt-và-cấu-hình-powerdns-trên-centos-7)
   - [1. Mô hình mạng](#1-mô-hình-mạng)
   - [2. Cài đặt PowerDNS trên DNS server](#2-cài-đặt-powerdns-trên-dns-server)
