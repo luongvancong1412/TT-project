@@ -8,10 +8,9 @@
     - [2.2. Cấu hình PowerDNS: ```/etc/pdns/pdns.conf```](#22-cấu-hình-powerdns-etcpdnspdnsconf)
     - [2.3 Cài đặt PowerAdmin](#23-cài-đặt-poweradmin)
     - [2.4 Thêm, chỉnh sửa và xóa zone DNS trong PowerDNS](#24-thêm-chỉnh-sửa-và-xóa-zone-dns-trong-powerdns)
-      - [2.4.1 Để thêm zone mới, nhấp vào “**Add master zone**”:](#241-để-thêm-zone-mới-nhấp-vào-add-master-zone)
+      - [2.4.1 Thêm zone mới](#241-thêm-zone-mới)
       - [2.4.2 Thêm các loại Bản ghi DNS:](#242-thêm-các-loại-bản-ghi-dns)
 - [Link tham khảo:](#link-tham-khảo)
-
 ## 1. Mô hình mạng
 ![](/DNS/image/001.png)
 ## 2. Cài đặt PowerDNS trên DNS server
@@ -314,14 +313,17 @@ http://192.168.100.123/poweradmin-2.1.7/
 ![](/DNS/image/037.png)
 
 ### 2.4 Thêm, chỉnh sửa và xóa zone DNS trong PowerDNS
-#### 2.4.1 Để thêm zone mới, nhấp vào “**Add master zone**”:
+#### 2.4.1 Thêm zone mới
+
+- Nhấn vào “**Add master zone**”:
+
 ![](/DNS/image/038.png)
 
 Cần chú ý các trường sau:
 1. **Zone name** - miền mà bạn sẽ thêm khu vực.
-1. **Owner** - đặt chủ sở hữu của vùng DNS.
-1. **Template** - mẫu DNS - không để lại.
-1. **DNSSEC** - Tiện ích mở rộng bảo mật hệ thống tên Donany (tùy chọn - kiểm tra nếu bạn cần).
+2. **Owner** - đặt chủ sở hữu của vùng DNS.
+3. **Template** - mẫu DNS - không để lại.
+4. **DNSSEC** - Tiện ích mở rộng bảo mật hệ thống tên Donany (tùy chọn - kiểm tra nếu bạn cần).
 
 Nhấp vào nút “ **Add zone** ” để thêm vùng DNS.
 
