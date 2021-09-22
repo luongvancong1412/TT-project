@@ -2,17 +2,19 @@
 
 ## Mục lục
 
-  - [A Jump Host](#a-jump-host)
-  - [Cấu hình SSH Jump Host](#cấu-hình-ssh-jump-host)
-    - [Mô hình mạng](#mô-hình-mạng)
-    - [Cấu hình SSH Jump Host](#cấu-hình-ssh-jump-host-1)
-  - [Thực hiện kết nối tới máy chủ](#thực-hiện-kết-nối-tới-máy-chủ)
+  - [1.A Jump Host](#1a-jump-host)
+  - [2. Cấu hình SSH Jump Host](#2-cấu-hình-ssh-jump-host)
+    - [2.1 Mô hình mạng](#21-mô-hình-mạng)
+    - [2.2 Cấu hình SSH Jump Host](#22-cấu-hình-ssh-jump-host)
+    - [2.3 Thực hiện kết nối tới máy chủ](#23-thực-hiện-kết-nối-tới-máy-chủ)
+    - [2.4 Kết nối tới máy chủ không cần cấu hình](#24-kết-nối-tới-máy-chủ-không-cần-cấu-hình)
+  - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 **Mục tiêu:**
 - Hiểu về SSH Jump Host
 - Kết nối an toàn sử dụng OpenSSH ProxyJump
 
-## A Jump Host
+## 1.A Jump Host
 - A Jump Host (Máy chủ nhảy)là một hệ thống trên mạng được sử dụng để truy cập và quản lý các thiết bị trong một vùng bảo mật riêng biệt.  
 - A Jump Host là a hardened server được đặt giữa các zone (vùng) bảo mật khác nhau.
 - Các vùng bảo mật này có thể là:
@@ -25,11 +27,11 @@
   - Triển khai tường lửa (Enable firewall)
   - Vá lỗi hệ thống thường xuyên
 
-## Cấu hình SSH Jump Host
-### Mô hình mạng
+## 2. Cấu hình SSH Jump Host
+### 2.1 Mô hình mạng
 
 ![](SSH%20Jump%20Host/image/mhm.png)
-### Cấu hình SSH Jump Host
+### 2.2 Cấu hình SSH Jump Host
 Trên Client: Mở tệp cấu hình SSH 
 ```
 #vi ~/.ssh/config
@@ -51,7 +53,7 @@ Hình minh hoạ:
 
 ![](SSH%20Jump%20Host/image/configproxyjump.png)
 
-## Thực hiện kết nối tới máy chủ
+### 2.3 Thực hiện kết nối tới máy chủ
 ```
 #ssh server
 ```
@@ -59,8 +61,15 @@ Hình minh hoạ:
 
 ![](SSH%20Jump%20Host/image/kq.png)
 
+### 2.4 Kết nối tới máy chủ không cần cấu hình
+```
+#ssh -J user1@192.168.100.128 user1@192.168.100.135
+```
+Hình minh hoạ:
 
-Tài liệu tham khảo:
+![](SSH%20Jump%20Host/image/kconfig.png)
+
+## Tài liệu tham khảo
 1. https://en.wikipedia.org/wiki/Jump_server
 2. https://www.simplified.guide/ssh/jump-host
 3. https://blog.ajiarya.id/posts/linux/cara-ssh-jump/#panduan
