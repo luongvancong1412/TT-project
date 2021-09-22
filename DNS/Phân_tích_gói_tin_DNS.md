@@ -124,14 +124,14 @@ Xét gói tin:
   - Name: src.g03.yahoodns.net
   - Type: AAAA
   - Class IN
-- Authoritative nameservers(Các máy chủ định danh có thẩm quyền)
+- Authoritative nameservers(Cung cấp các thông tin về tên miền)
 
 ![](image2/soa.png)
 
-Thông tin:
+Thông tin về tên miền
 - Name: g03.yahoodns.net
 - Loại SOA (Start Of a zone of Authority)
-- Class: IN
+- Class: IN (Internet)
 - TTL: 164 (2 phút, 44 giây)
 - Độ dài: 58
 - Primary name server (Máy chủ chính): yf1.yahoo.com
