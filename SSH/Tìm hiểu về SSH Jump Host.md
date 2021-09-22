@@ -49,6 +49,7 @@ Thực hiện kết nối tới server:
 #ssh server
 ```
 Hình minh hoạ:
+
 ![](SSH%20Jump%20Host/image/kq.png)
 
 
