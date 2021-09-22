@@ -12,20 +12,20 @@
 
 **Mục tiêu:**
 - Hiểu về SSH Jump Host
-- Kết nối an toàn sử dụng OpenSSH ProxyJump
+- Kết nối sử dụng OpenSSH ProxyJump
 
 ## 1.A Jump Host
-- A Jump Host (Máy chủ nhảy)là một hệ thống trên mạng được sử dụng để truy cập và quản lý các thiết bị trong một vùng bảo mật riêng biệt.  
-- A Jump Host là a hardened server được đặt giữa các zone (vùng) bảo mật khác nhau.
+- A Jump Host (Máy chủ nhảy) là một hệ thống trên mạng được sử dụng để truy cập và quản lý các thiết bị trong một vùng bảo mật riêng biệt.
+- Máy chủ nhảy là một máy chủ cứng và được giám sát trải dài hai vùng bảo mật khác nhau và cung cấp phương tiện truy cập được kiểm soát giữa chúng
+- Nó là một máy chủ mà người dùng có thể đăng nhập vào và sử dụng như một máy chủ chuyển tiếp để kết nối đến các máy chủ Linux khác, router,...
 - Các vùng bảo mật này có thể là:
   - Máy chủ trong DMZ của một công ty
   - Truy cập mạng của gia đình từ xa
-  - VPN
+  - Sử dụng VPN
 - Các máy chủ jump hardening (hạn chế bề mặt mối đe doạ) bằng:
   - Hạn chế số lượng cổng đang mở
   - Sử dụng ssh (Secure Shell)
   - Triển khai tường lửa (Enable firewall)
-  - Vá lỗi hệ thống thường xuyên
 
 ## 2. Cấu hình SSH Jump Host
 ### 2.1 Mô hình mạng
