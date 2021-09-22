@@ -1,7 +1,14 @@
 # Tìm hiểu về SSH Jump Host
 
+## Mục lục
 
-Mục tiêu:
+  - [A Jump Host](#a-jump-host)
+  - [Cấu hình SSH Jump Host](#cấu-hình-ssh-jump-host)
+    - [Mô hình mạng](#mô-hình-mạng)
+    - [Cấu hình SSH Jump Host](#cấu-hình-ssh-jump-host-1)
+  - [Thực hiện kết nối tới máy chủ](#thực-hiện-kết-nối-tới-máy-chủ)
+
+**Mục tiêu:**
 - Hiểu về SSH Jump Host
 - Kết nối an toàn sử dụng OpenSSH ProxyJump
 
@@ -44,7 +51,7 @@ Hình minh hoạ:
 
 ![](SSH%20Jump%20Host/image/configproxyjump.png)
 
-Thực hiện kết nối tới server:
+## Thực hiện kết nối tới máy chủ
 ```
 #ssh server
 ```
