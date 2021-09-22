@@ -26,7 +26,12 @@
   - Hạn chế số lượng cổng đang mở
   - Sử dụng ssh (Secure Shell)
   - Triển khai tường lửa (Enable firewall)
+- Giám sát đăng nhập trên SSH Jump Host
+```
+#tail -f /var/log/secure
+```
 
+![](SSH%20Jump%20Host/image/gsatdangnhap.png)
 ## 2. Cấu hình SSH Jump Host
 ### 2.1 Mô hình mạng
 
