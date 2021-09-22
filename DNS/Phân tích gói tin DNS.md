@@ -1,5 +1,15 @@
 # Phân tích gói tin DNS
 
+**Mục lục**
+  - [1.Bắt gói tin DNS](#1bắt-gói-tin-dns)
+  - [2.Dùng WireShark phân tích gói tin DNS: ```phantich2.pcap```](#2dùng-wireshark-phân-tích-gói-tin-dns-phantich2pcap)
+    - [2.1Query/Response type A](#21queryresponse-type-a)
+      - [2.1.1 Query type A](#211-query-type-a)
+      - [2.1.2 Response type A](#212-response-type-a)
+    - [2.2 Query/Response type AAAA](#22-queryresponse-type-aaaa)
+      - [2.2.1 Query type AAAA](#221-query-type-aaaa)
+      - [2.2.2 Response type AAAA](#222-response-type-aaaa)
+
 ## 1.Bắt gói tin DNS
 Trên Server Centos 7:
 - Dùng tcpdump bắt gói tin DNS:
