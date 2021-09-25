@@ -1,8 +1,8 @@
-# Tìm hiểu về tài khoản người dùng và lệnh ```sudo```, ```su``` trong linux
+# Tìm hiểu về tài khoản người dùng và lệnh ```sudo```, ```su``` trong Centos
 
 **Muc Lục**
 
-- [Tìm hiểu về tài khoản người dùng và lệnh ```sudo```, ```su``` trong linux](#tìm-hiểu-về-tài-khoản-người-dùng-và-lệnh-sudo-su-trong-linux)
+- [Tìm hiểu về tài khoản người dùng và lệnh ```sudo```, ```su``` trong Centos](#tìm-hiểu-về-tài-khoản-người-dùng-và-lệnh-sudo-su-trong-centos)
   - [1. Tài khoản người dùng trong linux](#1-tài-khoản-người-dùng-trong-linux)
     - [1.1 Tài khoản người dùng là gì?](#11-tài-khoản-người-dùng-là-gì)
     - [1.2 Các loại tài khoản người dùng](#12-các-loại-tài-khoản-người-dùng)
@@ -22,7 +22,7 @@
 - Tài khoản người dùng là một cách tiếp cận có hệ thống để theo dõi và giám sát việc sử dụng tài nguyên hệ thống. 
 - Mỗi tài khoản người dùng chứa hai số nhận dạng duy nhất
   - Tên người dùng
-  - UID.
+  - UID.(User Identifier)
 - Khi một tài khoản người dùng được tạo, tên người dùng của nó được ánh xạ tới một UID duy nhất.
 ![](image/rsg01-01-username-uid.png)
 - Tên người dùng phải là duy nhất trong hệ thống. 
@@ -51,7 +51,7 @@
 ### 1.3 Tệp quản lý người dùng
 Có 4 file chính quản lý người sử dụng:
 - ```/etc/passwd```: Giữ tài khoản người dùng và thông tin mật khẩu. 
-  - Trường: tên tài khoản,Ký tự giữ chỗ cho mật khẩu, UID, GID, Description(Sự miêu tả), Thư mục chính, Shell đăng nhập
+  - Trường: tên tài khoản,Ký tự giữ chỗ cho mật khẩu, UID, GID (Group Identifier), Description(Sự miêu tả), Thư mục chính, Shell đăng nhập
 
 ![](image/pass.png)
 
