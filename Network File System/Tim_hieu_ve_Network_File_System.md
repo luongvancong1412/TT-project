@@ -4,7 +4,7 @@
 
 - [Tìm hiểu về Network File System](#tìm-hiểu-về-network-file-system)
   - [1.Network File System](#1network-file-system)
-    - [1.1 NSF là gì](#11-nsf-là-gì)
+    - [1.1 NFS là gì](#11-nfs-là-gì)
     - [1.2 Phiên bản NFS](#12-phiên-bản-nfs)
     - [1.3 Cách hoạt động](#13-cách-hoạt-động)
     - [1.4 Ưu, nhược điểm](#14-ưu-nhược-điểm)
@@ -18,7 +18,7 @@
   - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## 1.Network File System
-### 1.1 NSF là gì
+### 1.1 NFS là gì
 - NFS (Network File System ) là một giao thức để truy cập từ xa vào hệ thống tệp.
 - Được phát triển bởi SunMicrosystems vào năm 1984
 - Cho phép các client kết nối đến phân vùng chia sẻ (Phân vùng server chia sẻ) và sử dụng như một phân vùng cục bộ
