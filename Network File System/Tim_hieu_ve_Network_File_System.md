@@ -101,7 +101,7 @@ Statefull Server:
 Nhược điểm :
 - NFS không an toàn, nên chỉ sử dụng trên mạng LAN sau Firewall
 - NFS bị chậm trong khi lưu lượng mạng lớn
-- Tên máy chủ có thể là giả mạo (tự xưng là máy khác)
+- Máy chủ lỗi thì tất cả các máy 
 ### 1.5 Mô hình hoạt động
 
 ![](image/kientruc.png)
@@ -222,3 +222,4 @@ Cuối cùng, reload firewall:
 4. https://www.slideshare.net/udamale/nfsnetwork-file-system?next_slideshow=1
 5. https://en.wikipedia.org/wiki/Network_File_System
 6. https://cseweb.ucsd.edu//classes/fa05/cse120/lectures/120-l15.pdf
+7. http://csis.pace.edu/~marchese/CS865/Lectures/Chap11/Chapter11.htm
