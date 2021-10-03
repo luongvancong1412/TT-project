@@ -1,7 +1,7 @@
-# Cài đặt và cấu hình Mariadb
+# Cài đặt và cấu hình Mariadb server
 
 **Mục lục**
-- [Cài đặt và cấu hình Mariadb](#cài-đặt-và-cấu-hình-mariadb)
+- [Cài đặt và cấu hình Mariadb server](#cài-đặt-và-cấu-hình-mariadb-server)
   - [1. Cài đặt MariaDB 5.5](#1-cài-đặt-mariadb-55)
   - [2. Cài đặt bảo mật cho MariaDB](#2-cài-đặt-bảo-mật-cho-mariadb)
   - [3.Kết nối Mariadb bằng root](#3kết-nối-mariadb-bằng-root)
