@@ -6,6 +6,8 @@
   - [2. Cài đặt bảo mật cho MariaDB](#2-cài-đặt-bảo-mật-cho-mariadb)
   - [3.Kết nối Mariadb bằng root](#3kết-nối-mariadb-bằng-root)
   - [4. Cấu hình firewall](#4-cấu-hình-firewall)
+  - [Câu lệnh SQL cơ bản sử dụng máy chủ MariaDB](#câu-lệnh-sql-cơ-bản-sử-dụng-máy-chủ-mariadb)
+  - [6. File log](#6-file-log)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## 1. Cài đặt MariaDB 5.5
@@ -54,7 +56,7 @@ character-set-server=utf8
 
 ![](image/tuxa_xoatest.png)
 
-- Reload privilege table:
+- Reload privilege table: Áp dụng cấu hình vừa đặt ở trên
 
 ![](image/table.png)
 
@@ -77,9 +79,80 @@ character-set-server=utf8
 ``#firewall-cmd --reload``
 
 ![](image/firewall.png)
- 
 
+## Câu lệnh SQL cơ bản sử dụng máy chủ MariaDB
+- Đăng nhập vào MariaDB với tài khoản root:
 
+```# mysql -u root -p ```
+
+- Hiển thị toàn bộ users:
+
+```select user,host from mysql.user;```
+
+Output:
+![](image/showuser.png)
+
+- Đổi tên tài khoản root (bảo mật):
+
+ ```UPDATE mysql.user SET user="admindb" WHERE user="root"; ```
+
+Kết quả:
+
+![](image/admindb.png)
+
+- Tạo database
+
+``` create database [name];```
+Ex: create database ql;
+
+- Xem danh sách database hiện có:
+
+ show databases; 
+
+![](image/taodb.png)
+
+- Truy cập vào cơ sở dữ liệu:
+
+``` use  [database_name]; ```
+
+- Tạo bảng:
+
+```create  table [table name](các trường);```
+
+Ex:
+
+use ql;
+ create table nhanvien(
+  manv int not null auto_increment,
+  ho varchar(100) not null,
+  ten varchar(100) not null,
+  tuoi int not null,
+  diachi varchar(200) not null,
+  primary key (manv)
+  ); 
+
+![](image/taobang.png)
+
+- Hiển thị toàn bộ table hiện có
+
+ ```show tables;``` 
+
+![](image/showbang.png)
+
+- Xóa bảng:
+
+```drop table  [tên bảng];``` 
+
+## 6. File log
+- Folder mặc định:
+
+```#cd /var/log/mariadb ```
+
+- Giám sát hoạt động trên file log:
+
+```# tail -f /var/log/mariadb/mariadb.log```
+
+![](image/log.png)
 
 # Tài liệu tham khảo
 1. https://www.server-world.info/en/note?os=CentOS_7&p=mariadb&f=1
