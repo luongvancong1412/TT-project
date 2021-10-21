@@ -151,100 +151,98 @@ echo 'Hello $world'
 
 Bạn cũng có thể sử dụng dấu \ để ngăn mở rộng:
 
+```
 #!/usr/bin/env bash
 world="Vietnamese"
 echo "Hello \$world"
+```
 Output:
 
-[root@hdv ~]# ./hello.sh
+```
+[root@localhost ~]# ./hello.sh
 Hello $world
-## 1.6 Xem thông tin cho tích hợp sẵn của Bash
-help [command]: Dùng để xe thông tin, cách sử dụng và các tùy chọn có trong câu lệnh
+```
 
-## 1.7 Chế độ “Debug”
-[root@hdv ~]# cat hello.sh 
+## 1.6 Chế độ “Debug”
+```
+[root@localhost ~]# cat hello.sh
 #!/usr/bin/env bash
+
 echo "Hello world"
-[root@hdv ~]# bash -x hello.sh 
+x=4
+v=$(expr 4 + $x)
+printf "v= $v\n"
+```
+
+```
+[root@localhost ~]# bash -x hello.sh
 + echo 'Hello world'
 Hello world
-Đối số -x cho phép bạn xem qua từng dòng lệnh trong tệp. Ví dụ1:
-
-#!/usr/bin/env bash
-echo "Hello world "
-adding_string_to_number="s"
-v=$(expr 5 + $adding_string_to_number)
-Output:
-
-[root@hdv ~]# bash -x hello.sh 
-+ echo 'Hello world \n'
-Hello world \n
-+ adding_string_to_number=3
-++ expr 5 + 3
++ x=4
+++ expr 4 + 4
 + v=8
-Ví dụ 2: thông số đưa vào sẽ không đúng định dạng:
++ printf 'v= 8\n'
+v= 8
+```
+![](image/Day1/debug.png)
 
-[root@hdv ~]# bash hello.sh 
-Hello world 
-expr: non-integer argument
+- Đối số `-x` cho phép bạn xem qua từng dòng lệnh trong tệp và cho biết lệnh đang lỗi ở đâu.
 
-[root@hdv ~]# bash -x hello.sh 
-+ echo 'Hello world '
-Hello world 
-+ adding_string_to_number=s
-++ expr 5 + s
-expr: non-integer argument
-+ v=
-bash hello.sh– Lỗi được nhắc không thể thực hiện tập lệnh nhưng sử dụng bash -x hello.sh sẽ biết lệnh đang bị lỗi ở đâu
+![](image/Day1/debug2.png)
 
 # Phần 2 Script shebang
 ## 2.1 ENV Shebang
 
 Để thực thi một script với tệp thực thi bash được tìm thấy trong biến môi trường PATH bằng cách sử dụng tệp thực thi env, Dòng đầu tiên của script phải chỉ ra đường dẫn tuyệt đối đến tệp thực thi env với đối số là bash:
 
-#!/usr/bin/env bash
+```#!/usr/bin/env bash```
 
-Đường dẫn env trong shebang được giải quyết và chỉ được sử dụng nếu một tệp lệnh được khởi chạy trực tiếp như thế này:
+- Đường dẫn env trong shebang được giải quyết và chỉ được sử dụng nếu một tệp lệnh được khởi chạy trực tiếp với đường dẫn tệp script:
 
-script.sh
+``script.sh``
 
-Tệp lệnh phải có quyền thực thi
+- Tệp lệnh phải có quyền thực thi
 
-Shebang bị bỏ qua khi một trình thông dịch bash được chỉ định rõ ràng để thực thi một script:
+- Shebang (```#!/usr/bin/env bash```) bị bỏ qua khi một trình thông dịch bash được chỉ định rõ ràng để thực thi một script:
 
-bash script.sh
+`bash script.sh`
 
-2.2 Direct shebang
+`sh script.sh`
+
+## 2.2 Direct shebang
 Để thực thi một tệp script với trình thông dịch bash, dòng đầu tiên của tệp lệnh phải chỉ ra đường dẫn tuyệt đối đến bash thực thi để sử dụng:
 
-#!/bin/bash
+``#!/bin/bash``
 
 Đường dẫn bash trong she bang được giải quyết và chỉ được sử dụng khi một script được khởi chạy trực tiếp như này:
 
-./script.sh
+```./script.sh```
 
 Script phải được cấp quyền thực thi.
 
 Shebang bị bỏ qua khi một trình thông dịch bash được chỉ định rõ ràng để thực thi một tệp lệnh:
 
-bash script.sh
+```bash script.sh```
 
-2.3 Other shebangs
+## 2.3 Other shebangs
+
 Có 2 loại chương trình mà kernel biết. Một chương trình nhị phân được xác định bởi tiêu đề ELF(ExtenableLoadableFormat – Định dạng có thể tái mở rộng), thường được tạo bởi trình biên dịch. Thứ hai là kịch bản của bất kỳ loại nào.
 
-Nếu một tệp bắt đầu với dòng đầu tiên bằng chuỗi #! thì tiếp theo phải là tên đường dẫn của trình thông dịch.
+- Nếu một tệp bắt đầu với dòng đầu tiên bằng chuỗi #! thì tiếp theo phải là tên đường dẫn của trình thông dịch.
 
-Nếu kernel đọc được dòng này, nó sẽ gọi trình thông dịch được đặt tên theo tên đường dẫn này và đưa các từ trong dòng làm đối số thông dịch.
+- Nếu kernel đọc được dòng này, nó sẽ gọi trình thông dịch được đặt tên theo tên đường dẫn này và đưa các từ trong dòng làm đối số thông dịch.
 
+`
 #!/usr/bin/env something 
-echo "Không in được"
-Sẽ không thực thi được câu lệnh vì trong /usr/bin/evn không có trình thông dịch something, something không thể xử lý được lệnh.
+echo "hello world"
+`
 
-Lưu ý: Sau khi bạn đọc xong day1 những điều cần nhớ:
+- Sẽ không thực thi được câu lệnh vì trong `/usr/bin/evn` không có trình thông dịch `something`, something không thể xử lý được lệnh.
 
-– Tạo file, file bash script.
+Mục tiêu:
+– Tạo file bash script.
 – Thêm quyền thực thi file bash script.
-– 3 cách để thực thi file bash script.
+– biết 4 cách để thực thi file bash script.
 – Cách sử dụng biến đơn giản, sử dụng chuỗi ký tự.
 – Đối số với câu lệnh.
 – Lệnh read.

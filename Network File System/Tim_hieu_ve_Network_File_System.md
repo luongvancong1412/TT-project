@@ -8,7 +8,6 @@
     - [1.2 Phiên bản NFS](#12-phiên-bản-nfs)
     - [1.3 Cách hoạt động](#13-cách-hoạt-động)
     - [1.4 Ưu, nhược điểm](#14-ưu-nhược-điểm)
-    - [1.5 Mô hình hoạt động](#15-mô-hình-hoạt-động)
   - [Cài đặt và cấu hình NFS trên Centos 7 64bit](#cài-đặt-và-cấu-hình-nfs-trên-centos-7-64bit)
     - [Mô hình mạng](#mô-hình-mạng)
     - [Cài đặt NFS](#cài-đặt-nfs)
@@ -92,17 +91,7 @@ Statefull Server:
 - Từ client, yêu cầu quyền truy cập vào dữ liệu đã xuất.
 - Server NFS tham chiếu tệp cấu hình /etc/export để xác minh quyền truy cập của client. 
 - Sau khi xác minh, tất cả hoạt động tập tin và thư mục được phép sử dụng trên Client
-### 1.4 Ưu, nhược điểm
-Ưu điểm :
-- NFS là 1 giải pháp chi phí thấp để chia sẻ tệp mạng.
-- Dễ cài đặt
-- Cho phép quản lý tập trung, giảm dung lượng ổ đĩa trên máy người dùng.
-
-Nhược điểm :
-- NFS không an toàn, nên chỉ sử dụng trên mạng LAN sau Firewall
-- NFS bị chậm trong khi lưu lượng mạng lớn
-- Máy chủ lỗi thì tất cả các máy 
-### 1.5 Mô hình hoạt động
+**Mô hình hoạt động**
 
 ![](image/kientruc.png)
 
@@ -113,15 +102,26 @@ Nhược điểm :
 Phía client:
 
 - Client truy cập file system bằng các cuộc gọi hệ thống (system call)
-- Giao diện hệ thống UNIX được thay thế bằng giao diện cho hệ thống tệp ảo (VFS) (các hệ điều hành hiện đại đều cung cấp VFS)
-- Các hoạt động trên giao diện VFS được chuyển đến hệ thống tệp cục bộ (Local file) hoặc được chuyển đến 1 thành phần riêng biệt gọi là NFS Client
+- Ở đây, Giao diện hệ thống UNIX được thay thế bằng giao diện cho hệ thống tệp ảo (VFS) (các hệ điều hành hiện đại đều cung cấp VFS)
+- Các hoạt động trên giao diện VFS được chuyển đến hệ thống tệp cục bộ (Local file) hoặc được chuyển đến 1 thành phần riêng biệt gọi là NFS Client.
+- Mỗi khi một hàm nào đó của **Client Stub** được gọi bởi **Client**, **Client Stub** sẽ gửi thông điệp để mô tả thủ tục ở xa tương ứng mà **Client** muốn thực thi **cùng với các tham số** nếu có. Sau đó nó sẽ nhờ hệ thống **RPC Runtime cục bộ** gửi thông điệp này đến phần **Server Stub** của Server.
 - NFS client đảm nhiệm việc xử lý quyền truy cập vào các tệp được lưu trữ tại máy chủ từ xa
 - Trong NFS, tất cả giao tiếp giữa máy khách và máy chủ được thực hiện thông qua RPC (cuộc gọi thủ tục)
 
 Phía Server:
 - NFS server xử lý các yêu cầu từ client
-- Từ RPC stub unmarshals request (yêu cầu sơ khai), Server chuyển chúng thành các hoạt động tệp VFS
+- **Server Stub** mở thông điệp ra xem, xác định **hàm từ xa** mà **Client** muốn thực hiện cùng với các **tham số** của nó. **Server Stub** gọi một lệnh tương ứng nằm trên phần **Server**. Khi nhận được yêu cầu của **Server Stub**, Server cho **thực thi lệnh được yêu cầu** và gửi kết quả thực thi được cho **Server Stub*
 - VFS chịu trách nhiệm triển khai 1 hệ thống tệp cục bộ.
+### 1.4 Ưu, nhược điểm
+Ưu điểm :
+- NFS là 1 giải pháp chi phí thấp để chia sẻ tệp mạng.
+- Dễ cài đặt
+- Cho phép quản lý tập trung, giảm dung lượng ổ đĩa trên máy người dùng.
+
+Nhược điểm :
+- NFS không an toàn, nên chỉ sử dụng trên mạng LAN sau Firewall
+- NFS bị chậm trong khi lưu lượng mạng lớn
+- Máy chủ lỗi thì tất cả các máy 
 
 ## Cài đặt và cấu hình NFS trên Centos 7 64bit
 ### Mô hình mạng
