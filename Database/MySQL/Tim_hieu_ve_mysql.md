@@ -10,6 +10,10 @@
   - [Database](#database)
   - [SQL](#sql)
   - [Phần mềm nguồn mở](#phần-mềm-nguồn-mở)
+- [Cài đặt MySQL trên Centos 7](#cài-đặt-mysql-trên-centos-7)
+  - [Các bước cài đặt](#các-bước-cài-đặt)
+  - [Đặt mật khẩu bảo mật tài khoản MySQL root](#đặt-mật-khẩu-bảo-mật-tài-khoản-mysql-root)
+  - [Đăng nhập vào MySQL](#đăng-nhập-vào-mysql)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## MySQL là gì?
@@ -67,7 +71,50 @@ Database là tập hợp dữ liệu theo cùng một cấu trúc được đặ
 Hệ Quản trị Cơ sở dữ liệu quan hệ (RDBMS) sử dụng Ngôn ngữ truy vấn có cấu trúc SQL– Structured Query Language. 
 ## Phần mềm nguồn mở
 Phần mềm nguồn mở là phần mềm với mã nguồn được công bố và sử dụng một giấy phép nguồn mở. Giấy phép này cho phép bất cứ ai cũng có thể nghiên cứu, thay đổi và cải tiến phần mềm, và phân phối phần mềm ở dạng chưa thay đổi hoặc đã thay đổi.
+
+# Cài đặt MySQL trên Centos 7
+## Các bước cài đặt
+- Cài kho lưu trữ MySQL
+
+```wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm```
+
+![](../image/khomysql.png)
+
+- Một số phiên bản khác: https://dev.mysql.com/downloads/repo/yum/
+
+- Update gói MySQL
+
+```rpm -Uvh mysql57-community-release-el7-9.noarch.rpm```
+
+![](../image/updaterpm.png)
+
+- Cài đặt MySQL trên Centos 7
+
+```yum install mysql-server -y```
+
+![](../Mariadb/image/install.png)
+
+- Khởi động dịch vụ
+  ```# systemctl start mysqld```
+
+![](../image/kdongsql.png)
+
+## Đặt mật khẩu bảo mật tài khoản MySQL root
+- Chạy lệnh:
+
+  ```# mysql_secure_installation```
+
+![](../image/secure.png)
+
+![](../image/remotesql.png)
+
+## Đăng nhập vào MySQL
+- Chạy lệnh:
+  ```# mysql -u root -p```
+
+![](../image/version.png)
 # Tài liệu tham khảo
 
 1. https://wiki.matbao.net/mysql-la-gi-huong-dan-toan-tap-ve-mysql/
 2. https://vi.wikipedia.org/wiki/MariaDB
+3. https://www.hostinger.vn/huong-dan/huong-dan-cai-mysql-trong-centos-7
