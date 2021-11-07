@@ -137,9 +137,6 @@
 
 #### 4.2 Cài đặt WordPress
 
-- Di chuyển tới nơi cài đặt Wordpress
-
-    ```# cd /var/www/html```
 - Cài đặt Wordpress từ internet:
 
     ```wget https://wordpress.org/latest.tar.gz```
