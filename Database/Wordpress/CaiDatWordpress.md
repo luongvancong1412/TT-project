@@ -125,7 +125,7 @@
 ```CREATE USER userwp@localhost IDENTIFIED BY '123456';```
 
 - Cấp cho userwp quyền truy cập vào CSDL:
-- 
+
 ```GRANT ALL PRIVILEGES ON wordpressdb.* TO userwp@localhost IDENTIFIED BY '123456';```
 - Lưu thay đổi:
 
