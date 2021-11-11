@@ -1,6 +1,6 @@
 # Chapter 4: Listing Files (Danh sách tệp)
 |Option|Mô tả|
-|---|---|---|
+|---|---|
 |a , --all|Liệt kê tất cả các mục nhập bao gồm những mục bắt đầu bằng dấu chấm|
 |-A ,|Liệt kê tất cả các mục không bao gồm . và ..|
 |-c|Sắp xếp tệp theo thời gian thay đổi
