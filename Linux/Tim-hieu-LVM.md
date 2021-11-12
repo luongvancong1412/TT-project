@@ -130,27 +130,28 @@ fdisk /dev/sdb
 
 ![](image/sdb.png)
 
-Trong đó bạn chọn n để bắt đầu tạo partition
-Bạn chọn p để tạo partition primary
-Bạn chọn 1 để tạo partition primary 1
-Tại First sector (2048-20971519, default 2048) bạn để mặc định
-Tại Last sector, +sectors or +size{K,M,G} (2048-20971519, default 20971519) bạn chọn +1G để partition bạn tạo ra có dung lượng 1 G
-Bạn chọn w để lưu lại và thoát.
+Trong đó:
+- Chọn `n` để bắt đầu tạo `partition`
+- Chọn `p` để tạo `partition primary`
+- Chọn `1` để tạo `partition primary 1`
+- Tại `First sector (2048-20971519, default 2048)` để mặc định
+- Tại `Last sector, +sectors or +size{K,M,G} (2048-20971519, default 20971519)` Nhập +1G để partition tạo ra có dung lượng 1G
+- Chọn `w` để lưu lại và thoát.
 
 Tiếp theo bạn thay đổi định dạng của partition vừa mới tạo thành LVM
 
 ![](image/doi.png)
 
-Chọn t để thay đổi định dạng partition
-Chọn 8e để đổi thành LVM
+- Chọn `t` để thay đổi định dạng partition
+- Chọn `8e` để đổi thành LVM
 
-Tương tự, bạn tạo thêm các partition primary từ sdb và tạo các partition primary từ sdc bằng lệnh fdisk /dev/sdc
+Tương tự, bạn tạo thêm các partition primary từ sdb và tạo các partition primary từ sdc bằng lệnh `fdisk /dev/sdc`
 
 ![](image/htb1.png)
 
 ###  5.3 Tạo Physical Volume
 
-Tạo các Physical Volume là /dev/sdb1 và /dev/sdc1 bằng các lệnh sau:
+Tạo các Physical Volume là `/dev/sdb1` và `/dev/sdc1` bằng các lệnh sau:
 
 ```
 # pvcreate /dev/sdb1
@@ -171,9 +172,9 @@ Tiếp theo, nhóm các Physical Volume thành 1 Volume Group bằng cách sử 
 
 `# vgcreate vg-cong1 /dev/sdb1 /dev/sdc1`
 
-Trong đó vg-cong1 là tên của Volume Group
+Trong đó `vg-cong1` là tên của `Volume Group`
 
-Có thể sử dụng câu lệnh sau để kiểm tra lại các Volume Group đã tạo
+Có thể sử dụng câu lệnh sau để kiểm tra lại các `Volume Group` đã tạo
 ```
 # vgs
 ```
@@ -243,15 +244,16 @@ Từ một Volume Group, Có thể tạo ra các Logical Volume bằng cách s�
 # lvcreate -L 1G -n lv-cong1 vg-cong1
 ```
 
--L: Chỉ ra dung lượng của logical volume
+Trong đó
+- `L`: Chỉ ra dung lượng của logical volume
+- `n`: Chỉ ra tên của logical volume
+- `lv-cong1` là tên Logical Volume
+- `vg-cong1` là Volume Group vừa tạo ở bước trước
 
--n: Chỉ ra tên của logical volume
+Lưu ý: có thể tạo nhiều Logical Volume từ 1 Volume Group
 
-Trong đó lv-cong1 là tên Logical Volume, vg-cong1 là Volume Group vừa tạo ở bước trước
+Kiểm tra lại các Logical Volume đã tạo
 
-Lưu ý là chúng ta có thể tạo nhiều Logical Volume từ 1 Volume Group
-
-Có thể sử dụng câu lệnh sau để kiểm tra lại các Logical Volume đã tạo
 ```
 # lvs
 ```
@@ -270,11 +272,12 @@ Minh hoạ:
   swap     centos   -wi-ao----  2.00g
   lv-cong1 vg-cong1 -wi-a-----  1.00g
 ```
+
 ![](image/lvs.png)
 
 ### 5.6 Định dạng Logical Volume
 
-Để format các Logical Volume thành các định dạng như ext2, ext3, ext4, ta có thể làm như sau:
+Để format các Logical Volume thành các định dạng như ext2, ext3, ext4, có thể làm như sau:
 
 ```
 # mkfs -t ext3 /dev/vg-cong1/lv-cong1
@@ -306,6 +309,7 @@ Writing inode tables: done
 Creating journal (8192 blocks): done
 Writing superblocks and filesystem accounting information: done
 ```
+
 ![](image/mu.png)
 
 ### 5.7 Mount và sử dụng
