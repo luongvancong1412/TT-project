@@ -122,6 +122,7 @@ sr0              11:0    1 1024M  0 rom
 ```
 
 Ảnh minh hoạ:
+
 ![](image/odia.png)
 
 ### 5.2 Tạo Partition
