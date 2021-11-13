@@ -13,7 +13,10 @@
     - [5.5 Tạo Logical Volume](#55-tạo-logical-volume)
     - [5.6 Định dạng Logical Volume](#56-định-dạng-logical-volume)
     - [5.7 Mount và sử dụng](#57-mount-và-sử-dụng)
-  - [Các thao tác trên LVM](#các-thao-tác-trên-lvm)
+  - [6. Các thao tác trên LVM](#6-các-thao-tác-trên-lvm)
+    - [6.1 Thay đổi dung lượng Logical Volume trên LVM](#61-thay-đổi-dung-lượng-logical-volume-trên-lvm)
+    - [6.2 Thay đổi dung lượng Volume Group trên LVM](#62-thay-đổi-dung-lượng-volume-group-trên-lvm)
+    - [6.3 Xoá Logical Volume, Volume Group, Physical Volume](#63-xoá-logical-volume-volume-group-physical-volume)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## 1. Logical Volume Manager
@@ -335,9 +338,118 @@ Kiểm tra lại dung lượng của thư mục đã được mount:
 
 ![](image/mount.png)
 
-## Các thao tác trên LVM
+## 6. Các thao tác trên LVM
+### 6.1 Thay đổi dung lượng Logical Volume trên LVM
+Lệnh kiểm tra các thông tin LVM:
+```
+# vgs
 
+# lvs
 
+# pvs
+```
+
+![](image/kt.png)
+
+Cần thay đổi Logical Volume lv-cong1 (thuộc Volume Group vg-cong1)
+
+- Kiểm tra Volume Group (VG) còn dư dung lượng không(VG đã cấp phát hết thì LV cũng không thể tăng dung lượng).
+  - Sử dụng lệnh:
+    ```
+    # vgdisplay
+    ```
+    ![](image/vgdisplay.png)
+
+    Volume Group (VG) vẫn còn dung lượng để cấp phát thông qua 2 trường thông tin:
+    - ```VG Status resizable```
+    - ```Free PE /Size  254 / 1016.00 MiB``` với dung lượng Free là 254*4=1016 Mb
+- Để tăng kích thước Logical Volume sử dụng lệnh sau:
+  ```
+  # lvextend -L +100M /dev/vg-cong1/lv-cong1
+  ```
+  - Với `L` là tuỳ chọn để tăng kích thước.
+    ![](image/tangLV.png)
+  - Kiểm tra lại bằng cách dùng lệnh: `#lvs`
+    ![](image/kqtang.png)
+  - Sau khi tăng kích thước cho Logical Volume thì Logical Volume đã được tăng nhưng file system trên volume này vẫn chưa thay đổi, bạn phải sử dụng lệnh sau để thay đổi:
+    ```
+    # resize2fs /dev/vg-cong1/lv-cong1
+    ```
+    ![](image/kq.png)
+- Để giảm kích thước của Logical Volume, trước hết các bạn phải umount Logical Volume mà mình muốn giảm
+  ```
+  # umount /dev/vg-demo1/lv-demo1
+  ```
+
+  ![](image/umount.png)
+
+  Tiến hành giảm kích thước của Logical Volume
+  ```
+  # lvreduce -L 90M /dev/vg-demo1/lv-demo1
+  ```
+  ![](image/lvrduce.png)
+
+  Sau đó tiến hành format lại Logical Volume
+  ```
+  # mkfs.ext4 /dev/vg-demo1/lv-demo1
+  ```
+
+  Cuối cùng là mount lại Logical Volume
+  ```
+  # mount /dev/vg-demo1/lv-demo1 demo1
+  ```
+  Kiểm tra kết quả ta được như sau:
+  ![](image/giamlv.png)
+### 6.2 Thay đổi dung lượng Volume Group trên LVM
+Việc thay đổi kích thước của Volume Group là việc nhóm thêm Physical Volume hay thu hồi Physical Volume ra khỏi Volume Group
+- Kiểm tra lại các partition và Volume Group
+  ```
+  # vgs
+  ```
+  ```
+  # lsblk
+  ```
+  ![](image/ktrvgs.png)
+- Tiếp theo, nhóm thêm 1 partition vào Volume Group như sau:
+  ```
+  # vgextend /dev/vg-cong1 /dev/sdb2
+  ```
+  ![](image/thempart.png)
+  Ở đây, muốn nhóm vào Volume Group phải là Physical Volume nên hệ thống đã tự động tạo cho mình Physical Volume và nhóm vào Volume Group.
+
+- Chúng ta có thể cắt 1 Physical Volume ra khỏi Volume Group như sau:
+  ```
+  # vgreduce /dev/vg-demo1 /dev/sdb3
+  ```
+  ![](image/vgreduce.png)
+
+### 6.3 Xoá Logical Volume, Volume Group, Physical Volume
+- Xóa Logical Volumes
+
+  - Trước tiên ta phải Umount Logical Volume
+    ```
+    # umount /dev/vg-demo1/lv-demo1
+    ```
+  - Sau đó tiến hành xóa Logical Volume bằng câu lệnh sau:
+    ```
+    # lvremove /dev/vg-demo1/lv-demo1
+    ```
+  - Ta kiểm tra lại kết quả
+  ![](image/lvremove.png)
+- Xóa Volume Group
+
+  - Trước khi xóa Volume Group, chúng ta phải xóa Logical Volume
+
+  - Xóa Volume Group bằng cách sử dụng lệnh sau:
+    ```
+    # vgremove /dev/vg-demo1
+    ```
+  ![](image/vgremove.png)
+- Xóa Physical Volume
+  ```
+  # pvremove /dev/sdb3
+  ```
+  ![](image/pvremove.png)
 # Tài liệu tham khảo
 1. https://www.techwiz.ca/~peters/presentations/lvm/oclug-lvm.pdf
 2. https://bachkhoa-aptech.edu.vn/gioi-thieu-ve-logical-volume-manager/279.html
