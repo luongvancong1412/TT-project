@@ -19,13 +19,14 @@
     - [6.2 Thay đổi dung lượng Volume Group trên LVM](#62-thay-đổi-dung-lượng-volume-group-trên-lvm)
     - [6.3 Xoá Logical Volume, Volume Group, Physical Volume](#63-xoá-logical-volume-volume-group-physical-volume)
 - [II. Snapshots và Restoring snapshot](#ii-snapshots-và-restoring-snapshot)
-  - [1. Tạo Snapshots và restoring](#1-tạo-snapshots-và-restoring)
+  - [1. Giới thiệu](#1-giới-thiệu)
+  - [2. Tạo Snapshots và restoring](#2-tạo-snapshots-và-restoring)
     - [Chuẩn bị](#chuẩn-bị)
     - [Bước 1: Tạo LVM Snapshot](#bước-1-tạo-lvm-snapshot)
     - [Bước 2: Extend Snapshot in LVM (Mở rộng Snapshot)](#bước-2-extend-snapshot-in-lvm-mở-rộng-snapshot)
     - [Bước 3: Restoring Snapshot or Merging (Hợp nhất)](#bước-3-restoring-snapshot-or-merging-hợp-nhất)
 - [III. Tìm hiểu về LVM Thin Provisioning](#iii-tìm-hiểu-về-lvm-thin-provisioning)
-  - [1. Giới thiệu](#1-giới-thiệu)
+  - [1. Giới thiệu](#1-giới-thiệu-1)
   - [2. Cách thức thực hiện](#2-cách-thức-thực-hiện)
     - [2.1 Tạo Virtual Volume](#21-tạo-virtual-volume)
     - [2.2 Tạo Thin Pool](#22-tạo-thin-pool)
@@ -468,6 +469,7 @@ Việc thay đổi kích thước của Volume Group là việc nhóm thêm Phys
   ![](image/pvremove.png)
 
 # II. Snapshots và Restoring snapshot
+## 1. Giới thiệu
 LVM Snapshots là bản sao thời gian trỏ chuột hiệu quả về không gian của lvm volume. 
 Nó chỉ hoạt động với lvm và chỉ sử dụng dung lượng khi thực hiện các thay đổi đối với nguồn Logical volume thành Snapshot volume. Nếu source volume có những thay đổi lớn được thực hiện đối với tổng 1GB, những thay đổi tương tự sẽ được thực hiện đối với snapshot volume. Tốt nhất là luôn luôn có một kích thước nhỏ thay đổi để tiết kiệm không gian. 
 
@@ -478,7 +480,7 @@ Nếu chúng ta vô tình xóa bất kỳ tệp nào sau khi tạo Snapshot, ch�
 
 Không thể sử dụng snapshot cho backup option. Backups là Bản sao chính của một số dữ liệu, vì vậy chúng tôi không thể sử dụng snapshot làm backup option.
 
-## 1. Tạo Snapshots và restoring
+## 2. Tạo Snapshots và restoring
 ### Chuẩn bị
 Máy Server:
 - Operating System: Centos 7 64bit
