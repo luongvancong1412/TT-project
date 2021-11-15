@@ -1,6 +1,7 @@
 # Tìm hiểu về Logical Volume Manager
 
 - [Tìm hiểu về Logical Volume Manager](#tìm-hiểu-về-logical-volume-manager)
+- [I. Giới thiệu Logical Volume Manager](#i-giới-thiệu-logical-volume-manager)
   - [1. Logical Volume Manager](#1-logical-volume-manager)
   - [2. Mục đích sử dụng](#2-mục-đích-sử-dụng)
   - [3.Ưu nhược điểm](#3ưu-nhược-điểm)
@@ -17,22 +18,23 @@
     - [6.1 Thay đổi dung lượng Logical Volume trên LVM](#61-thay-đổi-dung-lượng-logical-volume-trên-lvm)
     - [6.2 Thay đổi dung lượng Volume Group trên LVM](#62-thay-đổi-dung-lượng-volume-group-trên-lvm)
     - [6.3 Xoá Logical Volume, Volume Group, Physical Volume](#63-xoá-logical-volume-volume-group-physical-volume)
-- [Các tính năng nâng cao của LVM](#các-tính-năng-nâng-cao-của-lvm)
-  - [Snapshots và Restoring snapshot](#snapshots-và-restoring-snapshot)
-    - [Tạo Snapshots và restoring](#tạo-snapshots-và-restoring)
-      - [Chuẩn bị](#chuẩn-bị)
-      - [Bước 1: Tạo LVM Snapshot](#bước-1-tạo-lvm-snapshot)
-      - [Bước 2: Extend Snapshot in LVM (Mở rộng Snapshot)](#bước-2-extend-snapshot-in-lvm-mở-rộng-snapshot)
-      - [3 Bước 3: Restoring Snapshot or Merging (Hợp nhất)](#3-bước-3-restoring-snapshot-or-merging-hợp-nhất)
-- [Tìm hiểu về LVM Thin Provisioning](#tìm-hiểu-về-lvm-thin-provisioning)
-  - [Giới thiệu](#giới-thiệu)
-  - [Cách thức thực hiện](#cách-thức-thực-hiện)
-    - [Tạo Virtual Volume](#tạo-virtual-volume)
-    - [Tạo Thin Pool](#tạo-thin-pool)
-    - [Tạo các Thin Volumes](#tạo-các-thin-volumes)
-    - [Mở rộng Thin Pool](#mở-rộng-thin-pool)
+- [II. Snapshots và Restoring snapshot](#ii-snapshots-và-restoring-snapshot)
+  - [1. Tạo Snapshots và restoring](#1-tạo-snapshots-và-restoring)
+    - [Chuẩn bị](#chuẩn-bị)
+    - [Bước 1: Tạo LVM Snapshot](#bước-1-tạo-lvm-snapshot)
+    - [Bước 2: Extend Snapshot in LVM (Mở rộng Snapshot)](#bước-2-extend-snapshot-in-lvm-mở-rộng-snapshot)
+    - [Bước 3: Restoring Snapshot or Merging (Hợp nhất)](#bước-3-restoring-snapshot-or-merging-hợp-nhất)
+- [III. Tìm hiểu về LVM Thin Provisioning](#iii-tìm-hiểu-về-lvm-thin-provisioning)
+  - [1. Giới thiệu](#1-giới-thiệu)
+  - [2. Cách thức thực hiện](#2-cách-thức-thực-hiện)
+    - [2.1 Tạo Virtual Volume](#21-tạo-virtual-volume)
+    - [2.2 Tạo Thin Pool](#22-tạo-thin-pool)
+    - [2.3 Tạo các Thin Volumes](#23-tạo-các-thin-volumes)
+    - [2.4 Mở rộng Thin Pool](#24-mở-rộng-thin-pool)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
+
+# I. Giới thiệu Logical Volume Manager
 ## 1. Logical Volume Manager
 LVM (Logical Volume Manager) là một công cụ quản lý các ổ đĩa được cài đặt trên máy tính cho hệ điều hành linux.
 
@@ -465,8 +467,7 @@ Việc thay đổi kích thước của Volume Group là việc nhóm thêm Phys
   ```
   ![](image/pvremove.png)
 
-# Các tính năng nâng cao của LVM
-## Snapshots và Restoring snapshot
+# II. Snapshots và Restoring snapshot
 LVM Snapshots là bản sao thời gian trỏ chuột hiệu quả về không gian của lvm volume. 
 Nó chỉ hoạt động với lvm và chỉ sử dụng dung lượng khi thực hiện các thay đổi đối với nguồn Logical volume thành Snapshot volume. Nếu source volume có những thay đổi lớn được thực hiện đối với tổng 1GB, những thay đổi tương tự sẽ được thực hiện đối với snapshot volume. Tốt nhất là luôn luôn có một kích thước nhỏ thay đổi để tiết kiệm không gian. 
 
@@ -477,13 +478,13 @@ Nếu chúng ta vô tình xóa bất kỳ tệp nào sau khi tạo Snapshot, ch�
 
 Không thể sử dụng snapshot cho backup option. Backups là Bản sao chính của một số dữ liệu, vì vậy chúng tôi không thể sử dụng snapshot làm backup option.
 
-### Tạo Snapshots và restoring
-#### Chuẩn bị
+## 1. Tạo Snapshots và restoring
+### Chuẩn bị
 Máy Server:
 - Operating System: Centos 7 64bit
 - SoftWare: LVM
 - Server IP:192.168.30.200
-#### Bước 1: Tạo LVM Snapshot
+### Bước 1: Tạo LVM Snapshot
 Trước tiên, hãy kiểm tra dung lượng trống trong nhóm âm lượng để tạo một ảnh chụp nhanh mới bằng cách sử dụng lệnh ' vgs ' sau đây .
 ```
 # vgs 
@@ -541,7 +542,7 @@ Bây giờ, hãy sao chép hơn 1GB tệp trong tecmint_datas , hãy xem điều
 
 Nếu âm lượng hợp lý bị đầy, nó sẽ tự động giảm xuống và chúng tôi không thể sử dụng nó nữa, ngay cả khi chúng tôi mở rộng kích thước của khối lượng ảnh chụp nhanh. Ý tưởng tốt nhất là có cùng kích thước Nguồn trong khi tạo ảnh chụp nhanh, kích thước tecmint_datas là 10G, nếu tôi tạo kích thước ảnh chụp nhanh là 10GB, nó sẽ không bao giờ tràn như trên vì nó có đủ không gian để chụp nhanh khối lượng của bạn.
 
-#### Bước 2: Extend Snapshot in LVM (Mở rộng Snapshot)
+### Bước 2: Extend Snapshot in LVM (Mở rộng Snapshot)
 Nếu chúng ta cần mở rộng kích thước Snapshot trước khi tràn, chúng ta có thể thực hiện bằng cách sử dụng.
 ```
 # lvextend -L + 1G / dev / vg_tecmint_extra / tecmint_data_snap
@@ -558,7 +559,7 @@ Tiếp theo, xác minh kích thước mới và bảng COW bằng lệnh sau.
 ```
 Nhưng nếu bạn có snapshot volume có cùng kích thước với Source volume thì chúng tôi không cần phải lo lắng về những vấn đề này.
 
-#### 3 Bước 3: Restoring Snapshot or Merging (Hợp nhất)
+### Bước 3: Restoring Snapshot or Merging (Hợp nhất)
 Để khôi phục ảnh chụp nhanh, trước tiên chúng ta cần phải hủy gắn kết hệ thống tệp(un-mount file).
 ```
 # unmount /mnt/tecmint_datas/
@@ -580,8 +581,8 @@ Sau khi snapshot volume bị loại bỏ tự động. Bạn có thể thấy k�
 ```
 # lvs
 ```
-# Tìm hiểu về LVM Thin Provisioning
-## Giới thiệu
+# III. Tìm hiểu về LVM Thin Provisioning
+## 1. Giới thiệu
 Thin Provisioning là tính năng cấp phát ổ cứng dựa trên sự linh hoạt của LVM. Giả sử ta có một Volume Group, ta sẽ tạo ra 1 Thin Pool từ VG này với dung lượng là 20GB cho nhiều khách hàng sử dụng. Giả sử ta có 3 khách hàng, mỗi khách hàng được cấp 6GB lưu trữ. Như vậy ta có 3 x 6GB là 18GB. Với kỹ thuật cấp phát truyền thống thì ta chỉ có thể cấp phát thêm 2GB cho khách hàng thứ 4.
 
 ![](image/LVM-20.png)
@@ -591,7 +592,7 @@ Nhưng với kỹ thuật Thin Provisioning, ta vẫn có thể cấp thêm 6GB 
 
 Đối với cơ chế cấp phát bình thường thì LVM sẽ cấp phát 1 dãy block liên tục mỗi khi người dùng tạo ra 1 volume mới. Nhưng với cơ chế thin pool thì LVM chỉ sẽ cấp phát các block ổ cứng (là một tập hợp các con trỏ, trỏ tới ổ cứng) khi có dữ liệu thật sự ghi xuống đó. Cách tiếp cận này giúp tiết kiệm dung lượng cho hệ thống, tận dụng tối ưu dung lượng lưu trữ. Tuy nhiên, khuyết điểm là có thể gây phân mảnh hệ thống và gây ra tình trạng Over Provisioning như đã nói ở trên.
 
-## Cách thức thực hiện
+## 2. Cách thức thực hiện
 Sau đây là kịch bản demo Thin Provisioing + Over Provisioning trên LVM
 
 1. Tạo một Virtual Volume từ 2 đĩa sdb và sdc.
@@ -604,7 +605,7 @@ Sau đây là kịch bản demo Thin Provisioing + Over Provisioning trên LVM
 ![](image/LVM-21.png)
 *Kịch bản tạo Thin Pool và Thin Volume*
 
-### Tạo Virtual Volume
+### 2.1 Tạo Virtual Volume
 Khởi tạo Virtual Volume từ 2 đĩa sdb và sdc với tổng dung lượng là 20GB (10GB + 10GB):
 ```
 vgcreate DuyThinVolGroup /dev/sdb /dev/sdc
@@ -612,7 +613,7 @@ pvg
 vgs
 ```
 
-### Tạo Thin Pool
+### 2.2 Tạo Thin Pool
 Khởi tạo 1 Thin Pool với dung lượng là 18GB (phải có cờ –thinpool):
 ```
 lvcreate -L 18G --thinpool "DuyThinPool" DuyThinVolGroup
@@ -622,7 +623,7 @@ vgs -o +lv_size,lv_name
 lvdisplay
 ```
 
-### Tạo các Thin Volumes
+### 2.3 Tạo các Thin Volumes
 Tạo 4 Thin Volume cho các user, mỗi Volume có dung lượng là 6G (6*6 = 24GB > 18GB).
 
 Đây chính là Over Provisioning dựa trên Thin Provisioning
@@ -666,7 +667,7 @@ lvdisplay DuyThinVolGroup
 ```
 
 
-### Mở rộng Thin Pool
+### 2.4 Mở rộng Thin Pool
 Về bản chất, Thin Pool vẫn là 1 Logical Volume nên ta có thể dễ dàng mở rộng Thin Pool, miễn là Volume Group chứa nó vẫn còn dung lượng trống:
 ```
 lvscan
@@ -677,6 +678,7 @@ hoặc
 
 lvextend -L +1G DuyThinVolGroup/DuyThinPool
 ```
+
 # Tài liệu tham khảo
 1. https://www.techwiz.ca/~peters/presentations/lvm/oclug-lvm.pdf
 2. https://bachkhoa-aptech.edu.vn/gioi-thieu-ve-logical-volume-manager/279.html
