@@ -21,10 +21,7 @@
 - [II. Snapshots và Restoring snapshot](#ii-snapshots-và-restoring-snapshot)
   - [1. Giới thiệu](#1-giới-thiệu)
   - [2. Tạo Snapshots và restoring](#2-tạo-snapshots-và-restoring)
-    - [Chuẩn bị](#chuẩn-bị)
-    - [Bước 1: Tạo LVM Snapshot](#bước-1-tạo-lvm-snapshot)
-    - [Bước 2: Extend Snapshot in LVM (Mở rộng Snapshot)](#bước-2-extend-snapshot-in-lvm-mở-rộng-snapshot)
-    - [Bước 3: Restoring Snapshot or Merging (Hợp nhất)](#bước-3-restoring-snapshot-or-merging-hợp-nhất)
+  - [3. Cách sử dụng Snapshot](#3-cách-sử-dụng-snapshot)
 - [III. Tìm hiểu về LVM Thin Provisioning](#iii-tìm-hiểu-về-lvm-thin-provisioning)
   - [1. Giới thiệu](#1-giới-thiệu-1)
   - [2. Cách thức thực hiện](#2-cách-thức-thực-hiện)
@@ -37,27 +34,15 @@
 
 # I. Giới thiệu Logical Volume Manager
 ## 1. Logical Volume Manager
-LVM (Logical Volume Manager) là một công cụ quản lý các ổ đĩa được cài đặt trên máy tính cho hệ điều hành linux.
+LVM (Logical Volume Manager) là một công cụ quản lý các ổ cứng được cài đặt trên máy tính cho hệ điều hành linux. Qua đó có thể tăng, giảm kích thước,... phân vùng ổ cứng một cách dễ dàng.
 
-
-Một số khái niệm liên quan:
-- Physical volume: là một đĩa cứng vật lý (ví dụ: /dev/sda...) hoặc là partition
-- Volume Group: là một nhóm các physical volume (Có thể xem Volume Group như 1 ổ đĩa ảo )
-- Logical Volume: là các phân vùng ảo của ổ đĩa ảo
-
-Một số lệnh cần thiết:
-
-- Lệnh fdisk : Dùng để quản lý việc phân vùng trong ổ cứng. Là một công cụ hữu dụng tron linux tìm hiểu thêm FDISK
-- Lệnh mount : Dùng để gắn một phân vùng vào thư mục root để có thể sử dụng được nó tìm hiểu thêm về mount
-- Lệnh dd : Dùng Sao lưu và hồi phục toàn bộ dữ liệu ổ cứng hoặc một partition và kiểm tra tốc độ đọc của kiểu lưu trữ dữ liệu trong LVM
 ## 2. Mục đích sử dụng
 LVM được sử dụng cho các mục đích sau:
 
-- Tạo các ổ đĩa logic đơn của nhiều ổ đĩa vật lý hoặc toàn bộ đĩa cứng (hơi giống với RAID 0 , nhưng giống với JBOD hơn ), cho phép thay đổi kích thước ổ đĩa động.
-- Quản lý các trang trại đĩa cứng lớn bằng cách cho phép bổ sung và thay thế đĩa mà không có thời gian chết hoặc gián đoạn dịch vụ, kết hợp với hoán đổi nóng .
-- Trên các hệ thống nhỏ (như máy tính để bàn), thay vì phải ước tính tại thời điểm cài đặt phân vùng có thể cần lớn như thế nào, LVM cho phép dễ dàng thay đổi kích thước hệ thống tệp khi cần thiết.
-- Thực hiện sao lưu nhất quán bằng cách chụp nhanh các tập hợp lý.
-- Mã hóa nhiều phân vùng vật lý bằng một mật khẩu.
+- Tạo các ổ đĩa logic đơn của nhiều ổ đĩa vật lý hoặc toàn bộ đĩa cứng, cho phép thay đổi kích thước ổ đĩa động.
+- Quản lý lượng lớn các ổ cứng, cho phép bổ sung và thay thế ổ cứng mà không gián đoạn dịch vụ
+- Thay đổi kích thước hệ thống tệp linh hoạt. Trên các hệ thống nhỏ (như máy tính để bàn), thay vì phải ước tính tại thời điểm cài đặt phân vùng có thể cần lớn như thế nào, LVM cho phép dễ dàng thay đổi kích thước hệ thống tệp khi cần thiết.
+- Backup hệ thống bằng cách snapshot các phân vùng ổ cứng (real-time).
 
 ## 3.Ưu nhược điểm
 Ưu điểm :
@@ -66,13 +51,11 @@ LVM được sử dụng cho các mục đích sau:
 - Không làm hỏng dịch vụ
 - Có thể tạo ra các vùng dung lượng lớn nhỏ tuỳ ý.
 
-
 Nhược điểm:
-
-- Các bước thiết lập phức tạp và khó khăn hơn
+- Các bước thiết lập phức tạp
 - Càng gắn nhiều đĩa cứng và thiết lập càng nhiều LVM thì hệ thống khởi động càng lâu.
 - Khả năng mất dữ liệu cao khi một trong số các đĩa cứng bị hỏng.
-- Windows không thể nhận ra vùng dữ liệu của LVM. Nếu Dual-boot ,- Windows sẽ không thể truy cập dữ liệu trong LVM.
+- Windows không thể nhận ra vùng dữ liệu của LVM. Nếu Dual-boot, Windows sẽ không thể truy cập dữ liệu trong LVM.
 ## 4.Mô hình LVM
 ![](image/mhlvm.png)
 
@@ -101,6 +84,16 @@ File Systems
 - Sắp xếp dữ liệu trên đĩa cứng máy tính
 - Quản lý vị trí vật lý của mọi thành phần dữ liệu
 
+Một số khái niệm liên quan:
+- Physical volume: là một đĩa cứng vật lý (ví dụ: /dev/sda...) hoặc là partition
+- Volume Group: là một nhóm các physical volume (Có thể xem Volume Group như 1 ổ đĩa ảo )
+- Logical Volume: là các phân vùng ảo của ổ đĩa ảo
+
+Một số lệnh cần thiết:
+
+- Lệnh fdisk : Dùng để quản lý việc phân vùng trong ổ cứng. Là một công cụ hữu dụng tron linux tìm hiểu thêm FDISK
+- Lệnh mount : Dùng để gắn một phân vùng vào thư mục root để có thể sử dụng được nó tìm hiểu thêm về mount
+- Lệnh dd : Dùng Sao lưu và hồi phục toàn bộ dữ liệu ổ cứng hoặc một partition và kiểm tra tốc độ đọc của kiểu lưu trữ dữ liệu trong LVM
 ## 5.Tạo LVM
 Chuẩn bị
     Máy ảo Centos 7 trên VMWare
@@ -480,109 +473,90 @@ Nếu chúng ta vô tình xóa bất kỳ tệp nào sau khi tạo Snapshot, ch�
 
 Không thể sử dụng snapshot cho backup option. Backups là Bản sao chính của một số dữ liệu, vì vậy chúng tôi không thể sử dụng snapshot làm backup option.
 
+- Snapshot trong LVM là một tính năng hữu ích cho phép tạo ra các bản sao lưu dữ liệu của một Logical Volume nào đó.
+- Snapshot cung cấp cho ta một tính năng phục hồi dữ liệu của một Logical Volume trước thời điểm tạo ra nó.
 ## 2. Tạo Snapshots và restoring
-### Chuẩn bị
-Máy Server:
-- Operating System: Centos 7 64bit
-- SoftWare: LVM
-- Server IP:192.168.30.200
-### Bước 1: Tạo LVM Snapshot
-Trước tiên, hãy kiểm tra dung lượng trống trong nhóm âm lượng để tạo một ảnh chụp nhanh mới bằng cách sử dụng lệnh ' vgs ' sau đây .
-```
-# vgs 
-# lvs
-```
-Bạn thấy đấy, còn lại 8GB dung lượng trống trong đầu ra vgs ở trên . Vì vậy, hãy tạo một ảnh chụp nhanh cho một trong những tập của tôi có tên là tecmint_datas . Đối với mục đích trình diễn, tôi sẽ chỉ tạo khối lượng ảnh chụp nhanh 1GB bằng cách sử dụng các lệnh sau.
-```
-# lvcreate -L 1GB -s -n tecmint_datas_snap /dev/vg_tecmint_extra/tecmint_datas        
+Số liệu:
+- 2 Logical Volume:
 
-OR
+  - /dev/cong/Public     2GiB
+  - /dev/cong/Private    1GiB
 
-# lvcreate --size 1G --snapshot --name tecmint_datas_snap /dev/vg_tecmint_extra/tecmint_datas
-```
-Cả hai lệnh trên đều thực hiện cùng một việc:
+- 1 Volume Group:
+    cong    còn trống 1GiB
+- 4 Physical Volume:
+  - dev/sdb, /dev/sdc, /dev/sdd, /dev/sde
 
--s - Tạo Snapshot
--n - Tên cho Snapshot
+- Snapshot sẽ tạo cho Logical Volume /dev/cong/Private
 
-Đây, là lời giải thích của từng điểm được đánh dấu ở trên.
+    - Đầu tiên, ta cần kiểm tra dung lượng còn trống trong Volume Group:
 
-- Kích thước của ảnh chụp nhanh mà tôi đang tạo ở đây.
-- Tạo ảnh chụp nhanh.
-- Tạo tên cho ảnh chụp nhanh.
-- Tên ảnh chụp nhanh mới.
-- Khối lượng mà chúng ta sẽ tạo một ảnh chụp nhanh.
+      ```vgdisplay cong```
+kết quả sẽ hiển thị tương tự như sau:
 
-Nếu bạn muốn xóa ảnh chụp nhanh, bạn có thể sử dụng lệnh ' lvremove '.
+              --- Volume group ---
+              VG Name               LVMVolGroup
+              System ID
+              Format                lvm2
+              Metadata Areas        4
+              Metadata Sequence No  4
+              VG Access             read/write
+              VG Status             resizable
+              MAX LV                0
+              Cur LV                2
+              Open LV               2
+              Max PV                0
+              Cur PV                4
+              Act PV                4
+              VG Size               3.98 GiB
+              PE Size               4.00 MiB
+              Total PE              1020
+              Alloc PE / Size       768 / 3.00 GiB
+              Free  PE / Size       252 / 1008.00 MiB
+              VG UUID               ctKE4d-azxn-wQ8C-BXOK-nBvi-3neH-3VG2L1
 
-```# lvremove / dev / vg_tecmint_extra / tecmint_datas_snap```
+để ý vào `Free  PE / Size       252 / 1008.00 MiB` ta biết được dung lượng còn trống, và ta sẽ sử dụng 1 phần của toàn bộ dung lượng này để tạo ra một snapshot cho `/dev/LVMVolGroup/Private` với câu lệnh sau:
 
-Bây giờ, hãy liệt kê ảnh chụp nhanh mới được tạo bằng lệnh sau.
-```#lvs```
+```lvcreate -l 50 --snapshot -n pri_sns /dev/cong/Private```
 
-Bạn thấy ở trên, một ảnh chụp nhanh đã được tạo thành công. Tôi đã đánh dấu bằng một mũi tên nơi ảnh chụp nhanh bắt nguồn từ nơi tạo ra nó, tecmint_datas của nó . Có, vì chúng tôi đã tạo một ảnh chụp nhanh cho tecmint_datas l-volume .
+- Private_Snapshot là tên Logical Volume đóng vai trò Snapshot
 
-Bạn thấy ở trên, một ảnh chụp nhanh đã được tạo thành công. Tôi đã đánh dấu bằng một mũi tên nơi ảnh chụp nhanh bắt nguồn từ nơi tạo ra nó, tecmint_datas của nó . Có, vì chúng tôi đã tạo một ảnh chụp nhanh cho tecmint_datas l-volume .
+kết quả sẽ hiển thị tương tự như sau:
 
-Hãy thêm một số tệp mới vào tecmint_datas . Bây giờ khối lượng có một số dữ liệu khoảng 650MB và kích thước ảnh chụp nhanh của chúng tôi là 1GB. Vì vậy, có đủ không gian để sao lưu các thay đổi của chúng tôi về khối lượng nhanh. Ở đây chúng ta có thể thấy trạng thái của snapshot của chúng ta bằng lệnh dưới đây.
+              Using default stripesize 64.00 KiB.
+              Logical volume "Private_Snapshot" created.
 
-Bạn thấy đấy, 51% khối lượng ảnh chụp nhanh đã được sử dụng ngay bây giờ, không có vấn đề gì để sửa đổi thêm trong tệp của bạn. Để biết thêm thông tin chi tiết, hãy sử dụng lệnh.
+- Để kiểm tra kết quả đã tạo thành công hay chưa, ta có thể sử dụng câu lệnh `lvs` và nó sẽ hiển thị tương tự như sau:
 
-Một lần nữa, đây là lời giải thích rõ ràng về từng điểm được đánh dấu trong hình trên.
+          LV               VG          Attr       LSize    Pool Origin  Data%  Meta%  Move Log Cpy%Sync Convert
+          Private          LVMVolGroup owi-aos---    1.00g
+          Private_Snapshot LVMVolGroup swi-a-s---  200.00m      Private 0.00
+          Public           LVMVolGroup -wi-ao----    2.00g
+          root             cl          -wi-ao----   17.00g
+          swap             cl          -wi-ao----    2.00g
 
-Tên của Khối lượng lôgic Ảnh chụp.
-Tên nhóm khối lượng hiện đang được sử dụng.
-Khối lượng ảnh chụp nhanh ở chế độ đọc và ghi, chúng tôi thậm chí có thể gắn khối lượng và sử dụng nó.
-Thời gian khi ảnh chụp nhanh được tạo. Điều này rất quan trọng vì ảnh chụp nhanh sẽ tìm kiếm mọi thay đổi sau thời gian này.
-Ảnh chụp nhanh này thuộc tập hợp lý tecmint_datas.
-Khối lượng logic là trực tuyến và có sẵn để sử dụng.
-Kích thước của khối lượng Nguồn mà chúng tôi đã chụp nhanh.
-Cow-table size = copy on Write, có nghĩa là bất kỳ thay đổi nào được thực hiện đối với tập tecmint_data sẽ được ghi vào ảnh chụp nhanh này.
-Kích thước ảnh chụp nhanh hiện được sử dụng, tecmint_datas của chúng tôi là 10G nhưng kích thước ảnh chụp nhanh của chúng tôi là 1GB có nghĩa là tệp của chúng tôi có khoảng 650 MB. Vì vậy, bây giờ là 51% nếu tệp tăng lên kích thước 2GB ở kích thước tecmint_datas sẽ tăng nhiều hơn kích thước được phân bổ ảnh chụp nhanh, chắc chắn chúng ta sẽ gặp rắc rối với ảnh chụp nhanh. Điều đó có nghĩa là chúng ta cần mở rộng kích thước của khối lượng hợp lý (khối lượng ảnh chụp nhanh).
-Cung cấp kích thước của đoạn cho ảnh chụp nhanh.
-Bây giờ, hãy sao chép hơn 1GB tệp trong tecmint_datas , hãy xem điều gì sẽ xảy ra. Nếu làm vậy, bạn sẽ nhận được thông báo lỗi ' Lỗi đầu vào / đầu ra ', nghĩa là hết dung lượng trong ảnh chụp nhanh.
+    
 
-Nếu âm lượng hợp lý bị đầy, nó sẽ tự động giảm xuống và chúng tôi không thể sử dụng nó nữa, ngay cả khi chúng tôi mở rộng kích thước của khối lượng ảnh chụp nhanh. Ý tưởng tốt nhất là có cùng kích thước Nguồn trong khi tạo ảnh chụp nhanh, kích thước tecmint_datas là 10G, nếu tôi tạo kích thước ảnh chụp nhanh là 10GB, nó sẽ không bao giờ tràn như trên vì nó có đủ không gian để chụp nhanh khối lượng của bạn.
+- Vì Snapshot cũng được coi là một Logical Volume, lên khi ta muốn xóa, thay đổi dung lượng một snapshot, ta có thể thực hiện nó như việc làm đối với một Logical Volume thông thường. Ví dụ:
 
-### Bước 2: Extend Snapshot in LVM (Mở rộng Snapshot)
-Nếu chúng ta cần mở rộng kích thước Snapshot trước khi tràn, chúng ta có thể thực hiện bằng cách sử dụng.
-```
-# lvextend -L + 1G / dev / vg_tecmint_extra / tecmint_data_snap
-```
-Bây giờ có kích thước hoàn toàn là 2GB cho snapshot.
+  - Để thêm dung lượng cho Snapshot, ta chỉ cần thực hiện như sau:
 
-Tiếp theo, xác minh kích thước mới và bảng COW bằng lệnh sau.
-```
-# lvdisplay / dev / vg_tecmint_extra / tecmint_data_snap
-```
-Để biết kích thước của snap volume và % sử dụng lệnh:
-```
-# lvs
-```
-Nhưng nếu bạn có snapshot volume có cùng kích thước với Source volume thì chúng tôi không cần phải lo lắng về những vấn đề này.
+    ```lvextend -L +1G /dev/cong/pri_sns```
 
-### Bước 3: Restoring Snapshot or Merging (Hợp nhất)
-Để khôi phục ảnh chụp nhanh, trước tiên chúng ta cần phải hủy gắn kết hệ thống tệp(un-mount file).
-```
-# unmount /mnt/tecmint_datas/
-```
-Kiểm tra mount point.
-```
-# df -h
-```
-Ở đây, mount đã được ngắt kết nối, vì vậy chúng tôi có thể tiếp tục restore the snapshot. Để khôi phục snap sử dụng lệnh `lvconvert` .
-```
-# lvconvert --merge/dev/vg_tecmint_extra/tecmint_data_snap
-```
+  - Để xóa đi snapshot, ta chỉ cần thực hiện:
 
-Sau khi hợp nhất hoàn tất, snapshot volume sẽ tự động bị xóa. Bây giờ chúng ta có thể thấy không gian của phân vùng bằng lệnh df .
-```
-# df -Th
-```
-Sau khi snapshot volume bị loại bỏ tự động. Bạn có thể thấy kích thước của logical volume.
-```
-# lvs
-```
+    ```lvremove /dev/cong/pri_sns```
+
+
+## 3. Cách sử dụng Snapshot
+
+- Để phục hồi một snapshot cho Logical Volume, ta cần phải unmount Logical Volume đó ra trước tiên và sử dụng snapshot. Cách thực hiện như sau:
+
+  `umount -v /dev/cong/private`
+            
+  lvconvert --merge /dev/cong/pri_sns
+
+sau khi chạy câu lệnh trên thì snapshot Private_Snapshot sẽ bị xóa.
 # III. Tìm hiểu về LVM Thin Provisioning
 ## 1. Giới thiệu
 Thin Provisioning là tính năng cấp phát ổ cứng dựa trên sự linh hoạt của LVM. Giả sử ta có một Volume Group, ta sẽ tạo ra 1 Thin Pool từ VG này với dung lượng là 20GB cho nhiều khách hàng sử dụng. Giả sử ta có 3 khách hàng, mỗi khách hàng được cấp 6GB lưu trữ. Như vậy ta có 3 x 6GB là 18GB. Với kỹ thuật cấp phát truyền thống thì ta chỉ có thể cấp phát thêm 2GB cho khách hàng thứ 4.
@@ -610,7 +584,7 @@ Sau đây là kịch bản demo Thin Provisioing + Over Provisioning trên LVM
 ### 2.1 Tạo Virtual Volume
 Khởi tạo Virtual Volume từ 2 đĩa sdb và sdc với tổng dung lượng là 20GB (10GB + 10GB):
 ```
-vgcreate DuyThinVolGroup /dev/sdb /dev/sdc
+vgcreate cong1 /dev/sdb /dev/sdc
 pvg
 vgs
 ```
@@ -618,7 +592,7 @@ vgs
 ### 2.2 Tạo Thin Pool
 Khởi tạo 1 Thin Pool với dung lượng là 18GB (phải có cờ –thinpool):
 ```
-lvcreate -L 18G --thinpool "DuyThinPool" DuyThinVolGroup
+lvcreate -L 18G --thinpool "congThinPool" cong1
 
 vgs -o +lv_size,lv_name
 
@@ -630,42 +604,42 @@ Tạo 4 Thin Volume cho các user, mỗi Volume có dung lượng là 6G (6*6 = 
 
 Đây chính là Over Provisioning dựa trên Thin Provisioning
 ```
-lvcreate -V 6G --thin -n "Thin_User1" DuyThinVolGroup/DuyThinPool
+lvcreate -V 6G --thin -n "Thin_User1" cong1/congThinPool
 
-lvcreate -V 6G --thin -n "Thin_User2" DuyThinVolGroup/DuyThinPool
+lvcreate -V 6G --thin -n "Thin_User2" cong1/congThinPool
 
-lvcreate -V 6G --thin -n "Thin_User3" DuyThinVolGroup/DuyThinPool
+lvcreate -V 6G --thin -n "Thin_User3" cong1/congThinPool
 
-lvcreate -V 6G --thin -n "Thin_User4" DuyThinVolGroup/DuyThinPool
+lvcreate -V 6G --thin -n "Thin_User4" cong1/congThinPool
 ```
 *Hệ thống cảnh báo khi ta cấp các Volume nhiều hơn tổng dung lượng của Thin Pool*
 
 
 Format 4 volume này về định dạng ext4
 ```
-mkfs.ext4 /dev/DuyThinVolGroup/Thin_User1
+mkfs.ext4 /dev/cong1/Thin_User1
 
-mkfs.ext4 /dev/DuyThinVolGroup/Thin_User2
+mkfs.ext4 /dev/cong1/Thin_User2
 
-mkfs.ext4 /dev/DuyThinVolGroup/Thin_User3
+mkfs.ext4 /dev/cong1/Thin_User3
 
-mkfs.ext4 /dev/DuyThinVolGroup/Thin_User4
+mkfs.ext4 /dev/cong1/Thin_User4
 ```
 
 Tạo mount point và mount 4 volume này lên hệ thống
 ```
 mkdir -p /mnt/{user1,user2,user3,user4}
 
-mount /dev/DuyThinVolGroup/Thin_User1 /mnt/user1
+mount /dev/cong1/Thin_User1 /mnt/user1
 
-mount /dev/DuyThinVolGroup/Thin_User2 /mnt/user2
+mount /dev/cong1/Thin_User2 /mnt/user2
 
-mount /dev/DuyThinVolGroup/Thin_User3 /mnt/user3
+mount /dev/cong1/Thin_User3 /mnt/user3
 
-mount /dev/DuyThinVolGroup/Thin_User4 /mnt/user4
+mount /dev/cong1/Thin_User4 /mnt/user4
 
 df -h
-lvdisplay DuyThinVolGroup
+lvdisplay cong1
 ```
 
 
@@ -674,11 +648,11 @@ Về bản chất, Thin Pool vẫn là 1 Logical Volume nên ta có thể dễ d
 ```
 lvscan
 
-lvresize -L +1G DuyThinVolGroup/DuyThinPool
+lvresize -L +1G cong1/congThinPool
 
 hoặc
 
-lvextend -L +1G DuyThinVolGroup/DuyThinPool
+lvextend -L +1G cong1/congThinPool
 ```
 
 # Tài liệu tham khảo
