@@ -493,31 +493,33 @@ Số liệu:
 
       ```vgdisplay cong```
 kết quả sẽ hiển thị tương tự như sau:
+```
+[root@localhost ~]# vgdisplay cong
+  --- Volume group ---
+  VG Name               cong
+  System ID
+  Format                lvm2
+  Metadata Areas        2
+  Metadata Sequence No  3
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                2
+  Open LV               0
+  Max PV                0
+  Cur PV                2
+  Act PV                2
+  VG Size               3.99 GiB
+  PE Size               4.00 MiB
+  Total PE              1022
+  Alloc PE / Size       768 / 3.00 GiB
+  Free  PE / Size       254 / 1016.00 MiB
+  VG UUID               qNa9r0-bwxb-bmxk-ILYq-tUMC-kZcY-KHUoKU
+```
 
-              --- Volume group ---
-              VG Name               LVMVolGroup
-              System ID
-              Format                lvm2
-              Metadata Areas        4
-              Metadata Sequence No  4
-              VG Access             read/write
-              VG Status             resizable
-              MAX LV                0
-              Cur LV                2
-              Open LV               2
-              Max PV                0
-              Cur PV                4
-              Act PV                4
-              VG Size               3.98 GiB
-              PE Size               4.00 MiB
-              Total PE              1020
-              Alloc PE / Size       768 / 3.00 GiB
-              Free  PE / Size       252 / 1008.00 MiB
-              VG UUID               ctKE4d-azxn-wQ8C-BXOK-nBvi-3neH-3VG2L1
+để ý vào `Free  PE / Size       254 / 1008.00 MiB` ta biết được dung lượng còn trống, và ta sẽ sử dụng 1 phần của toàn bộ dung lượng này để tạo ra một snapshot cho `/dev/cong/private` với câu lệnh sau:
 
-để ý vào `Free  PE / Size       252 / 1008.00 MiB` ta biết được dung lượng còn trống, và ta sẽ sử dụng 1 phần của toàn bộ dung lượng này để tạo ra một snapshot cho `/dev/LVMVolGroup/Private` với câu lệnh sau:
-
-```lvcreate -l 50 --snapshot -n pri_sns /dev/cong/Private```
+```lvcreate -l 50 --snapshot -n pri_sns /dev/cong/private```
 
 - Private_Snapshot là tên Logical Volume đóng vai trò Snapshot
 
