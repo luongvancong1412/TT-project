@@ -57,7 +57,7 @@ Nhược điểm:
 - Khả năng mất dữ liệu cao khi một trong số các đĩa cứng bị hỏng.
 - Windows không thể nhận ra vùng dữ liệu của LVM. Nếu Dual-boot, Windows sẽ không thể truy cập dữ liệu trong LVM.
 ## 4.Mô hình LVM
-![](image/lvm11.png)
+![](image/lvm11.jpg)
 
 Physical Drivers
 - Thiết bị lưu trữ dữ liệu, ví dụ như trong linux nó là /dev/sdb,/dev/sdc .
