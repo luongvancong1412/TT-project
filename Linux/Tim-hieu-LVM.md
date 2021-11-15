@@ -57,7 +57,7 @@ Nhược điểm:
 - Khả năng mất dữ liệu cao khi một trong số các đĩa cứng bị hỏng.
 - Windows không thể nhận ra vùng dữ liệu của LVM. Nếu Dual-boot, Windows sẽ không thể truy cập dữ liệu trong LVM.
 ## 4.Mô hình LVM
-![](image/mhlvm.png)
+![](image/lvm11.png)
 
 Physical Drivers
 - Thiết bị lưu trữ dữ liệu, ví dụ như trong linux nó là /dev/sdb,/dev/sdc .
@@ -93,7 +93,6 @@ Một số lệnh cần thiết:
 
 - Lệnh fdisk : Dùng để quản lý việc phân vùng trong ổ cứng. Là một công cụ hữu dụng tron linux tìm hiểu thêm FDISK
 - Lệnh mount : Dùng để gắn một phân vùng vào thư mục root để có thể sử dụng được nó tìm hiểu thêm về mount
-- Lệnh dd : Dùng Sao lưu và hồi phục toàn bộ dữ liệu ổ cứng hoặc một partition và kiểm tra tốc độ đọc của kiểu lưu trữ dữ liệu trong LVM
 ## 5.Tạo LVM
 Chuẩn bị
     Máy ảo Centos 7 trên VMWare
@@ -524,18 +523,21 @@ kết quả sẽ hiển thị tương tự như sau:
 - Private_Snapshot là tên Logical Volume đóng vai trò Snapshot
 
 kết quả sẽ hiển thị tương tự như sau:
-
-              Using default stripesize 64.00 KiB.
-              Logical volume "Private_Snapshot" created.
+```
+[root@localhost ~]# lvcreate -l 50 --snapshot -n pri_sns /dev/cong/private
+  Logical volume "pri_sns" created.
+```
 
 - Để kiểm tra kết quả đã tạo thành công hay chưa, ta có thể sử dụng câu lệnh `lvs` và nó sẽ hiển thị tương tự như sau:
-
-          LV               VG          Attr       LSize    Pool Origin  Data%  Meta%  Move Log Cpy%Sync Convert
-          Private          LVMVolGroup owi-aos---    1.00g
-          Private_Snapshot LVMVolGroup swi-a-s---  200.00m      Private 0.00
-          Public           LVMVolGroup -wi-ao----    2.00g
-          root             cl          -wi-ao----   17.00g
-          swap             cl          -wi-ao----    2.00g
+```
+[root@localhost ~]# lvs
+  LV      VG     Attr       LSize   Pool Origin  Data%  Meta%  Move Log Cpy%Sync Convert
+  root    centos -wi-ao----  36.99g
+  swap    centos -wi-ao----   2.00g
+  pri_sns cong   swi-a-s--- 200.00m      private 0.00
+  private cong   owi-a-s---   1.00g
+  public  cong   -wi-a-----   2.00g
+```
 
     
 
@@ -558,7 +560,15 @@ kết quả sẽ hiển thị tương tự như sau:
             
   lvconvert --merge /dev/cong/pri_sns
 
-sau khi chạy câu lệnh trên thì snapshot Private_Snapshot sẽ bị xóa.
+sau khi chạy câu lệnh trên thì snapshot pri_sns sẽ bị xóa.
+```
+[root@localhost ~]# lvs
+  LV      VG     Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  root    centos -wi-ao---- 36.99g
+  swap    centos -wi-ao----  2.00g
+  private cong   -wi-a-----  1.00g
+  public  cong   -wi-a-----  2.00g
+```
 # III. Tìm hiểu về LVM Thin Provisioning
 ## 1. Giới thiệu
 Thin Provisioning là tính năng cấp phát ổ cứng dựa trên sự linh hoạt của LVM. Giả sử ta có một Volume Group, ta sẽ tạo ra 1 Thin Pool từ VG này với dung lượng là 20GB cho nhiều khách hàng sử dụng. Giả sử ta có 3 khách hàng, mỗi khách hàng được cấp 6GB lưu trữ. Như vậy ta có 3 x 6GB là 18GB. Với kỹ thuật cấp phát truyền thống thì ta chỉ có thể cấp phát thêm 2GB cho khách hàng thứ 4.
