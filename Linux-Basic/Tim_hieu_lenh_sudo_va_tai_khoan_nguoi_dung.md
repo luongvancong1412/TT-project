@@ -149,7 +149,7 @@ Trong đó:
   - ```su - root``` hoặc ``su -``
   - ```su root``` hoặc ```su```
 
-<img src="https://github.com/luongvancong1412/TT-project/issues/1#issuecomment-969037320" alt="..." width="250" />
+<img src="https://github.com/luongvancong1412/TT-project/issues/1#issuecomment-969037320" width="250" />
 
 ## Tài liệu tham khảo:
 1. https://freetuts.net/lenh-su-trong-linux-3290.html
