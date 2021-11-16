@@ -6,6 +6,7 @@
   - [2. Mục đích sử dụng](#2-mục-đích-sử-dụng)
   - [3.Ưu nhược điểm](#3ưu-nhược-điểm)
   - [4.Mô hình LVM](#4mô-hình-lvm)
+  - [Kiểu lưu trữ](#kiểu-lưu-trữ)
   - [5.Tạo LVM](#5tạo-lvm)
     - [5.1 Thêm ổ cứng ảo](#51-thêm-ổ-cứng-ảo)
     - [5.2 Tạo Partition](#52-tạo-partition)
@@ -29,6 +30,9 @@
     - [2.2 Tạo Thin Pool](#22-tạo-thin-pool)
     - [2.3 Tạo các Thin Volumes](#23-tạo-các-thin-volumes)
     - [2.4 Mở rộng Thin Pool](#24-mở-rộng-thin-pool)
+- [IV. Kiểm chứng 2 kiểu lưu trữ Linear và Striped](#iv-kiểm-chứng-2-kiểu-lưu-trữ-linear-và-striped)
+  - [1.Chuẩn bị:](#1chuẩn-bị)
+  - [2. Thực hiện](#2-thực-hiện)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 
@@ -93,6 +97,16 @@ Một số lệnh cần thiết:
 
 - Lệnh fdisk : Dùng để quản lý việc phân vùng trong ổ cứng. Là một công cụ hữu dụng tron linux tìm hiểu thêm FDISK
 - Lệnh mount : Dùng để gắn một phân vùng vào thư mục root để có thể sử dụng được nó tìm hiểu thêm về mount
+## Kiểu lưu trữ
+- Có hai kiểu lưu trữ khi lưu trữ dữ liệu vào ổ đĩa:
+  - linear
+  - striped
+- Linear : Dữ liệu sẽ được lưu hết phân vùng này rồi bắt đầu chuyển sang phân vùng khác để lưu trữ
+  - Ưu điểm : Các dữ liệu tập trung vào một phân vùng sẽ dễ dàng quản lý
+  - Nhược điểm : Khi bị mất dữ liệu sẽ mất hết dữ liệu của một phần đó. Làm việc chậm hơn bởi vì chỉ có một phân vùng mà trong khi các khu vừng khác không hoạt động
+- Striped: sẽ chia đều các dữ liệu ra và ghi vào các phân vùng đã có. Và cách chia dữ liệu ra bao nhiêu thì được định sẵn bởi người cài đặt nó.
+  - Ưu điểm: Tốc độ sẽ nhanh hơn vì tất cả các phân vùng sẽ cùng làm việc. Tốc độ đọc và ghi cũng nhannh hơn phương pháp Linear
+  - Nhược điểm: Khi mất dữ liệu ở một phân vùng thì sẽ bị mất và ảnh hưởng rất nhiều dữ liệu bởi vì mỗi dữ liệu đều được lưu ở nhiều phân vùng khi sử dụng phương pháp striped
 ## 5.Tạo LVM
 Chuẩn bị
     Máy ảo Centos 7 trên VMWare
@@ -666,7 +680,155 @@ hoặc
 
 lvextend -L +1G cong1/congThinPool
 ```
+# IV. Kiểm chứng 2 kiểu lưu trữ Linear và Striped
+## 1.Chuẩn bị:
+## 2. Thực hiện
+- Bước 1: Đầu tiên ta cài gói wget cho VM bằng lệnh sau
+    ```
+    yum install wget
+    ```
+- Bước 2 : Sau khi download xong gói wget ta sử dụng wget để cài lệnh giám sát quá trình đọc ghi ổ đĩa bwn-ng
 
+```# wget https://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/b/bwm-ng-0.6.1-2.el7.x86_64.rpm```
+
+- Bước 3 : Các gói cần thiết đã cài sau đó ta đến bước tạo ra các phân vùng
+```
+[root@localhost ~]# lsblk
+NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda               8:0    0   40G  0 disk
+├─sda1            8:1    0    1G  0 part /boot
+└─sda2            8:2    0   39G  0 part
+  ├─centos-root 253:0    0   37G  0 lvm  /
+  └─centos-swap 253:1    0    2G  0 lvm  [SWAP]
+sdb               8:16   0   20G  0 disk
+├─sdb1            8:17   0    5G  0 part
+├─sdb2            8:18   0   10G  0 part
+└─sdb3            8:19   0    5G  0 part
+sdc               8:32   0   10G  0 disk
+├─sdc1            8:33   0    5G  0 part
+└─sdc2            8:34   0    5G  0 part
+sr0              11:0    1 1024M  0 rom
+```
+- Bước 4: Tiếp theo ta sẽ tạo ra group-volume như bài trước về lvm tổng quan tôi đã hướng dẫn các bạn làm. Sau đó kiểm tra lại bằng lệnh vgs
+```
+[root@localhost ~]# vgcreate group1 /dev/sdb1 /dev/sdc1
+  Physical volume "/dev/sdb1" successfully created.
+  Physical volume "/dev/sdc1" successfully created.
+  Volume group "group1" successfully created
+[root@localhost ~]# vgcreate group2 /dev/sdb2 /dev/sdc2
+  Physical volume "/dev/sdb2" successfully created.
+  Physical volume "/dev/sdc2" successfully created.
+  Volume group "group2" successfully created
+[root@localhost ~]#
+[root@localhost ~]# vgs
+  VG     #PV #LV #SN Attr   VSize   VFree
+  centos   1   2   0 wz--n- <39.00g  4.00m
+  group1   2   0   0 wz--n-   9.99g  9.99g
+  group2   2   0   0 wz--n-  14.99g 14.99g
+```
+- Bước 5: Ta sẽ tạo ra một logical với kiểu lưu trữ là linear và một logical với kiểu lưu trữ là striped. Ở đây tôi sẽ tạo ra logical có tên là linear_logical với group1 theo cú pháp
+```
+lvcreate --extents (số %)FREE --name (tên logical)
+```
+và striped_logical với group2 theo cú pháp
+```
+lvcreate --extents N%FREE --stripes (số physical) --stripesize (số dung lượng) --name (tên logical) (tên group )
+```
+```
+[root@localhost ~]# lvcreate --extents 100%FREE --name linear-LV group1
+  Logical volume "linear-LV" created.
+[root@localhost ~]# lvcreate --extents 100%FREE --stripes 2 --stripesize 64 --name striped-lv group2
+  Logical volume "striped-lv" created.
+[root@localhost ~]#
+[root@localhost ~]# lvs
+  LV         VG     Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  root       centos -wi-ao---- 36.99g
+  swap       centos -wi-ao----  2.00g
+  linear-LV  group1 -wi-a-----  9.99g
+  striped-lv group2 -wi-a-----  9.99g
+```
+
+- Bước 6: Tạo định dạng cho logical để có thể mount lại nó vào thư mục và dùng chúng
+
+```
+[root@localhost ~]# mkfs -t ext4 /dev/group1/linear-LV
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+655360 inodes, 2619392 blocks
+130969 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=2151677952
+80 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+[root@localhost ~]# mkfs -t ext4 /dev/group2/striped-lv
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=16 blocks, Stripe width=32 blocks
+655360 inodes, 2619392 blocks
+130969 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=2151677952
+80 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+[root@localhost ~]#
+```
+
+- Bước 7: Mount nó lại vào cây thư mục root là có thể sử dụng chúng. Và để kiểm tra lại xem logical đã được mount hay chưa, sử dụng lệnh df -h
+```
+[root@localhost ~]# mkdir linear
+[root@localhost ~]# mkdir striped
+[root@localhost ~]#
+[root@localhost ~]# mount /dev/group1/linear-LV linear
+[root@localhost ~]# mount /dev/group2/striped-lv striped
+[root@localhost ~]# df -h
+Filesystem                      Size  Used Avail Use% Mounted on
+/dev/mapper/centos-root          37G  1.9G   36G   6% /
+devtmpfs                        475M     0  475M   0% /dev
+tmpfs                           487M     0  487M   0% /dev/shm
+tmpfs                           487M  7.7M  479M   2% /run
+tmpfs                           487M     0  487M   0% /sys/fs/cgroup
+/dev/sda1                      1014M  133M  882M  14% /boot
+tmpfs                            98M     0   98M   0% /run/user/0
+/dev/mapper/group1-linear--LV   9.8G   37M  9.2G   1% /root/linear
+/dev/mapper/group2-striped--lv  9.8G   37M  9.2G   1% /root/striped
+```
+- Bước 8 sau khi đã thực hiện xong việc tạo ra 2 logical thì ra sẽ dùng lệnh dd copy file root vào 2 logical này để xem tốc độ độc ghi của nó và cách lưu trữ dữ liệu xem đúng như lý thuyết hay không.
+Trường hợp 1:
+![](image/lenk.png)
+  - Giám sát trên bwm-ng
+      ![](image/linearkc.png)
+
+Kết quả ta thấy được rằng chỉ có ổ sdb1 là đang chạy để lưu trữ khi ta copy phân vùng.
+Trường hợp 2:
+![](image/lenh2.png)
+  - Giám sát trên bwm-ng
+      ![](image/kq2.png)
+Còn kết quả ở logical striped ta thấy rằng cả physical sdb2 và sdc2 cùng chạy để có thể lưu trữ được khi ta copy phân vùng.
 # Tài liệu tham khảo
 1. https://www.techwiz.ca/~peters/presentations/lvm/oclug-lvm.pdf
 2. https://bachkhoa-aptech.edu.vn/gioi-thieu-ve-logical-volume-manager/279.html
