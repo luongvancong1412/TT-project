@@ -105,7 +105,6 @@ Một số lệnh cần thiết:
   - Ưu điểm : Các dữ liệu tập trung vào một phân vùng sẽ dễ dàng quản lý
   - Nhược điểm : Khi bị mất dữ liệu sẽ mất hết dữ liệu của một phần đó. Làm việc chậm hơn bởi vì chỉ có một phân vùng mà trong khi các khu vừng khác không hoạt động
 - Striped: sẽ chia đều các dữ liệu ra và ghi vào các phân vùng đã có. Và cách chia dữ liệu ra bao nhiêu thì được định sẵn bởi người cài đặt nó.
-  - Ưu điểm: Tốc độ sẽ nhanh hơn vì tất cả các phân vùng sẽ cùng làm việc. Tốc độ đọc và ghi cũng nhannh hơn phương pháp Linear
   - Nhược điểm: Khi mất dữ liệu ở một phân vùng thì sẽ bị mất và ảnh hưởng rất nhiều dữ liệu bởi vì mỗi dữ liệu đều được lưu ở nhiều phân vùng khi sử dụng phương pháp striped
 ## 5.Tạo LVM
 Chuẩn bị
@@ -604,9 +603,6 @@ Sau đây là kịch bản demo Thin Provisioing + Over Provisioning trên LVM
   3.2. Tạo mount point và mount 4 volume này.
 4. Mở rộng Thin Pool.
 
-![](image/LVM-21.png)
-*Kịch bản tạo Thin Pool và Thin Volume*
-
 ### 2.1 Tạo Virtual Volume
 Khởi tạo Virtual Volume từ 2 đĩa sdb và sdc với tổng dung lượng là 20GB (10GB + 10GB):
 ```
@@ -638,7 +634,6 @@ lvcreate -V 6G --thin -n "Thin_User3" cong1/congThinPool
 
 lvcreate -V 6G --thin -n "Thin_User4" cong1/congThinPool
 ```
-*Hệ thống cảnh báo khi ta cấp các Volume nhiều hơn tổng dung lượng của Thin Pool*
 
 
 Format 4 volume này về định dạng ext4
@@ -682,6 +677,8 @@ lvextend -L +1G cong1/congThinPool
 ```
 # IV. Kiểm chứng 2 kiểu lưu trữ Linear và Striped
 ## 1.Chuẩn bị:
+- 1 VM bao gồm 3 disk: sda,adb,sdc.
+- Cài các gói: wget, bwm-ng
 ## 2. Thực hiện
 - Bước 1: Đầu tiên ta cài gói wget cho VM bằng lệnh sau
     ```
@@ -709,7 +706,7 @@ sdc               8:32   0   10G  0 disk
 └─sdc2            8:34   0    5G  0 part
 sr0              11:0    1 1024M  0 rom
 ```
-- Bước 4: Tiếp theo ta sẽ tạo ra group-volume như bài trước về lvm tổng quan tôi đã hướng dẫn các bạn làm. Sau đó kiểm tra lại bằng lệnh vgs
+- Bước 4: Tiếp theo, tạo ra group-volume. Sau đó kiểm tra lại bằng lệnh vgs
 ```
 [root@localhost ~]# vgcreate group1 /dev/sdb1 /dev/sdc1
   Physical volume "/dev/sdb1" successfully created.
@@ -726,14 +723,16 @@ sr0              11:0    1 1024M  0 rom
   group1   2   0   0 wz--n-   9.99g  9.99g
   group2   2   0   0 wz--n-  14.99g 14.99g
 ```
-- Bước 5: Ta sẽ tạo ra một logical với kiểu lưu trữ là linear và một logical với kiểu lưu trữ là striped. Ở đây tôi sẽ tạo ra logical có tên là linear_logical với group1 theo cú pháp
-```
-lvcreate --extents (số %)FREE --name (tên logical)
-```
-và striped_logical với group2 theo cú pháp
+- Bước 5: Tạo ra một logical với kiểu lưu trữ là linear và một logical với kiểu lưu trữ là striped. 
+  - Tạo ra logical có tên là linear-LV với  group1 theo cú pháp:
+    ```
+    lvcreate --extents (số %)FREE --name (tên logical)
+    ```
+  - và striped-lv với group2 theo cú pháp:
 ```
 lvcreate --extents N%FREE --stripes (số physical) --stripesize (số dung lượng) --name (tên logical) (tên group )
 ```
+  - Minh hoạ:
 ```
 [root@localhost ~]# lvcreate --extents 100%FREE --name linear-LV group1
   Logical volume "linear-LV" created.
@@ -748,7 +747,7 @@ lvcreate --extents N%FREE --stripes (số physical) --stripesize (số dung lư�
   striped-lv group2 -wi-a-----  9.99g
 ```
 
-- Bước 6: Tạo định dạng cho logical để có thể mount lại nó vào thư mục và dùng chúng
+- Bước 6: Tạo định dạng cho logical để có thể mount vào thư mục
 
 ```
 [root@localhost ~]# mkfs -t ext4 /dev/group1/linear-LV
@@ -798,7 +797,7 @@ Writing superblocks and filesystem accounting information: done
 [root@localhost ~]#
 ```
 
-- Bước 7: Mount nó lại vào cây thư mục root là có thể sử dụng chúng. Và để kiểm tra lại xem logical đã được mount hay chưa, sử dụng lệnh df -h
+- Bước 7: Mount nó lại vào cây thư mục root. Và để kiểm tra lại xem logical đã được mount hay chưa, sử dụng lệnh df -h
 ```
 [root@localhost ~]# mkdir linear
 [root@localhost ~]# mkdir striped
@@ -817,17 +816,31 @@ tmpfs                            98M     0   98M   0% /run/user/0
 /dev/mapper/group1-linear--LV   9.8G   37M  9.2G   1% /root/linear
 /dev/mapper/group2-striped--lv  9.8G   37M  9.2G   1% /root/striped
 ```
-- Bước 8 sau khi đã thực hiện xong việc tạo ra 2 logical thì ra sẽ dùng lệnh dd copy file root vào 2 logical này để xem tốc độ độc ghi của nó và cách lưu trữ dữ liệu xem đúng như lý thuyết hay không.
+- Bước 8 sau khi đã thực hiện xong việc tạo ra 2 logical thì ra sẽ dùng lệnh dd copy file root vào 2 logical này để xem tốc độ độc ghi và cách lưu trữ dữ liệu.
 Trường hợp 1:
+
 ![](image/lenk.png)
+
+
   - Giám sát trên bwm-ng
+    ```
+     bwm-ng -i disk IO
+    ```
       ![](image/linearkc.png)
 
 Kết quả ta thấy được rằng chỉ có ổ sdb1 là đang chạy để lưu trữ khi ta copy phân vùng.
+
 Trường hợp 2:
+
 ![](image/lenh2.png)
+
   - Giám sát trên bwm-ng
+    ```
+     bwm-ng -i disk IO
+    ```
+
       ![](image/kq2.png)
+
 Còn kết quả ở logical striped ta thấy rằng cả physical sdb2 và sdc2 cùng chạy để có thể lưu trữ được khi ta copy phân vùng.
 # Tài liệu tham khảo
 1. https://www.techwiz.ca/~peters/presentations/lvm/oclug-lvm.pdf
