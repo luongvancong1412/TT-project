@@ -6,8 +6,9 @@
   - [2. Mục đích sử dụng](#2-mục-đích-sử-dụng)
   - [3.Ưu nhược điểm](#3ưu-nhược-điểm)
   - [4.Mô hình LVM](#4mô-hình-lvm)
-  - [Kiểu lưu trữ](#kiểu-lưu-trữ)
-  - [5.Tạo LVM](#5tạo-lvm)
+  - [5 Kiểu lưu trữ](#5-kiểu-lưu-trữ)
+  - [6. Kích hoạt ghi nhật ký cho LVM](#6-kích-hoạt-ghi-nhật-ký-cho-lvm)
+  - [7.Tạo LVM](#7tạo-lvm)
     - [5.1 Thêm ổ cứng ảo](#51-thêm-ổ-cứng-ảo)
     - [5.2 Tạo Partition](#52-tạo-partition)
     - [5.3 Tạo Physical Volume](#53-tạo-physical-volume)
@@ -97,7 +98,7 @@ Một số lệnh cần thiết:
 
 - Lệnh fdisk : Dùng để quản lý việc phân vùng trong ổ cứng. Là một công cụ hữu dụng tron linux tìm hiểu thêm FDISK
 - Lệnh mount : Dùng để gắn một phân vùng vào thư mục root để có thể sử dụng được nó tìm hiểu thêm về mount
-## Kiểu lưu trữ
+## 5 Kiểu lưu trữ
 - Có hai kiểu lưu trữ khi lưu trữ dữ liệu vào ổ đĩa:
   - linear
   - striped
@@ -106,7 +107,24 @@ Một số lệnh cần thiết:
   - Nhược điểm : Khi bị mất dữ liệu sẽ mất hết dữ liệu của một phần đó. Làm việc chậm hơn bởi vì chỉ có một phân vùng mà trong khi các khu vừng khác không hoạt động
 - Striped: sẽ chia đều các dữ liệu ra và ghi vào các phân vùng đã có. Và cách chia dữ liệu ra bao nhiêu thì được định sẵn bởi người cài đặt nó.
   - Nhược điểm: Khi mất dữ liệu ở một phân vùng thì sẽ bị mất và ảnh hưởng rất nhiều dữ liệu bởi vì mỗi dữ liệu đều được lưu ở nhiều phân vùng khi sử dụng phương pháp striped
-## 5.Tạo LVM
+## 6. Kích hoạt ghi nhật ký cho LVM
+- Bước 1: Chỉnh sửa tệp lvm.conf, tìm phần log
+
+    ```[root@localhost log]# vi /etc/lvm/lvm.conf```
+
+    ![](image/log.png)
+
+- Bước 2: Thay đổi level = 0 thành giá trị từ 2-7
+  - Level 0 - Không tạo ra đầu ra.
+  - Level 7 - là chi tiết nhất (LOG_DEBUG).
+
+    ![](image/levelog.png)
+
+- Bước 3: Lưu các thay đổi và thoát. THông báo nhật ký sẽ được lưu trong `/var/log/messages`
+
+  ![](image/theodoi.png)
+  
+## 7.Tạo LVM
 Chuẩn bị
     Máy ảo Centos 7 trên VMWare
 
