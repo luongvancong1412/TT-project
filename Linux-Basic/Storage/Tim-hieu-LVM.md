@@ -9,17 +9,17 @@
   - [5 Kiểu lưu trữ](#5-kiểu-lưu-trữ)
   - [6. Kích hoạt ghi nhật ký cho LVM](#6-kích-hoạt-ghi-nhật-ký-cho-lvm)
   - [7.Tạo LVM](#7tạo-lvm)
-    - [5.1 Thêm ổ cứng ảo](#51-thêm-ổ-cứng-ảo)
-    - [5.2 Tạo Partition](#52-tạo-partition)
-    - [5.3 Tạo Physical Volume](#53-tạo-physical-volume)
-    - [5.4 Tạo Volume Group](#54-tạo-volume-group)
-    - [5.5 Tạo Logical Volume](#55-tạo-logical-volume)
-    - [5.6 Định dạng Logical Volume](#56-định-dạng-logical-volume)
-    - [5.7 Mount và sử dụng](#57-mount-và-sử-dụng)
-  - [6. Các thao tác trên LVM](#6-các-thao-tác-trên-lvm)
-    - [6.1 Thay đổi dung lượng Logical Volume trên LVM](#61-thay-đổi-dung-lượng-logical-volume-trên-lvm)
-    - [6.2 Thay đổi dung lượng Volume Group trên LVM](#62-thay-đổi-dung-lượng-volume-group-trên-lvm)
-    - [6.3 Xoá Logical Volume, Volume Group, Physical Volume](#63-xoá-logical-volume-volume-group-physical-volume)
+    - [7.1 Thêm ổ cứng ảo](#71-thêm-ổ-cứng-ảo)
+    - [7.2 Tạo Partition](#72-tạo-partition)
+    - [7.3 Tạo Physical Volume](#73-tạo-physical-volume)
+    - [7.4 Tạo Volume Group](#74-tạo-volume-group)
+    - [7.5 Tạo Logical Volume](#75-tạo-logical-volume)
+    - [7.6 Định dạng Logical Volume](#76-định-dạng-logical-volume)
+    - [7.7 Mount và sử dụng](#77-mount-và-sử-dụng)
+  - [8. Các thao tác trên LVM](#8-các-thao-tác-trên-lvm)
+    - [8.1 Thay đổi dung lượng Logical Volume trên LVM](#81-thay-đổi-dung-lượng-logical-volume-trên-lvm)
+    - [8.2 Thay đổi dung lượng Volume Group trên LVM](#82-thay-đổi-dung-lượng-volume-group-trên-lvm)
+    - [8.3 Xoá Logical Volume, Volume Group, Physical Volume](#83-xoá-logical-volume-volume-group-physical-volume)
 - [II. Snapshots và Restoring snapshot](#ii-snapshots-và-restoring-snapshot)
   - [1. Giới thiệu](#1-giới-thiệu)
   - [2. Tạo Snapshots và restoring](#2-tạo-snapshots-và-restoring)
@@ -128,7 +128,7 @@ Một số lệnh cần thiết:
 Chuẩn bị
     Máy ảo Centos 7 trên VMWare
 
-### 5.1 Thêm ổ cứng ảo
+### 7.1 Thêm ổ cứng ảo
 
 
 ![](image/b1.png)
@@ -168,7 +168,7 @@ sr0              11:0    1 1024M  0 rom
 
 ![](image/odia.png)
 
-### 5.2 Tạo Partition
+### 7.2 Tạo Partition
 – Tạo các partition cho các ổ mới , bắt đầu từ sdb với lệnh :
 fdisk /dev/sdb
 
@@ -193,7 +193,7 @@ Tương tự, bạn tạo thêm các partition primary từ sdb và tạo các p
 
 ![](image/htb1.png)
 
-###  5.3 Tạo Physical Volume
+###  7.3 Tạo Physical Volume
 
 Tạo các Physical Volume là `/dev/sdb1` và `/dev/sdc1` bằng các lệnh sau:
 
@@ -210,7 +210,7 @@ Kiểm tra bằng lệnh pvs hoặc pvdisplay xem các physical volume đã đư
 
 ![](image/pvs.png)
 
-### 5.4 Tạo Volume Group
+### 7.4 Tạo Volume Group
 
 Tiếp theo, nhóm các Physical Volume thành 1 Volume Group bằng cách sử dụng câu lệnh sau:
 
@@ -281,7 +281,7 @@ Hoặc
   centos     1   2   0 wz--n- <39.00g 4.00m
   vg-cong1   2   0   0 wz--n-   1.99g 1.99g
 ```
-### 5.5 Tạo Logical Volume
+### 7.5 Tạo Logical Volume
 Từ một Volume Group, Có thể tạo ra các Logical Volume bằng cách sử dụng lệnh sau:
 
 ```
@@ -319,7 +319,7 @@ Minh hoạ:
 
 ![](image/lvs.png)
 
-### 5.6 Định dạng Logical Volume
+### 7.6 Định dạng Logical Volume
 
 Để format các Logical Volume thành các định dạng như ext2, ext3, ext4, có thể làm như sau:
 
@@ -356,7 +356,7 @@ Writing superblocks and filesystem accounting information: done
 
 ![](image/mu.png)
 
-### 5.7 Mount và sử dụng
+### 7.7 Mount và sử dụng
 
 Tạo ra một thư mục để mount Logical Volume đã tạo vào thư mục đó
 
@@ -378,8 +378,8 @@ Kiểm tra lại dung lượng của thư mục đã được mount:
 
 ![](image/mount.png)
 
-## 6. Các thao tác trên LVM
-### 6.1 Thay đổi dung lượng Logical Volume trên LVM
+## 8. Các thao tác trên LVM
+### 8.1 Thay đổi dung lượng Logical Volume trên LVM
 Lệnh kiểm tra các thông tin LVM:
 ```
 # vgs
@@ -440,7 +440,7 @@ Cần thay đổi Logical Volume lv-cong1 (thuộc Volume Group vg-cong1)
   ```
   Kiểm tra kết quả ta được như sau:
   ![](image/giamlv.png)
-### 6.2 Thay đổi dung lượng Volume Group trên LVM
+### 8.2 Thay đổi dung lượng Volume Group trên LVM
 Việc thay đổi kích thước của Volume Group là việc nhóm thêm Physical Volume hay thu hồi Physical Volume ra khỏi Volume Group
 - Kiểm tra lại các partition và Volume Group
   ```
@@ -463,7 +463,7 @@ Việc thay đổi kích thước của Volume Group là việc nhóm thêm Phys
   ```
   ![](image/vgreduce.png)
 
-### 6.3 Xoá Logical Volume, Volume Group, Physical Volume
+### 8.3 Xoá Logical Volume, Volume Group, Physical Volume
 - Xóa Logical Volumes
 
   - Trước tiên ta phải Umount Logical Volume
