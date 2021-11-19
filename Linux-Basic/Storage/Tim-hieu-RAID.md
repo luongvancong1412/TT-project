@@ -22,19 +22,27 @@
 - RAID (Redundant Array of Independent Disks) 
 - là hình thức ghép nhiều ổ đĩa cứng vật lý thành một hệ thống ổ đĩa cứng có chức gia tăng tốc độ đọc/ghi dữ liệu hoặc nhằm tăng thêm sự an toàn của dữ liệu chứa trên hệ thống đĩa hoặc kết hợp cả hai yếu tố trên.
 Lợi ích:
-- Dự phòng
-- Hiệu quả cao
-- Giá thành thấp
+- An toàn vì có cơ chế dự phòng
+
+- Hiệu quả cao, sử dụng bộ nhớ dung lượng lớn
+
+- Quản lý dữ liệu người dùng dễ dàng, phân chia thư mục chi tiết
+
+Sự dự phòng là nhân tố quan trọng nhất trong quá trình phát triển RAID cho môi trường máy chủ. Dự phòng cho phép sao lưu dữ liệu bộ nhớ khi gặp sự cố. Nếu một ổ cứng trong dãy bị trục trặc thì nó có thể hoán đổi sang ổ cứng khác mà không cần tắt cả hệ thống hoặc có thể sử dụng ổ cứng dự phòng. Phương pháp dự phòng phụ thuộc vào phiên bản nào được sử dụng.
+
+Khi áp dụng các phiên bản RAID mạnh bạn có thể thấy rõ hiệu quả tăng cao của nó. Hiệu quả cũng tùy thuộc vào số lượng ổ cứng được liên kết với nhau và các mạch điều khiển.
+
+Tất cả các nhà quản lý những tập đoàn CNTT đều muốn giảm giá thành. Khi ra đời, giá thành là một vấn đề chủ chốt. Mục tiêu của các mảng RAID Array là cung cấp bộ nhớ tốt hơn cho hệ thống so với việc sử dụng riêng biệt các ổ đĩa có dung lượng lớn
 ## 2 Kỹ thuật lưu trữ
-- Parity là một phương pháp tạo lại nội dung bị mất từ ​​thông tin parity. Chúng được ứng dụng trong RAID5 và RAID6 dựa trên parity.
+- `Parity` là một phương pháp tạo lại nội dung bị mất từ ​​thông tin parity. Chúng được ứng dụng trong RAID5 và RAID6 dựa trên parity.
 
-- Stripe chia sẻ dữ liệu ngẫu nhiên vào nhiều đĩa. Việc chia sẻ dữ liệu này thì sẽ không có dữ liệu đầy đủ trong một đĩa.
+- `Stripe` chia sẻ dữ liệu ngẫu nhiên vào nhiều đĩa. Việc chia sẻ dữ liệu này thì sẽ không có dữ liệu đầy đủ trong một đĩa.
 
-- Mirroring được sử dụng trong RAID1 và RAID10. Mirroring tạo một bản sao của cùng một dữ liệu. Trong RAID 1, nó sẽ lưu cùng một nội dung vào đĩa khác.
+- `Mirroring` được sử dụng trong RAID1 và RAID10. Mirroring tạo một bản sao của cùng một dữ liệu. Trong RAID 1, nó sẽ lưu cùng một nội dung vào đĩa khác.
 
-- Hot spare là một ổ đĩa dự phòng trong máy chủ nó có thể tự động thay thế các ổ đĩa bị lỗi. Nếu bất kỳ một trong các ổ đĩa bị lỗi, ổ đĩa dự phòng này sẽ được sử dụng và xây dựng lại tự động.
+- `Hot spare` là một ổ đĩa dự phòng trong máy chủ nó có thể tự động thay thế các ổ đĩa bị lỗi. Nếu bất kỳ một trong các ổ đĩa bị lỗi, ổ đĩa dự phòng này sẽ được sử dụng và xây dựng lại tự động.
 
-- Chunks là một kích thước của dữ liệu có thể tối thiểu từ 4KB trở lên. Bằng cách xác định kích thước chunks, chúng ta có thể tăng hiệu suất I/O.
+- `Chunks` là một kích thước của dữ liệu có thể tối thiểu từ 4KB trở lên. Bằng cách xác định kích thước chunks, chúng ta có thể tăng hiệu suất I/O.
 ## 3. Phân loại
 - RAID-0: Sử dụng nhiều hơn hai ổ đĩa cứng để cấu hình. RAID-0 phân chia dữ liệu thành các đoạn và lưu trữ tại các ổ cứng nhằm tăng tốc độ đọc và ghi dữ liệu. Nếu một ổ cứng bị hỏng thì dữ liệu cũng bị mất.
 - RAID-1: Sử dụng nhiều hơn hai ổ đĩa cứng để cấu hình. Dữ liệu được ghi giống nhau vào hai ổ cứng nhằm đảm bảo tính sẵn sàng cho dữ liệu. Nếu một trong hai ổ cứng bị hỏng thì dữ liệu vẫn còn.
