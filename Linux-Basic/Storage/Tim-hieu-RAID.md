@@ -34,15 +34,9 @@ Khi áp dụng các phiên bản RAID mạnh bạn có thể thấy rõ hiệu q
 
 Tất cả các nhà quản lý những tập đoàn CNTT đều muốn giảm giá thành. Khi ra đời, giá thành là một vấn đề chủ chốt. Mục tiêu của các mảng RAID Array là cung cấp bộ nhớ tốt hơn cho hệ thống so với việc sử dụng riêng biệt các ổ đĩa có dung lượng lớn
 ## 2 Kỹ thuật lưu trữ
-- `Parity` là một phương pháp tạo lại nội dung bị mất từ ​​thông tin parity. Chúng được ứng dụng trong RAID5 và RAID6 dựa trên parity.
-
-- `Stripe` chia sẻ dữ liệu ngẫu nhiên vào nhiều đĩa. Việc chia sẻ dữ liệu này thì sẽ không có dữ liệu đầy đủ trong một đĩa.
-
-- `Mirroring` được sử dụng trong RAID1 và RAID10. Mirroring tạo một bản sao của cùng một dữ liệu. Trong RAID 1, nó sẽ lưu cùng một nội dung vào đĩa khác.
-
-- `Hot spare` là một ổ đĩa dự phòng trong máy chủ nó có thể tự động thay thế các ổ đĩa bị lỗi. Nếu bất kỳ một trong các ổ đĩa bị lỗi, ổ đĩa dự phòng này sẽ được sử dụng và xây dựng lại tự động.
-
-- `Chunks` là một kích thước của dữ liệu có thể tối thiểu từ 4KB trở lên. Bằng cách xác định kích thước chunks, chúng ta có thể tăng hiệu suất I/O.
+- **Striping** (Phân chia dải): Tách luồng dữ liệu thành các khối có kích thước nhất định (được gọi là kích thước khối) sau đó viết từng khối này qua từng RAID. Cách lưu trữ dữ liệu này ảnh hưởng đến hiệu suất.
+- **Mirroring** (mirroring): Là một kỹ thuật lưu trữ trong đó các bản sao dữ liệu giống hệt nhau được lưu trữ trên các thành viên RAID cùng một lúc. Loại vị trí dữ liệu này ảnh hưởng đến khả năng chịu lỗi cũng như hiệu suất.
+- **Parity** là một kỹ thuật lưu trữ được sử dụng các phương pháp phân loại và tổng kiểm tra. Trong kỹ thuật chẵn lẻ, một hàm chẵn lẻ nhất định được tính cho các khối dữ liệu. Nếu một ổ đĩa bị lỗi, khối bị thiếu được tính toán lại từ tổng kiểm tra, cung cấp khả năng chịu lỗi RAID.
 ## 3. Phân loại
 - RAID-0: Sử dụng nhiều hơn hai ổ đĩa cứng để cấu hình. RAID-0 phân chia dữ liệu thành các đoạn và lưu trữ tại các ổ cứng nhằm tăng tốc độ đọc và ghi dữ liệu. Nếu một ổ cứng bị hỏng thì dữ liệu cũng bị mất.
 - RAID-1: Sử dụng nhiều hơn hai ổ đĩa cứng để cấu hình. Dữ liệu được ghi giống nhau vào hai ổ cứng nhằm đảm bảo tính sẵn sàng cho dữ liệu. Nếu một trong hai ổ cứng bị hỏng thì dữ liệu vẫn còn.
@@ -51,29 +45,37 @@ Tất cả các nhà quản lý những tập đoàn CNTT đều muốn giảm g
 ### 4.1 Raid 0
 ![](image/mhoaraid.png)
 
-RAID 0 (Striping) dữ liệu sẽ được ghi vào đĩa bằng phương pháp chia sẻ, một nửa nội dung nằm trong một đĩa và 1 nửa khác sẽ được ghi vào đĩa khác.
-RAID0 cho phép ghi và đọc được hoàn thành nhanh hơn. Tuy nhiên, không giống như các cấp RAID khác, RAID0 không có tính Parity. Khi phân chia đĩa mà không có dữ liệu parity không có dự phòng hoặc khả năng chịu lỗi. Nếu một ổ đĩa bị lỗi, tất cả dữ liệu trên ổ đĩa đó sẽ bị mất.
-RAID0 được sử dụng tốt nhất để lưu trữ văn bản có yêu cầu đọc và ghi tốc độ cao. Bộ nhớ đệm phát trực tiếp video và chỉnh sửa video là những cách sử dụng phổ biến cho RAID 0 do tốc độ và hiệu suất.
-- Ưu điểm: Tăng tốc độ đọc/ghi ổ đĩa
-- Nhược điểm: Tính an toàn thấp (Vì nếu 1 ổ đĩa hư thì tâst cả dữ liệu trên đĩa còn lại sẽ không sử dụng được)
-- Đối tượng: Lý tưởng cho việc lưu trữ dữ liệu không quan trọng cần được đọc ghi tốc độ cao. ví dụ như chỉnh sửa ảnh hoặc video.
+Đây là dạng RAID được người dùng ưa thích do khả năng nâng cao hiệu suất trao đổi dữ liệu của đĩa cứng.
+RAID 0 cần ít nhất 2 ổ đĩa. Tổng quát ta có n đĩa (n>=2) và các đĩa cùng loại.
+Dữ liệu sẽ được chia ra nhiều phần bằng nhau để lưu trên từng đĩa. Như vậy mỗi đĩa sẽ chứa 1/n dữ liệu.
+Tổng dung lượng = dung lượng nhỏ nhất x Tổng số đĩa
+
+- Ưu điểm: Tăng tốc độ đọc/ghi ổ đĩa. (Lý thuyết thì tốc độ tăng n lần)
+- Nhược điểm: Tính an toàn thấp (Vì nếu 1 ổ đĩa hư thì tất cả dữ liệu trên đĩa còn lại sẽ không sử dụng được)
+- Ứng dụng: Lý tưởng cho việc lưu trữ dữ liệu không quan trọng cần được đọc ghi tốc độ cao (Thường dùng trong các máy trạm). ví dụ như chỉnh sửa ảnh hoặc video.
 ### 4.2 Raid 1
 ![](image/raid1.png)
 
-RAID1 (Mirroring) là sự sao chép dữ liệu vào hai hoặc nhiều đĩa. RAID1 là một lựa chọn tốt cho các ứng dụng đòi hỏi hiệu năng cao và tính sẵn sàng cao, như các ứng dụng giao dịch, email,... Cả hai đĩa đều hoạt động, dữ liệu có thể được đọc từ chúng đồng thời làm cho hoạt động đọc khá nhanh. Tuy nhiên, thao tác ghi chậm hơn vì thao tác ghi được thực hiện hai lần.
-
+RAID1 (Mirroring) là sự sao chép dữ liệu vào hai hoặc nhiều đĩa(Dữ liệu giống hệt nhau)
+Đây là dạng RAID cơ bản nhất có khả năng đảm bảo an toàn dữ liệu. 
+Cũng giống như RAID 0, RAID 1 đòi hỏi ít nhất 2 đĩa cứng để làm việc.
+Trong trường hợp 1 ổ bị trục trặc, ổ còn lại sẽ tiếp tục hoạt động bình thường. Có thể thay đổi đĩa hỏng mà không lo lắng vấn đề mất thông tin
+Đối với RAID 1, hiệu năng không phải là yếu tố hàng đầu. Tuy nhiên đối với hệ thống quản lý nhiều thông tin quan trọng thì RAID 1 là điều cần thiết.
+Tổng dung lượng = Dung lượng của 1 ổ đơn.
 RAID1 yêu cầu tối thiểu hai đĩa vật lý, vì dữ liệu được ghi đồng thời đến hai nơi. Nếu một đĩa bị lỗi, đĩa kia có thể truy xuất dữ liệu.
-- Ưu điểm: An toàn về dữ liệu
+- Ưu điểm: An toàn về dữ liệu, khả năng hoạt động liên tục cao
 - Nhược điểm: Hiệu suất không cao, chi phí cao
-- Đối tượng sử dụng: Các dịch vụ lưu trữ, các website vừa và nhỏ không yêu cầu quá cao về tốc độ đọc ghi của ổ cứng.
+- Đối tượng sử dụng: Các dịch vụ lưu trữ, các website vừa và nhỏ (Chỉ cần dung lượng 1 đĩa là đủ)không yêu cầu quá cao về tốc độ đọc ghi của ổ cứng.
 ### 4.3 Raid 5
 ![](image/raid5.png)
 
 RAID5 (Distributed Parity) được sử dụng ở cấp doanh nghiệp. RAID5 hoạt động theo phương pháp parity. Thông tin chẵn lẻ sẽ được sử dụng để xây dựng lại dữ liệu. Nó xây dựng lại từ thông tin còn lại trên các ổ đĩa tốt còn lại. Điều này sẽ bảo vệ dữ liệu của chúng ta khi ổ đĩa bị lỗi. Dử liệu trên RAID5 có thể tồn tại sau một lỗi ổ đĩa duy nhất, nếu các ổ đĩa bị lỗi nhiều hơn 1 sẽ gây mất dữ liệu.
+Khi một ổ đĩa trong mảng bị hỏng. Ổ đĩa này có thể được thay thế bởi một ổ đĩa mới mà không cần tắt NAS hoặc máy chủ, và cũng không làm gián đoạn người dùng đang truy cập NAS hoặc máy chủ đó. Đây là một giải pháp tuyệt vời cho khả năng chịu lỗi do ổ đĩa hỏng (hoặc dần dần sẽ hỏng), dữ liệu có thể được tái tạo (hay còn gọi là đồng bộ) trên ổ đĩa mới khi ổ đĩa hỏng được thay thế. Thời gian tái tạo phụ thuộc vào nhiều yếu tố như dung lượng dữ liệu cần tái tạo, tốc độ ghi của ổ đĩa mới, mức độ ưu tiên tái tạo (rebuild priority)... có thể mất nhiều tiếng hoặc thậm chí nhiều ngày mới hoàn tất.
 
-=> RAID 5 tương tự như Raid1 và Raid 0 cũng tách ra lưu giữ trên các ổ cứng, vẫn có phương án dự phòng khi ổ cứng bị hỏng.
+Tổng dung lượng= Dung lượng của 1 ổ cứng x (Số lượng các ổ cứng tham gia -1)
+
 Một số ưu điểm của RAID5:
-- Ưu điểm: Nâng cao hiệu suất, an toàn dữ liệu, tiết kiệm chi phí hơn.
+- Ưu điểm: Hiệu suất tốt, an toàn dữ liệu (Khả năng chịu lỗi tốt), khả năng hoạt động liên tục (Thay nóng- không cần tắt máy chủ)
 - Nhược điểm: Chi phí phát sinh thêm 1 ổ so với hình thức lưu trữ thông thường.
 - Đối tượng sử dụng: Tất cả những website, dịch vụ, ứng dụng có số lượng truy cập và yêu cầu tài nguyên từ nhỏ đến vừa và lớn.s
 
@@ -833,4 +835,6 @@ Nếu có lỗi, không reboot server để tránh tình trạng server không t
 
 # Tài liệu tham khảo
 1. https://blogd.net/linux/software-raid-toan-tap-tren-linux/#4
-2. 
+2. https://vi.wikipedia.org/wiki/RAID#RAID_5
+3. https://www.cuudulieutransang.vn/post/2014/03/27/gi%E1%BA%A3i-th%C3%ADch-c%C3%A1c-c%E1%BA%A5p-%C4%91%E1%BB%99-raid-ph%E1%BA%A7n-1
+4. 
