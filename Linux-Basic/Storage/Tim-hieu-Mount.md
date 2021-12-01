@@ -22,6 +22,7 @@
   - [1. MBR](#1-mbr)
   - [2. GPT](#2-gpt)
   - [3. File System Type](#3-file-system-type)
+  - [4. UUID là gì](#4-uuid-là-gì)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 
@@ -316,6 +317,18 @@ ext2|	2TB	|Nó là một hệ thống tập tin được sử dụng rộng rãi
 ext3|	16GB-2TB|	Một chức năng hệ thống ghi nhật ký được thêm vào ext2. Hệ thống tệp chính trên Linux. Phạm vi ngày dễ nhận biết là từ ngày 14 tháng 12 năm 1901 đến ngày 18 tháng 1 năm 2038.
 ext4|	16TB|	Hỗ trợ kích thước âm lượng lên đến 1EB và kích thước tệp lên đến 16TB.Phạm vi ngày từ 14 tháng 12 năm 1901 đến 25 tháng 4 năm 2514 và có thể được sử dụng khi còn sống.Dấu thời gian hỗ trợ nano giây. Có thể là hệ thống tệp chính trong tương lai. Phản hồi tốt hơn ext3.
 ReiserFS|	16TB|	Một hệ thống tệp nhật ký phù hợp để xử lý các tệp nhỏ. Bạn đang sử dụng nó? Nó đã được SUSE thông qua.|
+## 4. UUID là gì
+UUID là một ID để quản lý và xác định thiết bị. Mặc dù nó không được quản lý để không ai có thể sao chép nó, nó tồn tại như một ID duy nhất để nhận dạng thiết bị và UUID cũng được gán cho đĩa cứng.
+
+Để tìm UUID của đĩa cứng, hãy sử dụng lệnh blkid.
+
+Nếu bạn ghi một bản ghi bằng UUID trong fstab, nếu tên thiết bị bị thay đổi do thay đổi vật lý của kết nối đĩa cứng hoặc thêm / thay đổi thiết bị (ví dụ: sda1 được thay đổi thành sdb1). Tuy nhiên, bản ghi được ghi trong fstab sẽ chọn thiết bị có UUID được chỉ định. Nếu fstab được mô tả bằng tên thiết bị, nó có thể không khởi động bình thường nếu tên thiết bị được thay đổi.
+
+UUID của đĩa cứng cũng được tạo khi tạo hệ thống tệp. Bạn có thể thêm bất kỳ UUID nào bằng cách chỉ định tùy chọn -U cho lệnh mkfs.
+
+```
+# mkfs -t ext4 -L hdd1 -U aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa / dev / sdb5 ← Chỉ định UUID
+```
 # Tài liệu tham khảo
 
 1. https://vi.wikipedia.org/wiki/Mount_(m%C3%A1y_t%C3%ADnh)
