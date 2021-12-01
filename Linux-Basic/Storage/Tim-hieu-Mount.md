@@ -18,6 +18,9 @@
     - [2.3 Kết nối](#23-kết-nối)
     - [2.4 umount](#24-umount)
     - [2.5 fstab](#25-fstab)
+  - [3. mount iso Centos 7 create local yum](#3-mount-iso-centos-7-create-local-yum)
+    - [3.1 chuẩn bị](#31-chuẩn-bị)
+    - [3.2 Tiến hành](#32-tiến-hành)
 - [III. Thuật ngữ liên quan](#iii-thuật-ngữ-liên-quan)
   - [1. MBR](#1-mbr)
   - [2. GPT](#2-gpt)
@@ -247,6 +250,74 @@ Cột 1           Cột 2       Cột 3   Cột 4       Cột 5   Cột 6
 
 - dùng câu lệnh mount -a để đọc hết các dòng trong file fstab và kết nối lại
 - sau đó dùng mount để kiểm tra.
+## 3. mount iso Centos 7 create local yum
+### 3.1 chuẩn bị
+- VM máy Centos 7 64bit
+- add iso centos 7 vào VM
+### 3.2 Tiến hành
+- Kiểm tra cd/dvd:
+```
+[root@localhost cong]# lsblk
+NAME            MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+sda               8:0    0   40G  0 disk
+├─sda1            8:1    0    1G  0 part  /boot
+└─sda2            8:2    0   39G  0 part
+  ├─centos-root 253:0    0   37G  0 lvm   /
+  └─centos-swap 253:1    0    2G  0 lvm   [SWAP]
+sdb               8:16   0   10G  0 disk
+└─sdb1            8:17   0   10G  0 part
+  └─md0           9:0    0   20G  0 raid5
+sdc               8:32   0   11G  0 disk
+└─sdc1            8:33   0   11G  0 part
+  └─md0           9:0    0   20G  0 raid5
+sdd               8:48   0   20G  0 disk
+└─sdd1            8:49   0   20G  0 part
+  └─md0           9:0    0   20G  0 raid5
+sr0              11:0    1  4.3G  0 rom   
+sr1              11:1    1  4.3G  0 rom
+```
+
+- Mout cdrom vào thư mục /cong
+```
+[root@localhost ~]# mkdir /cong
+[root@localhost cong]# mount /dev/cdrom /cong
+mount: /dev/sr0 is write-protected, mounting read-only
+```
+- Backup file repo
+```
+[root@localhost ~]# mv /etc/yum.repos.d/*.repo /yumm
+```
+- Tạo repo file
+```
+[root@localhost cong]# vi /etc/yum.repos.d/cloud-local.repo
+```
+Nội dung file:
+```
+[cloudlocal]
+name=LocalRepository
+baseurl=file:///cong
+enabled=1
+gpgcheck=1
+gpgkey=file:///cong/RPM-GPG-KEY-CentOS-7
+```
+Trong đó:
+- [ cloudlocal] : Tên repo sẽ hiển thị trong quá trình cài đặt gói
+- name : Tên của Repo
+- baseurl : Vị trí package
+- enabled : Bật sử dụng Repo
+- gpgcheck : Bật cài đặt an toàn. Nếu set giá trị là 0 thì không cần để ý giá trị gpgkey
+- gpgkey : Vị trí lưu key
+
+
+- Xoá yum cached
+```
+yum clean all
+```
+
+- Cài đặt thử gói http:
+
+![](/Linux-Basic/Storage/image/aaa.png)
+
 # III. Thuật ngữ liên quan
 MBR (Master Boot Record) và GPT (GUID Partition Table) là hai cách khác nhau để lưu trữ các thông tin phân vùng trên một ổ đĩa.
 ## 1. MBR
@@ -338,3 +409,4 @@ UUID của đĩa cứng cũng được tạo khi tạo hệ thống tệp. Bạn
 3. https://quantrimang.com/gpt-va-mbr-khac-nhau-nhu-the-nao-khi-phan-vung-o-dia-122635
 4. https://kazmax.zpp.jp/linux_beginner/mount_hdd.html
 5. https://kazmax.zpp.jp/linux_beginner/mkfs.html
+6. https://news.cloud365.vn/huong-dan-tao-local-yum-repository-tren-centos-7-voi-dia-iso-dvd/
