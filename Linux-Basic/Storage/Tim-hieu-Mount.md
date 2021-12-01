@@ -309,6 +309,8 @@ Hệ thống tệp là một cơ chế để quản lý dữ liệu thuộc tín
 
 Trong trường hợp của Linux, hệ thống tệp được chấp nhận khác nhau tùy thuộc vào bản phân phối, nhưng có vẻ như ext3 và ext4 thường được chấp nhận.
 
+Ext - Extended File System
+
 **Một số loại chính**
 
 Tên|	Kích thước tệp tối đa|	Mô tả
