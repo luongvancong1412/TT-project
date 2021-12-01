@@ -9,7 +9,6 @@
   - [3. Unmount](#3-unmount)
   - [4.Vfstab](#4vfstab)
   - [5.Cú pháp](#5cú-pháp)
-  - [6.Tuỳ chọn](#6tuỳ-chọn)
 - [II. Lab mount fdisk mkfs](#ii-lab-mount-fdisk-mkfs)
   - [1. Chuẩn bị](#1-chuẩn-bị)
   - [2. Mount](#2-mount)
@@ -100,21 +99,6 @@ Note:
 ## 5.Cú pháp
 
 ```mount [OPTION...] DEVICE_NAME DIRECTORY```
-
-## 6.Tuỳ chọn
-|Tuỳ chọn|Mô tả|
-|---|---|
--V| Phiên bản đầu ra
--h|--help, In thông báo trợ giúp
--v, --verbose| Chế độ chi tiết
--a, --all| Gắn kết tất cả các hệ thống tệp được đề cập trong fstab(file cấu hình)
--F, --fork|
--f, --fake|
--i, --internal-only|
--l, --show-labels|
--n, --no-mtab|
--c, --no-canonicalize|
--r, --read-only|
 
 # II. Lab mount fdisk mkfs
 ## 1. Chuẩn bị
