@@ -81,6 +81,7 @@ Min ( 0 - 59 )
     00 03 * * * /root/Taofile/backup.sh
     ```
   - Lưu lại
+  - Sau khi thiết lập file crontab cho user sẽ được tạo ra ở folder: `/var/spool/cron`
 
 - Cấu hình crontab cho System-wide:Cấu hình trong file
   - Sử dụng lệnh
