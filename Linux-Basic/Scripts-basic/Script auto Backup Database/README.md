@@ -1,4 +1,4 @@
-# [Bash Script] Script tự động Backup Database mariadb
+# [Bash Shell] Script tự động Backup Database mariadb
 
 
 ## 1.Script tự động backup
