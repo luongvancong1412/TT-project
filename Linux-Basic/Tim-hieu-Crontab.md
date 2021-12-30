@@ -70,32 +70,68 @@ Min ( 0 - 59 )
   crontab -r
   ```
 - Cấu hình crontab cho user:
-```
-su user
-crontab -e
-```
-- Cấu hình crontab cho System-wide:Cấu hình trong file
-```
-vi /etc/crontab
-```
+  - Đăng nhập vào user cần tạo:
+  - Nhập lệnh : `crontab -e`
+    ```
+    su user
+    crontab -e
+    ```
+  - Nhập lệnh và thời gian thực thi
+    ```
+    00 03 * * * /root/Taofile/backup.sh
+    ```
+  - Lưu lại
 
+- Cấu hình crontab cho System-wide:Cấu hình trong file
+  - Sử dụng lệnh
+    ```
+    vi /etc/crontab
+    ```
+  - Output:
+    ```
+    SHELL=/bin/bash
+    PATH=/sbin:/bin:/usr/sbin:/usr/bin
+    MAILTO=root
+
+    # For details see man 4 crontabs
+
+    # Example of job definition:
+    # .---------------- minute (0 - 59)
+    # |  .------------- hour (0 - 23)
+    # |  |  .---------- day of month (1 - 31)
+    # |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+    # |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+    # |  |  |  |  |
+    # *  *  *  *  * user-name  command to be executed
+    ```
+  - Nhập lệnh và lưu lại
+- Một số file khác
 ```
-[sinhvien@conglv etc]$ ls cron*
-cron.deny  crontab
+[root@conglv etc]# ls -l cron*
+-rw-------. 1 root root   0 Aug  9  2019 cron.deny # Lish user không được tạo crontab
+-rw-r--r--. 1 root root 451 Jun 10  2014 crontab # Crontab hệ thống
 
 cron.d:
-0hourly
+total 4
+-rw-r--r--. 1 root root 128 Aug  9  2019 0hourly
 
 cron.daily:
-logrotate  man-db.cron
+total 8
+-rwx------. 1 root root 219 Apr  1  2020 logrotate
+-rwxr-xr-x. 1 root root 618 Oct 30  2018 man-db.cron
 
 cron.hourly:
-0anacron
+total 4
+-rwxr-xr-x. 1 root root 392 Aug  9  2019 0anacron
 
 cron.monthly:
+total 0
 
 cron.weekly:
+total 0
+
 ```
+Một số lệnh khác
 - @reboot : Chạy sau khi reboot.
 - @yearly : Chạy hàng năm, ví dụ: 0 0 1 1 *
 - @annually : Chạy hàng năm, ví dụ: 0 0 1 1 *
@@ -103,6 +139,11 @@ cron.weekly:
 - @weekly : Chạy hàng tuần, ví dụ: 0 0 * * 0
 - @daily : Chạy hàng ngày, ví dụ: 0 0 * * *
 - @hourly : Chạy mỗi giờ, ví dụ: 0 * * * *
+
+Ví dụ: Tạo một tác vụ chạy vào phút đầu tiên của tháng
+```
+@monthly /root/Taofile/backup.sh
+```
 ## II. Ứng dụng
 - Ex1: Thực thi lệnh lúc 8h30' ngày 10 tháng 7
 ```
@@ -124,7 +165,23 @@ cron.weekly:
 ```
 */10 * * * * CMD
 ```
-
+- Ex6: Backup DB mariadvb
+Cú pháp:
+```
+mysqldump -u [username] -p [databaseName] > [filename]-$(date +%F).sql
+```
+- username – tên người dùng có quyền sao lưu cơ sở dữ liệu
+- databasename – tên cơ sở dữ liệu cần sao lưu
+- filename – tên của bản sao dữ liệu
+- -$(date +%F) mốc thời gian sao lưu dữ liệu
+- Để khôi phục sử dụng lệnh:
+```
+-u [username] -p [databaseName] < backupfile.sql
+```
+Ví dụ:
+```
+mysqldump -u admindb -p quanly > backup.sql
+```
 ## Tài liệu tham khảo
 1. https://vietnix.vn/crontab/
 2. https://www.tutorialspoint.com/unix_commands/crontab.htm
