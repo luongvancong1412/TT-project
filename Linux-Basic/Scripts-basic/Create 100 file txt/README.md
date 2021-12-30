@@ -1,5 +1,11 @@
 # [Bash Shell] Script tự động tạo 100 tệp .txt
 
+Mục lục
+- [[Bash Shell] Script tự động tạo 100 tệp .txt](#bash-shell-script-tự-động-tạo-100-tệp-txt)
+	- [1. Script tự động tạo tệp](#1-script-tự-động-tạo-tệp)
+	- [2. Phân quyền cho script](#2-phân-quyền-cho-script)
+	- [3. Chạy script](#3-chạy-script)
+  
 ## 1. Script tự động tạo tệp
 Đoạn script sẽ thực hiện công việc tạo tệp từ 1 đến 100 trên Centos 7 trong đó mỗi tệp ghi số thứ tự tệp và thời gian tạo tệp (hiển thị đến mili giây)
 
