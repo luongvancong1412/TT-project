@@ -1,11 +1,11 @@
-# [Bash Shell] Script tự động Backup Database mariadb
+# [Bash Shell] Script + Crontab Backup Database mariadb
 
 Mục lục
-- [[Bash Shell] Script tự động Backup Database mariadb](#bash-shell-script-tự-động-backup-database-mariadb)
-  - [1.Script tự động backup](#1script-tự-động-backup)
+- [[Bash Shell] Script + Crontab Backup Database mariadb](#bash-shell-script--crontab-backup-database-mariadb)
+  - [1.Script backup](#1script-backup)
   - [2.Thiết lập Crontab để tự động backup hàng ngày](#2thiết-lập-crontab-để-tự-động-backup-hàng-ngày)
 
-## 1.Script tự động backup
+## 1.Script backup
 
 Đoạn script sẽ thực hiện công việc tự động Backup Database (MariaDB) hàng ngày trên Linux Server sử dụng Crontab
 
