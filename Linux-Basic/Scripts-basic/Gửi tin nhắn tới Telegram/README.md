@@ -21,13 +21,13 @@ Chat /newbot vào khung chat với BotFather để tạo:
 ## 2. Thêm Bot vào 1 Group
 - Tạo group mới:
 
-        ![](../../image/newgroup.png)
+    ![](../../image/newgroup.png)
 - Đặt tên group:
 
-        ![](../../image/groupname.png)
+    ![](../../image/groupname.png)
 - Thêm bot vào group:
 
-        ![](../../image/addbot.png)
+    ![](../../image/addbot.png)
 
 - Khởi động bot bằng cách chat: /my_id @Alerts_cong_BOT
 
@@ -80,8 +80,6 @@ printf "========================================================================
 printf "Gui:$noidung toi group Telegram thanh cong \n"
 printf "=========================================================================\n"
 ```
-
-Trong đó:
 
 Phân quyền thực thi cho script backup:
 ```
