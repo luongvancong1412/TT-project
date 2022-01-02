@@ -34,7 +34,7 @@
 1. [Special Characters](./5.Scripts/Special-Characters.md)
 2. [Redirection/Pipe operators](./5.Scripts/Redirection-or-Pipe-operators.md)
 3. [crontab](5.Scripts/crontab.md)
-### [VI. Text Editor]
+### [VI. Text Editor](./6.Text-Editor)
 1. [cat -- concatenate and displays files](./6.Text-Editor/cat.md)
 2. [more -- displays files](./6.Text-Editor/more.md)
 3. [less -- displays files](./6.Text-Editor/less.md)
