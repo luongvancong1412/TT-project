@@ -1,9 +1,6 @@
 #!/bin/bash
 
 clear
-printf "=========================================================================\n"
-printf "Gui tin toi group Telegram \n"
-printf "=========================================================================\n"
 echo "Nhap noi dung:"
 read noidung
 
@@ -13,7 +10,6 @@ url=https://api.telegram.org/bot${token}/sendMessage
 
 curl -d chat_id=$ID -d text="$noidung" $url
 
-clear
-printf "=========================================================================\n"
+printf "=================================================\n"
 printf "Gui:$noidung toi group Telegram thanh cong \n"
-printf "=========================================================================\n"
+printf "=================================================\n"
