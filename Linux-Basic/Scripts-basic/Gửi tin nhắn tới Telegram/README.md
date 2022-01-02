@@ -38,7 +38,8 @@ Chat /newbot vào khung chat với BotFather để tạo:
 
 Bước 1:  Truy cập đường dẫn  :https://web.telegram.org
 
-Bước 2: Truy cập vào Group mà bạn muốn lấy ID và mở đường dẫn của Group  ở trình duyệt .Ví dụ https://web.telegram.org/z/#-604968007
+Bước 2: Truy cập vào Group mà bạn muốn lấy ID và mở đường dẫn của Group  ở trình duyệt .
+Trên thanh URL hiện giống như sau: https://web.telegram.org/z/#-604968007
 
 Bước 3: Lấy ID Group Telegram của bạn. Ở đây là: **-604968007**( đây chính là ID group )
 
