@@ -37,7 +37,9 @@ Chat /newbot vào khung chat với BotFather để tạo:
 Để gửi thông báo về Group bạn cần phải có thêm Chat ID. Sử dụng URL sau:
 
 Bước 1:  Truy cập đường dẫn  :https://web.telegram.org
+
 Bước 2: Truy cập vào Group mà bạn muốn lấy ID và mở đường dẫn của Group  ở trình duyệt .Ví dụ https://web.telegram.org/z/#-604968007
+
 Bước 3: Lấy ID Group Telegram của bạn. Ở đây là: **-604968007**( đây chính là ID group )
 
 ## 4. Gửi thông báo tới Telegram
