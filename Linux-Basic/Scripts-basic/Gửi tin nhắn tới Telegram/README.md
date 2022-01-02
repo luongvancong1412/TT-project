@@ -36,26 +36,21 @@ Chat /newbot vào khung chat với BotFather để tạo:
 ## 3. Lấy Chat ID của group
 Để gửi thông báo về Group bạn cần phải có thêm Chat ID. Sử dụng URL sau:
 
-```
-https://api.telegram.org/bot<token>/getUpdates
-```
-
-Trong đó `<token>` là mã token nhận được ở bước 1
-
-![](../../image/chatid.png)
-
-Chat ID của group ở ví dụ này là: -604968007
+Bước 1:  Truy cập đường dẫn  :https://web.telegram.org
+Bước 2: Truy cập vào Group mà bạn muốn lấy ID và mở đường dẫn của Group  ở trình duyệt .Ví dụ https://web.telegram.org/z/#-604968007
+Bước 3: Lấy ID Group Telegram của bạn. Ở đây là: **-604968007**( đây chính là ID group )
 
 ## 4. Gửi thông báo tới Telegram
 Để gửi thông báo tới Telegram bạn có thể sử dụng method GET
+- Trên trình duyệt web:
 ```
 https://api.telegram.org/bot<token>/sendMessage?chat_id=<chat_id>&text=<noi_dung>
 ```
-Hoặc sử dụng cURL
+Hoặc sử dụng cURL (Trên Centos 7)
 ```
 curl -d chat_id=<chat_id> -d text="noi_dung"  https://api.telegram.org/bot<token>/sendMessage
 ```
-## 5. Tạo script gửi tin nhắn tới Group
+## 5. Tạo script gửi tin nhắn tới 1 Group
 
 Tạo 1 script backup có đường dẫn: **/scripts/message.sh**
 
@@ -84,4 +79,10 @@ printf "========================================================================
 Phân quyền thực thi cho script backup:
 ```
 chmod +x /scripts/message.sh
+```
+
+Chạy script:
+```
+cd /scripts
+bash message.sh
 ```
