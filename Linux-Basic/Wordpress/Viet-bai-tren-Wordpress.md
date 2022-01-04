@@ -56,13 +56,13 @@ mysqldump -u userwp -p --single-transaction --quick --lock-tables=false wordpres
 backup.sql.gz
 ```
 
-# Restore dữ liệu database wordpress
 - Viết thêm bài viết trước khi Restore:
 
 ![](../image/baiviettruockhikhoiphuc.png)
 
 Để khôi phục dữ liệu ta thực hiện
 
+# Restore dữ liệu database wordpress
 ## 1. Giải nén file gz
 ```
 cd /backup/wordpress
