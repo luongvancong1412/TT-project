@@ -2,14 +2,16 @@
 
 Mục lục
 - [Backup và Restore database trên Wordpress](#backup-và-restore-database-trên-wordpress)
+- [I. Viết bài lên wordpress](#i-viết-bài-lên-wordpress)
   - [1. Cài đặt trình soạn thảo](#1-cài-đặt-trình-soạn-thảo)
   - [2. Viết bài mới](#2-viết-bài-mới)
-- [Backup dữ liệu](#backup-dữ-liệu)
-- [Restore dữ liệu database wordpress](#restore-dữ-liệu-database-wordpress)
+- [II. Backup dữ liệu](#ii-backup-dữ-liệu)
+- [III. Restore dữ liệu database wordpress](#iii-restore-dữ-liệu-database-wordpress)
   - [1. Giải nén file gz](#1-giải-nén-file-gz)
   - [2. Khôi phục dữ liệu](#2-khôi-phục-dữ-liệu)
-- [Kết quả](#kết-quả)
+- [IV. Kết quả](#iv-kết-quả)
 
+# I. Viết bài lên wordpress
 ## 1. Cài đặt trình soạn thảo
 
 - Thêm Plugin mới:
@@ -39,7 +41,7 @@ Mục lục
   - **Save Draft** để lưu bản nháp bài viết khi chưa muốn đăng.
   - **Publish** để đăng bài viết công khai.
 
-# Backup dữ liệu
+# II. Backup dữ liệu
 - Bài viết trước khi backup:
 
 ![](/Linux-Basic/image/dulieutruockhibackup.png)
@@ -62,7 +64,7 @@ backup.sql.gz
 
 Để khôi phục dữ liệu ta thực hiện
 
-# Restore dữ liệu database wordpress
+# III. Restore dữ liệu database wordpress
 ## 1. Giải nén file gz
 ```
 cd /backup/wordpress
@@ -72,7 +74,7 @@ gunzip backup.sql.gz
 ```
 mysql -u userwp -p wordpressdb < backup.sql
 ```
-# Kết quả
+# IV. Kết quả
 Dữ liệu khôi phục đến thời điểm backup dữ liệu
 
 ![](../image/baivietsaukhoiphuc.png)
