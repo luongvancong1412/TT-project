@@ -48,7 +48,7 @@ Mục lục
 
 - Sử dụng lệnh:
 ```
-mysqldump -u userwp -p  wordpressdb | gzip > /backup/wordpress/backup.sql.gz
+mysqldump -u userwp -p wordpressdb | gzip > /backup/wordpress/backup.sql.gz
 ```
 - Output:
 ```
