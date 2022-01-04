@@ -27,3 +27,6 @@
 ### [Chapter 4. Managing Files](./Chapter_4)
 
 1. [Using File Management Commands](./Chapter_4/1.Using-File-Management-Commands.md)
+2. [Managing File Ownership](./Chapter_4/2.Managing-File-Ownership.md)
+3. [Controlling Access to Files](Chapter_4/3.Controlling-Access-to-Files.md)
+4. [Locating Files](./Chapter_4/4.Locating-Files.md)
