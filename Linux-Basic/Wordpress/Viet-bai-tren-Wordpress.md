@@ -1,7 +1,7 @@
-# Viết bài trên Wordpress
+# Backup và Restore trên Wordpress
 
 Mục lục
-- [Viết bài trên Wordpress](#viết-bài-trên-wordpress)
+- [Backup và Restore trên Wordpress](#backup-và-restore-trên-wordpress)
   - [1. Cài đặt trình soạn thảo](#1-cài-đặt-trình-soạn-thảo)
   - [2. Viết bài mới](#2-viết-bài-mới)
 - [Backup dữ liệu](#backup-dữ-liệu)
