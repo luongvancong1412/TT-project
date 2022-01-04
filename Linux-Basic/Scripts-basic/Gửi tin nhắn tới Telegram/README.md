@@ -1,5 +1,13 @@
 # [Bash Shell] Viết chương trình gửi tin nhắn tới Telegram
 
+Mục lục
+- [[Bash Shell] Viết chương trình gửi tin nhắn tới Telegram](#bash-shell-viết-chương-trình-gửi-tin-nhắn-tới-telegram)
+  - [1. Tạo bot Telegram](#1-tạo-bot-telegram)
+  - [2. Thêm Bot vào 1 Group](#2-thêm-bot-vào-1-group)
+  - [3. Lấy Chat ID của group](#3-lấy-chat-id-của-group)
+  - [4. Gửi thông báo tới Telegram](#4-gửi-thông-báo-tới-telegram)
+  - [5. Tạo script gửi tin nhắn tới 1 Group](#5-tạo-script-gửi-tin-nhắn-tới-1-group)
+
 ## 1. Tạo bot Telegram
 
 Bước 1: Login vào Telegram thông qua số điện thoại
@@ -16,6 +24,7 @@ Chat /newbot vào khung chat với BotFather để tạo:
 
     ![](/Linux-Basic/image/namebot.png)
 - Nhận được mã token:
+
     ![](../../image/token.png)
 
 ## 2. Thêm Bot vào 1 Group
@@ -78,7 +87,11 @@ printf "========================================================================
 printf "Gui:$noidung toi group Telegram thanh cong \n"
 printf "=========================================================================\n"
 ```
-
+Trong đó:
+- `token`: mã thông báo (xác thực) của BOT
+- `ID`, `chat_id`: là id của group, channel hoặc chat
+- `text`: là phàn tin nhắn sẽ gửi
+- 
 Phân quyền thực thi cho script backup:
 ```
 chmod +x /scripts/message.sh
@@ -89,3 +102,9 @@ Chạy script:
 cd /scripts
 bash message.sh
 ```
+
+# Tài liệu tham khảo:
+
+1. https://core.telegram.org/bots#6-botfather
+2. https://manage.hostvn.net/hostvn-knowledgebase.php?action=article&id=633
+3. https://help.ladipage.vn/cac-phan-tu-co-ban/cac-buoc-cai-dat-luu-data/luu-du-lieu-ve-telegram/huong-dan-tao-token-va-group-id-o-telegram
