@@ -282,6 +282,8 @@ EOF
 ```
 
 #### 2.4 Khởi động Cluster
+
+Ta sẽ dùng node mariadb-1 làm node khởi tạo Galera cluster ( Tức là các node khác sẽ đồng bộ dữ liệu từ mariadb-1 )
 Thực hiện trên node1
 ```
 galera_new_cluster
@@ -315,13 +317,14 @@ Kiểm tra các thành viên thuộc cluster
 ```
 
 Kết quả:
+```
 [root@localhost ~]# mysql -u root -e "SHOW STATUS LIKE 'wsrep_incoming_addresses'"
 +--------------------------+-----------------------------------------+
 | Variable_name            | Value                                   |
 +--------------------------+-----------------------------------------+
 | wsrep_incoming_addresses | 192.168.30.250:3306,192.168.30.200:3306 |
 +--------------------------+-----------------------------------------+
-
+```
 # Tài liệu tham khảo
 
 1. https://blog.cloud365.vn/linux/tong-quan-ve-cluster-p1/
