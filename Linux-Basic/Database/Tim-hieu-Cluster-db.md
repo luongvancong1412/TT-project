@@ -4,7 +4,7 @@
   - [I. Tổng quan về Cluster](#i-tổng-quan-về-cluster)
     - [1. Khái niệm](#1-khái-niệm)
     - [2. Tính năng](#2-tính-năng)
-    - [3. Các loại Cluster chính:](#3-các-loại-cluster-chính)
+    - [3. Các chế độ hoạt động chính:](#3-các-chế-độ-hoạt-động-chính)
       - [3.1 Active - Active (Load balancing)](#31-active---active-load-balancing)
       - [3.2 Active - Passive (High availability)](#32-active---passive-high-availability)
   - [II. Ứng dụng: Cluster DB](#ii-ứng-dụng-cluster-db)
@@ -12,14 +12,7 @@
     - [2. Ưu điểm](#2-ưu-điểm)
       - [2.1. Khả năng chịu lỗi](#21-khả-năng-chịu-lỗi)
       - [2.2. Cân bằng tải](#22-cân-bằng-tải)
-    - [3. Kiến trúc](#3-kiến-trúc)
-      - [3.1 Shared-Nothing](#31-shared-nothing)
-      - [3.2 Shared-Disk](#32-shared-disk)
-    - [4. Một số khái niệm khác](#4-một-số-khái-niệm-khác)
-      - [Replica - Bản sao](#replica---bản-sao)
-      - [Node Group](#node-group)
-      - [Partition - Phân vùng](#partition---phân-vùng)
-  - [Lab: Cài đặt MariaDB Galera Cluster](#lab-cài-đặt-mariadb-galera-cluster)
+  - [III. Lab: Cài đặt MariaDB Galera Cluster](#iii-lab-cài-đặt-mariadb-galera-cluster)
     - [1. Mô hình mạng](#1-mô-hình-mạng)
     - [2. Các bước thực hiện](#2-các-bước-thực-hiện)
       - [2.1 Chuẩn bị](#21-chuẩn-bị)
@@ -42,7 +35,7 @@
 - **Tính sẵn sàng cao (High availability)**: Các tài nguyên bên trong cluster luôn sẵn sàng xử lý yêu cầu, ngay cả khi có vấn đề xảy ra với các thành phần bên trong (hardware, software).
 - **Khả năng mở rộng (scalability)**: Khi tài nguyên có thể sử dụng của hệ thống tới giới hạn, ta có thể dễ dàng bổ sung thêm tài nguyên vào cluster bằng các bổ sung thêm các node.
 - **Độ tin cậy (reliability)**: Hệ thống Cluster giảm thiểu tần số lỗi có thể xảy ra, giảm thiểu các vấn đề dẫn tới ngừng hoạt động của hệ thống.
-### 3. Các loại Cluster chính:
+### 3. Các chế độ hoạt động chính:
 #### 3.1 Active - Active (Load balancing)
 - Cần ít nhất 2 node, cả 2 node chạy đồng thời xử lý cùng 1 loại dịch vụ. 
 - Mục đích chính của Active Active Cluster là tối ưu hóa cho hoạt động cân bằng tải (Load balancing). 
@@ -55,7 +48,6 @@
 - Cần ít nhất 2 node, tuy nhiên không phải tất cả các node đều sẵn sàng xử lý yêu cầu. VD: Nếu có 2 node thì 1 node sẽ chạy ở chế độ Active, node còn lại sẽ chạy ở chế độ passive hoặc standby.
 - Passive Node sẽ hoạt động như 1 bản backup của Active Node. Trong trường hợp Active Node xảy ra vấn đề, Passive Node sẽ chuyển trạng thái thành active, tiếp quản xử lý các yêu cầu.
 
-- Ứng dụng: load balancing, backup and failover purposes
 - Ưu điểm:
   - Hệ thống hoạt động liên tục
 - Nhược điểm:
@@ -78,50 +70,17 @@ Tính năng phân cụm thường được thiết lập để cho phép ngườ
 
 Phân cụm cơ sở dữ liệu có các dạng khác nhau, tùy thuộc vào cách dữ liệu được lưu trữ và phân bổ tài nguyên.
 
-
-### 3. Kiến trúc
-#### 3.1 Shared-Nothing
-Trong chế độ phân cụm cơ sở dữ liệu này, mỗi nút / máy chủ hoàn toàn độc lập, vì vậy không có điểm tranh chấp nào. Một ví dụ về điều này sẽ là khi một công ty có nhiều trung tâm dữ liệu cho một trang web.
-
-Với nhiều máy chủ trên toàn cầu, không có máy chủ duy nhất nào là “máy chủ”. Shared-nothing còn được gọi là “phân bổ cơ sở dữ liệu”.
-#### 3.2 Shared-Disk
-Tất cả dữ liệu được lưu trữ tập trung và sau đó được truy cập thông qua các phiên bản được lưu trữ trên các máy chủ hoặc nút khác nhau.
-
-Sự phân biệt giữa hai loại gần đây đã trở nên mờ nhạt với sự ra đời của điện toán lưới hoặc bộ nhớ đệm phân tán. Trong thiết lập này, dữ liệu vẫn được quản lý tập trung nhưng được kiểm soát bởi một “máy chủ ảo” mạnh mẽ bao gồm nhiều máy chủ hoạt động cùng nhau như một.
-
-### 4. Một số khái niệm khác
-#### Replica - Bản sao
-Trong khi cài đặt MySQL cluster các bạn sẽ phải cấu hình một thông số đó là số bản sao cho 1 phân vùng dữ liệu ở trong cluster, thường giá trị này sẽ là 2. Số bản sao này sẽ ảnh hưởng trực tiếp đến số Node Group. Số bản sao càng cao thì tính toàn vẹn dữ liệu và độ sẵn sàng càng cao, tuy nhiên cái gì cũng có mặt trái, số bản sao nhiều thì sẽ cần nhiều node để lưu dữ liệu hơn.
-
-#### Node Group
-Số Node group được tính bằng công thức Số Node Group = Số Data Node / số bản sao trong một trường hợp cơ bản (hình trên) với 2x2 data node và 2 bản sao cho mỗi phân vùng thì ta sẽ có 2 Node Group. Các data node trong 1 node group sẽ lưu các dữ liệu giống nhau.
-
-#### Partition - Phân vùng
-Dữ liệu của bạn sẽ không được lưu toàn bộ trên bất cứ 1 node nào cả mà nó sẽ được chia thành các phân vùng nhỏ hơn. Số phân vùng sẽ được tính bằng công thức Số phân vùng = Số Data node * số luồng LDM
-
-Khi sử dụng với Engine là Ndbd mặc định thì số luồng LDM tại mỗi node sẽ là 1 nên => Số phân vùng = Số Data node
-
-Với ví dụ trên ta thấy:
-
-Node Group 0 gồm: Node 1 và Node 2
-Node 1 chứa phân vùng 0 (phân vùng chính) và phân vùng 2 (phân vùng phụ)
-Node 2 chứa phân vùng 0 (phân vùng phụ) và phân vùng 2 (phân vùng chính)
-Node Group 1 gồm: Node 3 và Node 4
-Node 3 chứa phân vùng 1 (phân vùng chính) và phân vùng 3 (phân vùng phụ)
-Node 4 chứa phân vùng 1 (phân vùng phụ) và phân vùng 3 (phân vùng chính)
-Với các chia phân vùng dữ liệu như bên trên thì khi cluster vẫn hoạt động bình thường khi chỉ cần 1 node duy nhất trong các Node Group hoạt động. Điều này giúp đảm bảo tính sẵn sàng dữ liệu của Cluster.
-
-## Lab: Cài đặt MariaDB Galera Cluster
+## III. Lab: Cài đặt MariaDB Galera Cluster
 - MariaDB Galera Cluster là cơ chế đồng bộ dữ liệu cho multi-master MariaDB. Phục vụ tính sẵn sàng cao cho MariaDB với chế độ Active-Active ( Có thể đồng thời đọc ghi trên tất cả các node MariaDB thuộc Garela Cluster.
 - Sử dụng galera cluster, application có thể read/write trên bất cứ node nào. Một node có thể được thêm vào cluster cũng như gỡ ra khỏi cluster mà không có downtime dịch vụ, cách thức cũng đơn giản.
 - Bản thân các database như mariadb, percona xtradb không có tính năng multi master được tích hợp sẵn bên trong.Các database này sẽ sử dụng một galera replication plugin để sử dụng tính năng multi master do galera cluster cung cấp (wsrep api).
 
-**Ưu điểm**
-
-- Một giải pháp multi master hoàn chỉnh nên cho phép read/write trên node bất kỳ
-- Đồng bộ
-- Đa luồng cho phép write nhanh hơn
-- Không cần dự phòng vì node nào cũng là master rồi
+**Tính năng**
+- Sao chép đồng bộ
+- Cấu trúc liên kết Active-active multi-master tăng cao hiệu suất
+- Đọc và ghi vào bất kỳ node server
+- Kiểm soát các node tự động, các node lỗi sẽ được được gỡ khỏi cluster
+- Thêm node tự động
 ### 1. Mô hình mạng
 
 ![](./../image/cluster-mhm-ok.png)
@@ -279,17 +238,22 @@ wsrep_sst_method=rsync
 [mariadb-10.2]
 EOF
 ```
-
+Trong đó:
+- wsrep_cluster_address="gcomm://192.168.30.200,192.168.30.250" : danh sách các node thuộc Cluster.
+- wsrep_cluster_name="cong_cluster": tên của Cluster
+- wsrep_node_address="192.168.30.250" địa chỉ IP của node đang thực hiện
+- wsrep_node_name="node2" : tên node
 #### 2.4 Khởi động Cluster
 
-Ta sẽ dùng node mariadb-1 làm node khởi tạo Galera cluster ( Tức là các node khác sẽ đồng bộ dữ liệu từ mariadb-1 )
-Thực hiện trên node1
+Ở đây, dùng node1 làm node khởi tạo Galera cluster ( Tức là các node khác sẽ đồng bộ dữ liệu từ node1 )
+
+**Thực hiện trên node1**
 ```
 galera_new_cluster
 systemctl enable mariadb
 ```
 
-Thực hiện trên node 2 và các node khác nếu có
+**Thực hiện join node 2 và các node khác nếu có vào cụm:**
 ```
 systemctl start mariadb
 systemctl enable mariadb
