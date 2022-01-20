@@ -122,8 +122,10 @@ Node 4 chứa phân vùng 1 (phân vùng phụ) và phân vùng 3 (phân vùng c
 Với các chia phân vùng dữ liệu như bên trên thì khi cluster vẫn hoạt động bình thường khi chỉ cần 1 node duy nhất trong các Node Group hoạt động. Điều này giúp đảm bảo tính sẵn sàng dữ liệu của Cluster.
 
 ## Lab: Cài đặt MariaDB Galera Cluster
-
+MariaDB Galera Cluster là cơ chế đồng bộ dữ liệu cho multi-master MariaDB. Phục vụ tính sẵn sàng cao cho MariaDB với chế độ Active-Active ( Có thể đồng thời đọc ghi trên tất cả các node MariaDB thuộc Garela Cluster
 ### 1. Mô hình mạng
+
+![](./../image/cluster-mhm-ok.png)
 
 ### 2. Các bước thực hiện
 #### 2.1 Chuẩn bị
@@ -189,7 +191,7 @@ gpgcheck=1' >> /etc/yum.repos.d/MariaDB.repo
 yum -y update
 ```
 
-Cài đặt Mariadb
+Cài đặt Mariadb, galera, rsync
 ```
 yum install -y mariadb mariadb-server
 
@@ -240,9 +242,9 @@ innodb_autoinc_lock_mode=2
 #Cluster name
 wsrep_cluster_name="cong_cluster"
 # this server ip, change for each server
-wsrep_node_address="192.168.30.250"
+wsrep_node_address="192.168.30.200"
 # this server name, change for each server
-wsrep_node_name="node2"
+wsrep_node_name="node1"
 wsrep_sst_method=rsync
 [embedded]
 [mariadb]
@@ -269,9 +271,9 @@ innodb_autoinc_lock_mode=2
 #Cluster name
 wsrep_cluster_name="cong_cluster"
 # this server ip, change for each server
-wsrep_node_address="192.168.30.200"
+wsrep_node_address="192.168.30.250"
 # this server name, change for each server
-wsrep_node_name="node1"
+wsrep_node_name="node2"
 wsrep_sst_method=rsync
 [embedded]
 [mariadb]
