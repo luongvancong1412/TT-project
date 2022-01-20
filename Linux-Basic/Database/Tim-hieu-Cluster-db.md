@@ -3,13 +3,13 @@
 - [Tìm hiểu Cluster DB](#tìm-hiểu-cluster-db)
   - [I. Tổng quan về Cluster](#i-tổng-quan-về-cluster)
     - [1. Khái niệm](#1-khái-niệm)
-    - [2. Tính năng](#2-tính-năng)
+    - [2. Ưu điểm](#2-ưu-điểm)
     - [3. Các chế độ hoạt động chính:](#3-các-chế-độ-hoạt-động-chính)
       - [3.1 Active - Active (Load balancing)](#31-active---active-load-balancing)
       - [3.2 Active - Passive (High availability)](#32-active---passive-high-availability)
   - [II. Ứng dụng: Cluster DB](#ii-ứng-dụng-cluster-db)
     - [1. Khái niệm Database Clustering](#1-khái-niệm-database-clustering)
-    - [2. Ưu điểm](#2-ưu-điểm)
+    - [2. Ưu điểm](#2-ưu-điểm-1)
       - [2.1. Khả năng chịu lỗi](#21-khả-năng-chịu-lỗi)
       - [2.2. Cân bằng tải](#22-cân-bằng-tải)
   - [III. Lab: Cài đặt MariaDB Galera Cluster](#iii-lab-cài-đặt-mariadb-galera-cluster)
@@ -29,13 +29,24 @@
   - Hệ thống Cluster cho phép nhiều máy chủ chạy kết hợp, đồng bộ với nhau. 
   - Hệ thống Cluster nâng cao khả năng chịu lỗi của hệ thống, tăng cấp độ tin cậy, tăng tính đảm bảo, nâng cao khả năng mở rộng cho hệ thống. 
 - Trong trường hợp có lỗi xảy ra, các dịch vụ bên trong Cluster sẽ tự động loại trừ lỗi, cố gắng khôi phục, duy trì tính ổn định, tính sẵn sàng của dịch vụ
+
+- Mô hình Server Cluster bao gồm nhiều server riêng lẻ được liên kết và hoạt động cùng với nhau trong một hệ thống. Các server này giao tiếp với nhau để trao đổi thông tin lẫn nhau và giao tiếp với bên ngoài để thực hiện các yêu cầu. Khi có lỗi xảy ra, các service trong Cluster hoạt động tương tác với nhau để duy trì tính ổn định và tính sẵn sàng cao cho Cluster.
 - Cluster thường được tìm thấy ở các hệ thống thanh toán trực tuyến, ngân hàng, các cơ sở dữ liệu, hệ thống lưu trữ ..
-### 2. Tính năng
+### 2. Ưu điểm
 - **Cân bằng tải của cụm (Load Balancing)**: Các node bên trong cluster hoạt động song song, chia sẻ các tác vụ để năng cao hiệu năng.
-- **Tính sẵn sàng cao (High availability)**: Các tài nguyên bên trong cluster luôn sẵn sàng xử lý yêu cầu, ngay cả khi có vấn đề xảy ra với các thành phần bên trong (hardware, software).
-- **Khả năng mở rộng (scalability)**: Khi tài nguyên có thể sử dụng của hệ thống tới giới hạn, ta có thể dễ dàng bổ sung thêm tài nguyên vào cluster bằng các bổ sung thêm các node.
+- **Cung cấp tính sẵn sàng cao (High availability)**: Hệ thống Cluster cung cấp tính luôn sẵn sàng cho các ứng dụng và các service ngay cả khi các thành phần hardware hay software bị lỗi.
+Khi một server trong Cluster bị fail, quyền sở hữu tài nguyên của nó như là các ổ đĩa và IP address tự động chuyển tới một server khác còn hoạt động. Cũng như dễ dàng việc bảo trì bằng cách đặt server ở trạng thái không hoạt động
+- **Cung cấp khả năng mở rộng (scalability)**: Khi các ứng dụng trong Cluster sử dụng tài nguyên hệ thống vượt quá khả năng của nó, ta có thể dễ dàng add thêm node vào cluster để đáp ứng nhu cầu truy cập
 - **Độ tin cậy (reliability)**: Hệ thống Cluster giảm thiểu tần số lỗi có thể xảy ra, giảm thiểu các vấn đề dẫn tới ngừng hoạt động của hệ thống.
+  
+
+Một số thuật ngữ:
+- Cluster : Là một hệ thống song song và được phân phối bởi một nhóm các server dành riêng để chạy những ứng dụng đặc biệt nào đó và kết nối với nhau để cung cấp khả năng chịu lỗi (faul tolerance) và load balance. Cluster dùng để cung cấp tính luôn sẵn sàng cho việc truy cập
+- Node : Là một server thuộc một Cluster nào đó mà trên đó các ứng dụng và Cluster service được cài đặt
+- Failover : Quá trình chuyển đổi dự phòng có thể xảy ra một cách tự động. Khi một node trong Cluster bị hỏng, các resource group của nó sẽ được chuyển tới một hay nhiều node trong Cluster mà còn hoạt động được. Quá trình tự động failover tương tự như lập kế hoạch cho việc tái chỉ định quyền sở hữu các resource.
 ### 3. Các chế độ hoạt động chính:
+- Khi một node hay một application trong Cluster bị fail, Server Cluster có thể phản ứng bằng cách khởi động lại application bị lỗi hay phân tán công việc từ node bị fail tới các node khác còn hoạt động trong Cluster đó.
+- Quá trình này cho phép các nguồn như là database, file share và application duy trì tính sẵn sàng cao cho các ứng dụng của user và client.
 #### 3.1 Active - Active (Load balancing)
 - Cần ít nhất 2 node, cả 2 node chạy đồng thời xử lý cùng 1 loại dịch vụ. 
 - Mục đích chính của Active Active Cluster là tối ưu hóa cho hoạt động cân bằng tải (Load balancing). 
@@ -243,6 +254,11 @@ Trong đó:
 - wsrep_cluster_name="cong_cluster": tên của Cluster
 - wsrep_node_address="192.168.30.250" địa chỉ IP của node đang thực hiện
 - wsrep_node_name="node2" : tên node
+
+Các file cấu hình:
+- Cấu hình log: /etc/my.cnf
+- Cấu hình kết nối: /etc/my.cnf.d/server.cnf
+  
 #### 2.4 Khởi động Cluster
 
 Ở đây, dùng node1 làm node khởi tạo Galera cluster ( Tức là các node khác sẽ đồng bộ dữ liệu từ node1 )
