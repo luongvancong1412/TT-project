@@ -461,7 +461,18 @@ readme.html  wp-blog-header.php  wp-content            wp-links-opml.php  wp-mai
 
     ```# vi wp-config.php```
 
-![](image/wpconfig.png)
+```
+     23 define( 'DB_NAME', 'wordpressdb' );
+     24
+     25 /** MySQL database username */
+     26 define( 'DB_USER', 'wpuser' );
+     27
+     28 /** MySQL database password */
+     29 define( 'DB_PASSWORD', '123456' );
+     30
+     31 /** MySQL hostname */
+     32 define( 'DB_HOST', '192.168.92.130' );
+```
 
 ### 4. Kiểm tra
 Trên Client: Truy cập  Wordpress bằng trình duyệt
