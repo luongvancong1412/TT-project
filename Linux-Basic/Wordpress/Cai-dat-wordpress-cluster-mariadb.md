@@ -1,6 +1,6 @@
-# Triển khai Wordpress cluster Mariadb
+# Triển khai Wordpress Mariadb Galera Cluster
 
-- [Triển khai Wordpress cluster Mariadb](#triển-khai-wordpress-cluster-mariadb)
+- [Triển khai Wordpress Mariadb Galera Cluster](#triển-khai-wordpress-mariadb-galera-cluster)
   - [Mô hình](#mô-hình)
   - [I. Cài đặt Mariadb Galera](#i-cài-đặt-mariadb-galera)
     - [1. Chuẩn bị](#1-chuẩn-bị)
