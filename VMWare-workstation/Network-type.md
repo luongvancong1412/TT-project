@@ -1,4 +1,6 @@
 <h2> CÁC LOẠI NETWORK TRONG VMWARE WORKSTATION
+#
+Mục lục
 
 - [1.Bridge](#1bridge)
 - [2.Host - Only](#2host---only)
