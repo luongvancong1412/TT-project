@@ -1,10 +1,10 @@
-<h2> CÁC LOẠI NETWORK TRONG VMWARE WORKSTATION
-#
+# Network type
 Mục lục
 
-- [1.Bridge](#1bridge)
-- [2.Host - Only](#2host---only)
-- [3.NAT (Network Address Translation)](#3nat-network-address-translation)
+- [Network type](#network-type)
+  - [1.Bridge](#1bridge)
+  - [2.Host - Only](#2host---only)
+  - [3.NAT (Network Address Translation)](#3nat-network-address-translation)
 ## 1.Bridge
 - Ở chế độ này, card mạng trên máy ảo được gắn vào VMnet0, VMnet0 này liên kết trực tiếp với card mạng vật lý trên máy thật, máy ảo lúc này sẽ kết nối internet thông qua  card mạng vật lý và có chung lớp mạng với card mạng vật lý.
 
@@ -18,6 +18,7 @@ Mục lục
 - Hai máy ảo thấy được nhau.(Card Host-only chỉ có thể giao tiếp với card mạng ảo VMnet1 trên máy thật)
 
 ![](./image/2-hostonly.png)
+
 - Các máy ảo và máy thật thấy được nhau.
 - Card Host-only chỉ có thể giao tiếp với các card Host-only trên các máy ảo khác.
 - Card Host-only không thể giao tiếp với mạng vật lý mà máy tính thật đang kết nối.
