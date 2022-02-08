@@ -39,7 +39,22 @@ install nginx:
 yum install nginx -y
 ```
 
+Cấu hình firewall:
 ```
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+firewall-cmd --zone=public --permanent --add-port=443/tcp
+firewall-cmd --reload
+```
+Khởi động dịch vụ:
+```
+systemctl start nginx
+systemctl enable nginx
+```
+Sửa file cấu hình `/etc/nginx/nginx.conf`
+```
+cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+
+echo '
 server {
         listen      80 default_server;
         listen      [::]:80 default_server;
@@ -53,5 +68,37 @@ server {
         location / {
             proxy_pass http://192.168.92.100/;
         }
-    }
-````
+    }' >> /etc/nginx/nginx.conf
+```
+
+Trong đó: 
+**Chuyển request tới máy chủ được uỷ quyền:**
+```
+location /some/path/ {
+    proxy_pass http://www.example.com/link/;
+}
+```
+
+- Cấu hình ví dụ này dẫn đến việc chuyển tất cả các yêu cầu được xử lý ở vị trí này đến máy chủ được ủy quyền tại địa chỉ được chỉ định. Địa chỉ này có thể được chỉ định dưới dạng tên miền hoặc địa chỉ IP. Địa chỉ cũng có thể bao gồm một cổng.
+- **Lưu ý** rằng trong ví dụ đầu tiên ở trên, địa chỉ của máy chủ được ủy quyền được theo sau bởi một URI `/link/`,. Nếu URI được chỉ định cùng với địa chỉ, nó sẽ thay thế một phần của URI yêu cầu phù hợp với tham số vị trí. Ví dụ, ở đây yêu cầu với /some/path/page.htmlURI sẽ được ủy quyền http://www.example.com/link/page.html. 
+
+
+## 3. Cài đặt Apache Server
+
+Cài đặt Httpd:
+```
+yum install -y httpd
+```
+Cấu hình firewall:
+```
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+firewall-cmd --zone=public --permanent --add-port=443/tcp
+firewall-cmd --reload
+```
+
+Khởi động dịch vụ:
+```
+systemctl start httpd
+systemctl enable httpd
+```
+
