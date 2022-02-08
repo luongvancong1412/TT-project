@@ -13,3 +13,4 @@
 
 ### [Khác]
 - [Tìm hiểu Cluster DB](./Tim-hieu-Cluster-db.md)
+- [Troubleshooting galera mariadb](./khoiphuccumgalera.md)
