@@ -18,6 +18,7 @@
   - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## Tổng quan
+- Pv6, viết tắt Internet Protocol version 6", là "Giao thức liên mạng thế hệ 6", một phiên bản của giao thức IP
 - Cấu trúc header của gói tin IPv6 đơn giản hơn IPv4. 
 
 ![](./image/ipv6vaipv4.png)
