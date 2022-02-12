@@ -10,10 +10,21 @@
   - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## I.Tổng quan
+Bài này cấu hình cho bộ cân bằng tải, trong trường hợp này là HAProxy. Bộ cân bằng tải được gắn 1 địa chỉ IP ảo cho Webserver Apache và được trỏ đến 1 trong nhiều thiết bị Webserver đằng sau bộ cân bằng tải theo kiểu vòng tròn.
 
+Ngoài ra, cấu hình 2 máy chủ HAProxy ở chế độ active-passive, trong đó 1 máy chủ dự phòng. Quá trình chuyển đổi được thực hiện bởi keepalived deamon. Keepalived giám sát tình trạng hoạt động của bộ cân bằng tải và trong trường hợp bị lỗi, IP ảo sẽ được chuyển đến cân bằng tải thụ passive, sau đó sẽ trờ thành active.
+=> Virtual IP được định bởi cấu hình `keepalived`.
+
+Virtual IP là địa chỉ IP duy nhất được sử dụng làm điểm truy cập vào giao diện người dùng của thiết bị Webserver Apache và được cấu hình trong cấu hình của HAProxy cũng với cấu hình cân bằng tải. Khi người dùng cuối truy cập vào IP ảo, IP đó sẽ chuyển hướng lưu lượng truy cập đến thiết bị webserver Apache thích hợp dựa trên chính sách HAProxy đã cấu hình.
 ## II. Triển khai
-
+Cấu hình này sử dụng 2 máy chủ HAProxy vào 1 Virtual IP (được cấu hình bởi `keepalive`).
 ### 1. Mô hình
+
+![](./../image/haproxyapache.png)
+
+Địa chỉ IP: VIP: `192.168.30.110`
+
+![](./../image/ipplanninghaproxy.png)
 ### 2. Cài đặt Apache
 
 Trên node1:
@@ -210,3 +221,4 @@ systemctl restart httpd
 1. https://viblo.asia/p/trien-khai-dich-vu-high-available-voi-keepalived-haproxy-tren-server-ubuntu-jOxKdqWlzdm
 2. https://blog.cloud365.vn/linux/haproxy-keepalived-apache/#phan-1-chuan-bi
 3. https://www.server-world.info/en/note?os=CentOS_7&p=haproxy&f=1
+4. https://access.redhat.com/documentation/en-us/red_hat_cloudforms/4.5/html/high_availability_guide/configuring_haproxy
