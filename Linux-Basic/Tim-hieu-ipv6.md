@@ -18,7 +18,7 @@
   - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## Tổng quan
-- Pv6, viết tắt Internet Protocol version 6", là "Giao thức liên mạng thế hệ 6", một phiên bản của giao thức IP
+- IPv6, viết tắt Internet Protocol version 6", là "Giao thức liên mạng thế hệ 6", một phiên bản của giao thức IP (giao thức mạng)
 - Cấu trúc header của gói tin IPv6 đơn giản hơn IPv4. 
 
 ![](./image/ipv6vaipv4.png)
@@ -38,7 +38,7 @@
 
   - Traffic Class: 8 bits giúp xác định loại lưu lượng.
 
-  - Flow label: 20 bits giá mỗi luồng dữ liệu.
+  - Flow label: 20 bits giá trị của mỗi luồng dữ liệu.
 
   - Payload Length: 16 bits (số dương). Giúp xác định kích thước phần tải theo sau IPv6 Header.
 
@@ -108,9 +108,9 @@
 
 ## Địa chỉ IPv6 đặc biệt
 ### 1. Địa chỉ IPv6 tất cả là số 0
-- Địa chỉ IPv6 bao gồm tất cả các số 0 có thể được viết bằng dấu `::`.
+- Địa chỉ IPv6 bao gồm tất cả các số 0 (0:0:0:0:0:0:0:0) có thể được viết bằng dấu `::`.
 
-- Là dạng địa chỉ không xác định (**Unspecified address**), được sử dụng để xác nhận rằng hiện tại node không có địa chỉ, không bao giờ địa chỉ này được gắn cho giao diện hoặc sử dụng làm địa chỉ đích.
+- Là dạng địa chỉ không xác định (**Unspecified address**), được sử dụng để xác nhận rằng hiện tại node không có địa chỉ, không bao giờ địa chỉ này được gắn cho giao diện hoặc sử dụng làm địa chỉ đích: `::`
 
 ### 2. IPv6 Loopback Address
 - Tương đương với 127.0.0.1 trong IPv4.
@@ -143,8 +143,6 @@ Tương ứng với địa chỉ public của IPv4. Nó có thể định tuyế
 
 - Link-Local Addresses : gồm các địa chỉ dùng cho các Host trong cùng Link và Neighbor Discovery Process(quy trình xác định các Nodes trong cùng Link).
 
-- Site-Local Addresses : gồm các địa chỉ dùng để các Nodes trong cùng Site liên lạc với nhau.
-
 #### 1.2 Link-local Addresses
 Sử dụng bởi các node khi giao tiếp với các node lân cận (neighbor node). Phạm vi của dạng địa chỉ unicast này là trên một đường kết nối (phạm vi link). Địa chỉ link-local luôn được cấu hình một cách tự động,
 
@@ -154,6 +152,9 @@ Sử dụng bởi các node khi giao tiếp với các node lân cận (neighbor
 
 #### 1.3 Unique Local Address
 - bắt đầu từ FC00::/7
+
+![](./image/unicast.png)
+
 - Giống địa chỉ IP private, chỉ sử dụng trong mạng nội bộ, không quảng bá ra ngoài internet, có thể dùng lặp lại bởi nhiều tổ chức.
 ### 2. Multicast
 - Là địa chỉ đại diện cho 1 nhóm
@@ -161,9 +162,16 @@ Sử dụng bởi các node khi giao tiếp với các node lân cận (neighbor
 
 - Địa chỉ multicast cũng có phạm vi: toàn cầu (global), tổ chức (organization-local), một site (site-local), link (link-local) và trong node (node-local). Phạm vi tổ chức và node là hai dạng địa chỉ mới, không có trong dạng địa chỉ unicast. Một node IPv6 có thể được gắn rất nhiều địa chỉ.
 
+![](image/multicast.png)
 
 - 8 bit đầu tiên trong địa chỉ multicast luôn là 1111 1111 (FF)
-- Ví dụ: FF02::1
+- Flag (4 bits) chỉ ra đây có phải là dạng địa chỉ multicast được định nghĩa trước (well-known). Nếu có là well-known, mọi bít sẽ là 0.
+
+- Scope (4 bits) .
+
+- Group ID được sử dụng để xác định một nhóm multicast. Có những group ID được định nghĩa từ trước (predefined group ID), như Group ID =1 tức là mọi node.
+
+- Ví dụ: FF02::1 có nghĩa Scope ID = 2 và Group ID =1, chỉ định mọi node trong phạm vi một link (link-scope).
 ### 3. Anycast
 - Anycast là một dạng địa chỉ hoàn toàn mới trong IPv6. Dạng địa chỉ này không được gắn cho node hay giao diện, mà cho những chức năng cụ thể. Thay vì thực hiện truyền dữ liệu đến mọi node trong một nhóm như địa chỉ multicast, anycast gửi gói tin đến node gần nhất (tính theo thủ tục định tuyến) trong nhóm. Anycast không có không gian địa chỉ riêng gắn cho nó
 - Nó được lấy trong vùng của địa chỉ unicast. Bởi vậy, địa chỉ anycast cũng có ba phạm vi như địa chỉ unicast. Nhưng việc sử dụng của địa chỉ anycast cũng không rõ ràng. 
