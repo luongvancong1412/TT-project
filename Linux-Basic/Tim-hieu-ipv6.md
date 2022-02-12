@@ -45,9 +45,9 @@
 
   - Hop Limit: 8 bits (số dương). Qua mỗi node, giá trị này giảm 1 đơn vị (giảm đến 0 thì gói bị loại bỏ).
 
-  - Source Address: 128 bit mang địa chỉ IPv6 nguồn của gói tin.
+  - Source Address: mang địa chỉ IPv6 nguồn của gói tin.
 
-  - Destination Address: 128 bit mang địa chỉ IPv6 đích của gói tin.
+  - Destination Address: mang địa chỉ IPv6 đích của gói tin.
 
 ## Cấu trúc địa chỉ IPv6
 - Địa chỉ IPv6 dài 128 bit:
