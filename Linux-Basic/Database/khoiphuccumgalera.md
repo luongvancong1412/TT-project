@@ -17,11 +17,15 @@ seqno:   -1
 safe_to_bootstrap: 0
 ```
 
-2. Nếu tất cả chúng đều có seqno không hợp lệ là -1 và không có seqno nào có giá trị là 1 trong "safe_to_bootstrap" thì chọn 1 node1 để sửa đổi grastate.dat và thay đổi "safe_to_bootstrap" thành 1.
+1. Nếu tất cả chúng đều có seqno không hợp lệ là -1 và không có seqno nào có giá trị là 1 trong "safe_to_bootstrap" thì bạn cần tạm thời khởi động dịch vụ cơ sở dữ liệu trên mỗi máy chủ với tùy chọn chọn recovery để có thể thấy số liên quan đến "Recovered Position" 1 node1 để sửa đổi grastate.dat và thay đổi "safe_to_bootstrap" thành 1.
+```
+mysqld --wsrep-recover
+```
+Server có số giao dịch cao nhất  là nút đầu tiên được bắt đầu trong cụm. Sửa đổi `grastate.dat` và thay đổi "safe_to_bootstrap" từ 0 thành 1.
 ```
 sed -i 's/safe_to_bootstrap: 0/safe_to_bootstrap: 1/' /var/lib/mysql/grastate.dat
 ```
-3. Bây giờ bạn có thể làm theo quy trình bình thường để bắt đầu một cụm Galera mới bằng cách sử dụng máy chủ này làm nút bắt đầu.
+1. Bây giờ bạn có thể làm theo quy trình bình thường để bắt đầu một cụm Galera mới bằng cách sử dụng máy chủ này làm nút bắt đầu.
 ```
 galera_new_cluster
 ```
