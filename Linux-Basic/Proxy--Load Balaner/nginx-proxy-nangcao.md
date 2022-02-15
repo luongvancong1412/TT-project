@@ -1,21 +1,88 @@
-# Cấu hình Nginx làm Reverse Proxy cho Apache
+# Cấu hình Nginx làm Reverse Proxy cho Apache. Cấu hình log Apache IP cho phép nhận IP user truy cập qua Nginx Proxy.
 
 
-- [Cấu hình Nginx làm Reverse Proxy cho Apache](#cấu-hình-nginx-làm-reverse-proxy-cho-apache)
+- [Cấu hình Nginx làm Reverse Proxy cho Apache. Cấu hình log Apache IP cho phép nhận IP user truy cập qua Nginx Proxy.](#cấu-hình-nginx-làm-reverse-proxy-cho-apache-cấu-hình-log-apache-ip-cho-phép-nhận-ip-user-truy-cập-qua-nginx-proxy)
   - [1.Mô hình mạng](#1mô-hình-mạng)
-  - [2.Cài đặt Nginx](#2cài-đặt-nginx)
-  - [3. Cài đặt Apache Server](#3-cài-đặt-apache-server)
-  - [4. Kiểm tra:](#4-kiểm-tra)
+  - [2. Cài đặt Apache Server](#2-cài-đặt-apache-server)
+  - [3.Cài đặt Nginx](#3cài-đặt-nginx)
+  - [4. Cấu hình log Apache Server](#4-cấu-hình-log-apache-server)
+  - [5. Kiểm tra:](#5-kiểm-tra)
 - [Tài liệu tham khảo:](#tài-liệu-tham-khảo)
 
 ## 1.Mô hình mạng
 
-![](../image/proxy-mhm.png)
+![](../image/proxy-nangcap.png)
 
 Mô hình IP:
 
-![](../image/proxy-ip.png)
-## 2.Cài đặt Nginx
+![](../image/ipproxynangcao.png)
+
+Đặt tên host:
+```
+hostname set-hostname node1
+```
+```
+hostname set-hostname node2
+```
+```
+hostname set-hostname node3
+```
+
+## 2. Cài đặt Apache Server
+
+> Trên node 1
+
+Cài đặt Httpd:
+```
+yum install -y httpd
+```
+Cấu hình firewall:
+```
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+firewall-cmd --reload
+```
+
+Khởi động dịch vụ:
+```
+systemctl start httpd
+systemctl enable httpd
+```
+
+Tạo trang test đơn giản:
+```
+echo 'Luong Van Cong
+Apache server 192.168.77.70 ' >> /var/www/html/index.html
+```
+
+>Trên node 2
+
+Cài đặt Httpd:
+```
+yum install -y httpd
+```
+Cấu hình firewall:
+```
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+firewall-cmd --reload
+```
+
+Khởi động dịch vụ:
+```
+systemctl start httpd
+systemctl enable httpd
+```
+
+Tạo trang test đơn giản:
+```
+mkdir /var/www/html/cong
+
+echo 'Luong Van Cong
+Apache server 192.168.77.71 ' >> /var/www/html/index.html
+```
+
+## 3.Cài đặt Nginx
+
+> Trên node 3
 
 Install the prerequisites:
 ```
@@ -64,7 +131,7 @@ Backup file cấu hình `/etc/nginx/nginx.conf`
 ```
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 ```
-Cấu hình 
+Tạo 1 file test.conf trong thư mục : `
 ```
 echo 'server {
         listen      80 default_server;
@@ -76,7 +143,11 @@ echo 'server {
         proxy_set_header         Host $http_host;
 
         location / {
-            proxy_pass http://192.168.92.100/;
+            proxy_pass http://192.168.77.70/;
+        }
+
+        location /cong {
+            proxy_pass http://192.168.77.71/cong/;
         }
     }' >> /etc/nginx/conf.d/test.conf
 ```
@@ -96,44 +167,50 @@ location /some/path/ {
 - `proxy_set_header X-Forwarded-For`: Mặc định client request thì thông tin sẽ chỉ giao tiếp với reverse proxy, vì vậy mà thông tin log của Backend server (Apache web server) sẽ chỉ nhận được là địa chỉ IP của Nginx proxy. Để ghi nhận địa chỉ IP thực của client vào backend web server, chúng ta sử dụng tham số: “proxy_set_header X-Forwarded-For”
 - `proxy_set_header Host $host`: Dùng để định nghĩa lại trường Host request header mà truyền đến backend khi mà cached được enable trên nginx . $host bằng giá trị server_name trong trường Host request header.
 
+Kiểm tra cấu hình:
+```
+nginx -t
+```
+hoặc
+```
+nginx -T
+```
+Kết quả:
+```
+[root@node3 ~]# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
 
 Khởi động lại dịch vụ:
 ```
-systemctl restart nginx
+nginx -s reload
 ```
 
-## 3. Cài đặt Apache Server
+## 4. Cấu hình log Apache Server
+> Trên cả node 1 và node 2
 
-
-Cài đặt Httpd:
 ```
-yum install -y httpd
+vi /etc/httpd/conf/httpd.conf
 ```
-Cấu hình firewall:
+- Để hiển thị IP người dùng truy cập qua Nginx Proxy. Sửa dòng 196:
 ```
-firewall-cmd --zone=public --permanent --add-port=80/tcp
-firewall-cmd --zone=public --permanent --add-port=443/tcp
-firewall-cmd --reload
+LogFormat "\"%{X-Forwarded-For}i\" %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 ```
 
-Khởi động dịch vụ:
+- Để che IP người dùng truy cập qua Nginx Proxy. Sửa dòng 196 thành:
 ```
-systemctl start httpd
-systemctl enable httpd
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 ```
-
-Tạo trang test đơn giản:
-```
-echo 'Luong Van Cong
-Apache server' >> /var/www/html/index.html
-```
-
-## 4. Kiểm tra:
-- Truy cập: http://192.168.30.101
+## 5. Kiểm tra:
+- Truy cập: http://192.168.30.72
 - Kết quả:
 
-![](../image/proxy-kq.png)
+![](../image/kqproxy1.png)
 
+- Truy cập: http://192.168.30.72/cong
+- Kết quả:
+![](./../image/kqproxy2.png)
 
 # Tài liệu tham khảo:
 
