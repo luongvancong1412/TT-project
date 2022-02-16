@@ -240,7 +240,7 @@ proxy_set_header Host $host
 - Dùng để định nghĩa lại trường Host request header mà truyền đến backend khi mà cached được enable trên nginx . $host bằng giá trị server_name trong trường Host request header.
 
 
-- `proxy_redirect off;` : tắt chức năng proxy_redirect. Xem chi tiết tại :http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_redirect
+- `proxy_redirect off;` : tắt chức năng proxy_redirect. Xem chi tiết tại: http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_redirect
 
 
 Kiểm tra cú pháp (syntax) cấu hình:
