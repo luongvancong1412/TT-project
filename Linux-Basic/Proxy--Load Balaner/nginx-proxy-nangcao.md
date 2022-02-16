@@ -224,10 +224,7 @@ Kiểm tra cú pháp (syntax) cấu hình:
 ```
 nginx -t
 ```
-hoặc
-```
-nginx -T
-```
+
 Kết quả:
 ```
 [root@node3 ~]# nginx -t
