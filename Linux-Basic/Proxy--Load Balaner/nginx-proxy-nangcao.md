@@ -2,13 +2,49 @@
 
 
 - [Cấu hình Nginx làm Reverse Proxy cho Apache. Cấu hình log Apache IP cho phép nhận IP user truy cập qua Nginx Proxy.](#cấu-hình-nginx-làm-reverse-proxy-cho-apache-cấu-hình-log-apache-ip-cho-phép-nhận-ip-user-truy-cập-qua-nginx-proxy)
+  - [Chức năng cơ bản](#chức-năng-cơ-bản)
+    - [1.1 Kiểm soát các quá trình Nginx trong thời gian chạy:](#11-kiểm-soát-các-quá-trình-nginx-trong-thời-gian-chạy)
+    - [1.2 Lệnh kiểm tra cấu hình:](#12-lệnh-kiểm-tra-cấu-hình)
+    - [1.3 Các biến đại diện cho các trường header trong request của client](#13-các-biến-đại-diện-cho-các-trường-header-trong-request-của-client)
   - [1.Mô hình mạng](#1mô-hình-mạng)
   - [2. Cài đặt Apache Server](#2-cài-đặt-apache-server)
   - [3.Cài đặt Nginx](#3cài-đặt-nginx)
   - [4. Cấu hình log Apache Server](#4-cấu-hình-log-apache-server)
   - [5. Kiểm tra:](#5-kiểm-tra)
 - [Tài liệu tham khảo:](#tài-liệu-tham-khảo)
+## Chức năng cơ bản
+### 1.1 Kiểm soát các quá trình Nginx trong thời gian chạy:
+**Các lệnh kiểm soát (Controlling NGINX):**
+Để tải lại cấu hình của mình,ta có thể:
+- khởi động (restart) lại Nginx
+    ```
+    systemctl restart nginx
+    ```
+- gửi tín hiệu (signal) tới quy trình chính (master).
 
+
+Một signal có thể được gửi bằng lệnh `nginx` với đối số `-s`
+- Cú pháp:
+```
+nginx -s <SIGNAL>
+```
+- Trong đó: `<SIGNAL>` có thể là:
+    - `quit` - tắt 1 cách duyên dáng (signal `SIGQUIT`)
+    - `reload` - tải lại tệp cấu hình (signal `SIGHUP`)
+    - `reopen` - mở lại tệp nhật ký (signal SIGUSR1)
+    - `stop` - tắt ngay lập tức (hoặc tắt nhanh, signal SIGTERM )
+
+### 1.2 Lệnh kiểm tra cấu hình:
+- Cú pháp:
+```
+nginx -t
+```
+### 1.3 Các biến đại diện cho các trường header trong request của client
+
+- `$remote_addr` : chứa địa chỉ của client
+- `$remote_port` : chứa port của client
+
+Để xem thêm các biến khác: https://nginx.org/en/docs/http/ngx_http_core_module.html#variables
 ## 1.Mô hình mạng
 
 ![](../image/proxy-nangcap.png)
@@ -135,7 +171,7 @@ Tạo 1 file test.conf trong thư mục : `
 ```
 echo 'server {
         listen      80 default_server;
-        listen      [::]:80 default_server;
+        #listen      [::]:80 default_server;
 
         proxy_redirect           off;
         proxy_set_header         X-Real-IP $remote_addr;
@@ -153,21 +189,36 @@ echo 'server {
 ```
 
 Trong đó: 
-- **Chuyển request tới máy chủ được uỷ quyền:**
 ```
-location /some/path/ {
-    proxy_pass http://www.example.com/link/;
+location / {
+    proxy_pass http://192.168.77.70/;
 }
 ```
+- Người dùng truy cập `http://192.168.30.72/`, URI sẽ được chuyển đến máy chủ Apache: `http://192.168.77.70/index.html`
+```
+location /cong {
+    proxy_pass http://192.168.77.71/cong/;
+}
+```
+- Người dùng truy cập `http://192.168.30.72/cong/`, request của client sẽ được chuyển đến máy chủ Apache: `http://192.168.77.71/cong/index.html`
 
-- Cấu hình ví dụ này dẫn đến việc chuyển tất cả các yêu cầu được xử lý ở vị trí này đến máy chủ được ủy quyền tại địa chỉ được chỉ định. Địa chỉ này có thể được chỉ định dưới dạng tên miền hoặc địa chỉ IP. Địa chỉ cũng có thể bao gồm một cổng.
-- **Lưu ý** rằng trong ví dụ đầu tiên ở trên, địa chỉ của máy chủ được ủy quyền được theo sau bởi một URI `/link/`,. Nếu URI được chỉ định cùng với địa chỉ, nó sẽ thay thế một phần của URI yêu cầu phù hợp với tham số vị trí. Ví dụ, ở đây yêu cầu với /some/path/page.htmlURI sẽ được ủy quyền http://www.example.com/link/page.html. 
+```
+proxy_set_header         X-Real-IP $remote_addr;
+```
+- Real IP của client sẽ được gán vào biến `$remote_addr`, sau đó được gửi tới server Apache.
 
-- `proxy_set_header X-Real-IP`: Truyền Real IP của client vào header khi gửi request đến Backend Apache.
-- `proxy_set_header X-Forwarded-For`: Mặc định client request thì thông tin sẽ chỉ giao tiếp với reverse proxy, vì vậy mà thông tin log của Backend server (Apache web server) sẽ chỉ nhận được là địa chỉ IP của Nginx proxy. Để ghi nhận địa chỉ IP thực của client vào backend web server, chúng ta sử dụng tham số: “proxy_set_header X-Forwarded-For”
-- `proxy_set_header Host $host`: Dùng để định nghĩa lại trường Host request header mà truyền đến backend khi mà cached được enable trên nginx . $host bằng giá trị server_name trong trường Host request header.
+```
+proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
+```
+- `proxy_set_header X-Forwarded-For`: Để ghi nhận địa chỉ IP thực của client vào backend web server, chúng ta sử dụng tham số: “proxy_set_header X-Forwarded-For”
 
-Kiểm tra cấu hình:
+```
+proxy_set_header Host $host
+```
+- Dùng để định nghĩa lại trường Host request header mà truyền đến backend khi mà cached được enable trên nginx . $host bằng giá trị server_name trong trường Host request header.
+
+
+Kiểm tra cú pháp (syntax) cấu hình:
 ```
 nginx -t
 ```
@@ -186,7 +237,15 @@ Khởi động lại dịch vụ:
 ```
 nginx -s reload
 ```
+hoặc
+```
+systemctl restart nginx
+```
 
+Câu lệnh kết hợp:
+```
+nginx -t && nginx -s reload
+```
 ## 4. Cấu hình log Apache Server
 > Trên cả node 1 và node 2
 
@@ -203,15 +262,25 @@ LogFormat "\"%{X-Forwarded-For}i\" %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{Us
 LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 ```
 ## 5. Kiểm tra:
-- Truy cập: http://192.168.30.72
+**Truy cập:** http://192.168.30.72
+
 - Kết quả:
 
 ![](../image/kqproxy1.png)
+- Log:
 
-- Truy cập: http://192.168.30.72/cong
+![](./../image/realip70.png)
+
+**Truy cập:** http://192.168.30.72/cong
+
 - Kết quả:
 ![](./../image/kqproxy2.png)
+
+- Log: `tail -f /var/log/httpd/access_log`
+  
+![](../image/realip71.png)
 
 # Tài liệu tham khảo:
 
 1. https://www.server-world.info/en/note?os=CentOS_7&p=nginx&f=6
+2. https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/
