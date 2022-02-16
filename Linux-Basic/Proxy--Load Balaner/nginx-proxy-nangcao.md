@@ -1,19 +1,20 @@
-# Cấu hình Nginx làm Reverse Proxy cho Apache. Cấu hình log Apache IP cho phép nhận IP user truy cập qua Nginx Proxy.
+# Cấu hình Nginx làm Reverse Proxy cho Apache. Kiểm chứng `location`
 
 
-- [Cấu hình Nginx làm Reverse Proxy cho Apache. Cấu hình log Apache IP cho phép nhận IP user truy cập qua Nginx Proxy.](#cấu-hình-nginx-làm-reverse-proxy-cho-apache-cấu-hình-log-apache-ip-cho-phép-nhận-ip-user-truy-cập-qua-nginx-proxy)
-  - [Chức năng cơ bản](#chức-năng-cơ-bản)
-    - [1.1 Kiểm soát các quá trình Nginx trong thời gian chạy:](#11-kiểm-soát-các-quá-trình-nginx-trong-thời-gian-chạy)
-    - [1.2 Lệnh kiểm tra cấu hình:](#12-lệnh-kiểm-tra-cấu-hình)
-    - [1.3 Các biến đại diện cho các trường header trong request của client](#13-các-biến-đại-diện-cho-các-trường-header-trong-request-của-client)
-  - [1.Mô hình mạng](#1mô-hình-mạng)
-  - [2. Cài đặt Apache Server](#2-cài-đặt-apache-server)
-  - [3.Cài đặt Nginx](#3cài-đặt-nginx)
-  - [4. Cấu hình log Apache Server](#4-cấu-hình-log-apache-server)
-  - [5. Kiểm tra:](#5-kiểm-tra)
+- [Cấu hình Nginx làm Reverse Proxy cho Apache. Kiểm chứng `location`](#cấu-hình-nginx-làm-reverse-proxy-cho-apache-kiểm-chứng-location)
+  - [I. Tổng quan](#i-tổng-quan)
+    - [1. Kiểm soát các quá trình Nginx trong thời gian chạy:](#1-kiểm-soát-các-quá-trình-nginx-trong-thời-gian-chạy)
+    - [2. Lệnh kiểm tra cú pháp (syntax) cấu hình:](#2-lệnh-kiểm-tra-cú-pháp-syntax-cấu-hình)
+    - [3. Các biến đại diện cho các trường header trong request của client](#3-các-biến-đại-diện-cho-các-trường-header-trong-request-của-client)
+  - [II. Lab](#ii-lab)
+    - [1.Mô hình mạng](#1mô-hình-mạng)
+    - [2. Cài đặt Apache Server](#2-cài-đặt-apache-server)
+    - [3.Cài đặt Nginx](#3cài-đặt-nginx)
+    - [4. Cấu hình log Apache Server](#4-cấu-hình-log-apache-server)
+    - [5. Kiểm tra:](#5-kiểm-tra)
 - [Tài liệu tham khảo:](#tài-liệu-tham-khảo)
-## Chức năng cơ bản
-### 1.1 Kiểm soát các quá trình Nginx trong thời gian chạy:
+## I. Tổng quan
+### 1. Kiểm soát các quá trình Nginx trong thời gian chạy:
 **Các lệnh kiểm soát (Controlling NGINX):**
 Để tải lại cấu hình của mình,ta có thể:
 - khởi động (restart) lại Nginx
@@ -34,18 +35,19 @@ nginx -s <SIGNAL>
     - `reopen` - mở lại tệp nhật ký (signal SIGUSR1)
     - `stop` - tắt ngay lập tức (hoặc tắt nhanh, signal SIGTERM )
 
-### 1.2 Lệnh kiểm tra cấu hình:
+### 2. Lệnh kiểm tra cú pháp (syntax) cấu hình:
 - Cú pháp:
 ```
 nginx -t
 ```
-### 1.3 Các biến đại diện cho các trường header trong request của client
+### 3. Các biến đại diện cho các trường header trong request của client
 
 - `$remote_addr` : chứa địa chỉ của client
 - `$remote_port` : chứa port của client
 
 Để xem thêm các biến khác: https://nginx.org/en/docs/http/ngx_http_core_module.html#variables
-## 1.Mô hình mạng
+## II. Lab
+### 1.Mô hình mạng
 
 ![](../image/proxy-nangcap.png)
 
@@ -64,7 +66,7 @@ hostname set-hostname node2
 hostname set-hostname node3
 ```
 
-## 2. Cài đặt Apache Server
+### 2. Cài đặt Apache Server
 
 > Trên node 1
 
@@ -116,7 +118,7 @@ echo 'Luong Van Cong
 Apache server 192.168.77.71 ' >> /var/www/html/index.html
 ```
 
-## 3.Cài đặt Nginx
+### 3.Cài đặt Nginx
 
 > Trên node 3
 
@@ -246,7 +248,7 @@ Câu lệnh kết hợp:
 ```
 nginx -t && nginx -s reload
 ```
-## 4. Cấu hình log Apache Server
+### 4. Cấu hình log Apache Server
 > Trên cả node 1 và node 2
 
 ```
@@ -261,7 +263,7 @@ LogFormat "\"%{X-Forwarded-For}i\" %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{Us
 ```
 LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 ```
-## 5. Kiểm tra:
+### 5. Kiểm tra:
 **Truy cập:** http://192.168.30.72
 
 - Kết quả:
