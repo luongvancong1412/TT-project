@@ -68,7 +68,7 @@ Cấu hình proxy, tạo tệp `test.conf` trong `/etc/nginx/conf.d/`
 ```
 echo 'server {
         listen      80 default_server;
-        listen      [::]:80 default_server;
+        #listen      [::]:80 default_server;
 
         proxy_redirect           off;
         proxy_set_header         X-Real-IP $remote_addr;
