@@ -40,6 +40,26 @@ nginx -s <SIGNAL>
 ```
 nginx -t
 ```
+
+Ví dụ:
+- Lỗi thiếu `}` trong 
+![](./../image/loisyn.png)
+
+- Kiểm tra có lỗi syntax không:
+```
+[root@node3 nginx]# nginx -t
+nginx: [emerg] "http" directive is not allowed here in /etc/nginx/nginx.conf:14
+nginx: configuration file /etc/nginx/nginx.conf test failed
+```
+- Sửa lỗi:
+
+![](./../image/suasyn.png)
+- Kiểm tra lại:
+```
+[root@node3 nginx]# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
 ### 3. Các biến đại diện cho các trường header trong request của client
 
 - `$remote_addr` : chứa địa chỉ của client

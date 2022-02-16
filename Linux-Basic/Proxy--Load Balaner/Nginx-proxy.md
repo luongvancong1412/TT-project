@@ -3,7 +3,7 @@
 
 - [Cấu hình Nginx làm Reverse Proxy cho Apache](#cấu-hình-nginx-làm-reverse-proxy-cho-apache)
   - [1.Mô hình mạng](#1mô-hình-mạng)
-  - [2.Cài đặt Nginx](#2cài-đặt-nginx)
+  - [2.Cài đặt Nginx server](#2cài-đặt-nginx-server)
   - [3. Cài đặt Apache Server](#3-cài-đặt-apache-server)
   - [4. Kiểm tra:](#4-kiểm-tra)
 - [Tài liệu tham khảo:](#tài-liệu-tham-khảo)
@@ -15,7 +15,7 @@
 Mô hình IP:
 
 ![](../image/proxy-ip.png)
-## 2.Cài đặt Nginx
+## 2.Cài đặt Nginx server
 
 Install the prerequisites:
 ```
