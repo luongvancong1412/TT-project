@@ -64,7 +64,7 @@ Backup file cấu hình `/etc/nginx/nginx.conf`
 ```
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 ```
-Cấu hình 
+Cấu hình proxy, tạo tệp `test.conf` trong `/etc/nginx/conf.d/`
 ```
 echo 'server {
         listen      80 default_server;

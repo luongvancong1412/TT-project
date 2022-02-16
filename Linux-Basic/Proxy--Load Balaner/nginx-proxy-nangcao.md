@@ -169,7 +169,7 @@ Backup file cấu hình `/etc/nginx/nginx.conf`
 ```
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 ```
-Tạo 1 file test.conf trong thư mục : `
+Tạo 1 file test.conf trong thư mục : `/etc/nginx/conf.d/`
 ```
 echo 'server {
         listen      80 default_server;
