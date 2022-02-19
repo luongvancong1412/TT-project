@@ -108,7 +108,7 @@ Giống như IPv4, IPv6 cũng gồm 2 phần: Phần mạng (nhưng sử dụng 
 ### 2.4 Quy hoạch IPv6
 
 ![](./image/ipv6-quyhoach.png)
-- Không gian IPv6 được quy hoạch theo khối ngay từ đầu. Các khối IP lớn sẽ được cấp cho các cơ quan quản lý IP cấp vùng (các Registry, như ARIN hay APNIC,...); Các cơ quan này lại chia thành các khối nhỏ hơn và cấp xuống cho các ISP;
+- Không gian IPv6 được quy hoạch theo khối ngay từ đầu. Các khối IP lớn sẽ được cấp cho các cơ quan quản lý IP cấp vùng (các Registry, như ARIN (Cơ quan đăng ký Internet Bắc MỸ) hay APNIC(Châu A- TBD),...); Các cơ quan này lại chia thành các khối nhỏ hơn và cấp xuống cho các ISP;
 - Các ISP lại tiếp tục thực hiện chia nhỏ và cấp xuống cho các doanh nghiệp;
 - Cuối cùng, doanh nghiệp sẽ chia nhỏ khối IP được cấp thành các subnet của mình
 
