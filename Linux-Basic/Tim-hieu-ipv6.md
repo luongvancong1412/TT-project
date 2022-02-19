@@ -1,13 +1,13 @@
 # Tìm hiểu địa chỉ IPv6
 
 - [Tìm hiểu địa chỉ IPv6](#tìm-hiểu-địa-chỉ-ipv6)
-  - [1. Tổng quan IPv6](#1-tổng-quan-ipv6)
-  - [2. Cấu trúc địa chỉ IPv6](#2-cấu-trúc-địa-chỉ-ipv6)
+  - [I. Tổng quan IPv6](#i-tổng-quan-ipv6)
+  - [II. Cấu trúc địa chỉ IPv6](#ii-cấu-trúc-địa-chỉ-ipv6)
     - [2.1 Biểu diễn địa chỉ IPv6](#21-biểu-diễn-địa-chỉ-ipv6)
     - [2.2 Quy tắc thu gọn địa chỉ IPv6:](#22-quy-tắc-thu-gọn-địa-chỉ-ipv6)
     - [2.3 Network Prefixes](#23-network-prefixes)
     - [2.4 Quy hoạch IPv6](#24-quy-hoạch-ipv6)
-  - [Các loại địa chỉ IPv6:](#các-loại-địa-chỉ-ipv6)
+  - [III. Các loại địa chỉ IPv6:](#iii-các-loại-địa-chỉ-ipv6)
     - [1. Unicast](#1-unicast)
       - [1.1. Global Unicast](#11-global-unicast)
       - [1.2 Link-local](#12-link-local)
@@ -19,7 +19,7 @@
     - [3. Anycast](#3-anycast)
   - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
-## 1. Tổng quan IPv6
+## I. Tổng quan IPv6
 Internet Protocol version 6 – Phiên bản 6 của thủ tục Internet, được phát triển nhằm thay thế IPv4, khắc phục những hạn chế của phiên bản IPv4 và cải thiện thêm nhiều đặc tính mới:
   - Không gian địa chỉ lớn, 128 bit địa chỉ (2^128= 3.4*10^38 địa chỉ), nên các host có thể truy nhập được trên toàn cầu
   - End - to -end không cần NAT (NAT sẽ giúp chuyển đổ từ IP private sang IP public khi chuyển từ Vùng Private sang vùng Public. NAT cũng tốt nhưng nó sẽ làm chậm quá trình truyền tin (đọc vào tận lớp 4))
@@ -55,7 +55,7 @@ Internet Protocol version 6 – Phiên bản 6 của thủ tục Internet, đư�
 
   - Destination Address:bít mang địa chỉ IPv6 đích của gói tin.
 
-## 2. Cấu trúc địa chỉ IPv6
+## II. Cấu trúc địa chỉ IPv6
 ### 2.1 Biểu diễn địa chỉ IPv6
 
 ![](./image/1hexa.png)
@@ -112,7 +112,7 @@ Giống như IPv4, IPv6 cũng gồm 2 phần: Phần mạng (nhưng sử dụng 
 - Các ISP lại tiếp tục thực hiện chia nhỏ và cấp xuống cho các doanh nghiệp;
 - Cuối cùng, doanh nghiệp sẽ chia nhỏ khối IP được cấp thành các subnet của mình
 
-## Các loại địa chỉ IPv6:
+## III. Các loại địa chỉ IPv6:
 - Theo cách thức gói tin được gửi đến đích, địa chỉ IPv6 có 3 loại:
   - Unicast (Sử dụng trong giao tiếp 1-1)
   - Multicast (Sử dụng trong giao tiếp 1-nhiều)
