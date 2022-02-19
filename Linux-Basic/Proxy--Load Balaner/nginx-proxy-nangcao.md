@@ -30,11 +30,33 @@ Một signal có thể được gửi bằng lệnh `nginx` với đối số `-
 nginx -s <SIGNAL>
 ```
 - Trong đó: `<SIGNAL>` có thể là:
-    - `quit` - tắt 1 cách duyên dáng (signal `SIGQUIT`)
+    - `quit` - Shut down gracefully (signal `SIGQUIT`)
     - `reload` - tải lại tệp cấu hình (signal `SIGHUP`)
-    - `reopen` - mở lại tệp nhật ký (signal SIGUSR1)
-    - `stop` - tắt ngay lập tức (hoặc tắt nhanh, signal SIGTERM )
+    - `reopen` - Reopen log files (signal SIGUSR1)
+    - `stop` - Shut down immediately (hoặc tắt nhanh, signal SIGTERM )
 
+
+
+Thực hiện lệnh:
+```
+nginx -s reload
+```
+Khi đó trong tệp log sẽ có dòng:
+```
+2022/02/19 20:27:22 [notice] 7904#7904: signal process started
+
+2022/02/19 20:27:22 [notice] 7598#7598: signal 1 (SIGHUP) received from 7904, reconfiguring
+2022/02/19 20:27:22 [notice] 7598#7598: reconfiguring
+2022/02/19 20:27:22 [notice] 7598#7598: using the "epoll" event method
+2022/02/19 20:27:22 [notice] 7598#7598: start worker processes
+2022/02/19 20:27:22 [notice] 7598#7598: start worker process 7905
+2022/02/19 20:27:22 [notice] 7903#7903: gracefully shutting down
+2022/02/19 20:27:22 [notice] 7903#7903: exiting
+2022/02/19 20:27:22 [notice] 7903#7903: exit
+2022/02/19 20:27:22 [notice] 7598#7598: signal 17 (SIGCHLD) received from 7903
+2022/02/19 20:27:22 [notice] 7598#7598: worker process 7903 exited with code 0
+2022/02/19 20:27:22 [notice] 7598#7598: signal 29 (SIGIO) received
+```
 ### 2. Lệnh kiểm tra cú pháp (syntax) cấu hình:
 - Cú pháp:
 ```
@@ -77,13 +99,13 @@ Mô hình IP:
 
 Đặt tên host:
 ```
-hostname set-hostname node1
+hostnamectl set-hostname node1
 ```
 ```
-hostname set-hostname node2
+hostnamectl set-hostname node2
 ```
 ```
-hostname set-hostname node3
+hostnamectl set-hostname node3
 ```
 
 ### 2. Cài đặt Apache Server
@@ -135,7 +157,7 @@ Tạo trang test đơn giản:
 mkdir /var/www/html/cong
 
 echo 'Luong Van Cong
-Apache server 192.168.77.71 ' >> /var/www/html/index.html
+Apache server 192.168.77.71 ' >> /var/www/html/cong/index.html
 ```
 
 ### 3.Cài đặt Nginx
@@ -283,6 +305,17 @@ LogFormat "\"%{X-Forwarded-For}i\" %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{Us
 ```
 LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 ```
+
+Trong đó:
+- %h: địa chỉ của máy client
+- %l: nhận dạng người dùng được xác định bởi identd (thường không SD vì không tin cậy)
+- %u: tên người dung được xác định bằng xác thức HTTP
+- %t: thời gian yêu cầu được nhận
+- %r: là yêu cầu từ người sử dụng (client)
+- %>s: mã trạng thái được gửi từ máy chủ đến máy khách
+- %b: kích cỡ phản hồi đối với client
+- Refer: tiêu đề Refeer của yêu cầu HTTP (chứa URL của trang mà yêu cầu này được khởi tạo)
+- User_agent: chuỗi xác định trình duyệt
 ### 5. Kiểm tra:
 **Truy cập:** http://192.168.30.72
 
