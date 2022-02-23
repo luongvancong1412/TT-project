@@ -56,7 +56,7 @@ http{
     . . .
 }
 ```
-
+- `deny` và `allow` có thể nằm trong Block: http, server, location, limit_except
 Kết quả sau khi chặn:
 
 ![](./image/kqchanip.png)
@@ -71,7 +71,7 @@ Kết quả sau khi chặn:
 
 #### Bước 2: Cấu hình giới hạn tốc độ
 **Cấu hình giới hạn tốc độ cơ bản**
-Sử dụng 2 Directive `limit_req_zone` và `limit_req`:
+Sử dụng 2 Directive `limit_req_zone` và `limit_req` (Trong Block: http, server, location):
 Ví dụ sử dụng 2 cấu hình:
 ```
 limit_req_zone $binary_remote_addr zone=congvhost1:10m rate=10r/s;
@@ -140,3 +140,4 @@ Trong ví dụ này, khi truy cập thành công vào trang web: http://congvhos
 1. https://ubiq.co/tech-blog/block-ip-address-nginx/
 2. http://nginx.org/en/docs/http/ngx_http_limit_req_module.html
 3. http://sbin.xyz/2018/01/30/Nginx-gioi-han-toc-do-truy-cap-cua-nguoi-dung/
+4. http://nginx.org/en/docs/http/ngx_http_access_module.html
