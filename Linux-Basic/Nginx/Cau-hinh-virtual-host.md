@@ -1,9 +1,17 @@
 # Cấu hình Virtual host
 
 Mục lục
+- [Cấu hình Virtual host](#cấu-hình-virtual-host)
+  - [I.Virtual host](#ivirtual-host)
+  - [II. Lab:](#ii-lab)
+    - [1. Mô hình mạng](#1-mô-hình-mạng)
+    - [2. Các bước thực hiện](#2-các-bước-thực-hiện)
+      - [Bước 1: Cài đặt Nginx](#bước-1-cài-đặt-nginx)
+      - [Bước 2: Cấu hình tạo ra các Virtual host](#bước-2-cấu-hình-tạo-ra-các-virtual-host)
+      - [Bước 3: Kiểm tra](#bước-3-kiểm-tra)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
-
-## Virtual host
+## I.Virtual host
 
 + *Virtual Host* là một kỹ thuật cho phép nhiều website có thể dùng chung một địa chỉ ip. Thuật ngữ này được sử dụng với các website sử dụng Apache server. Trong các website sử dụng Nginx server thì nó được gọi là *Server Block*
 + Đây là kỹ thuật dùng để cấu hình cho web server khi bạn muốn có nhiều nhiều website với các tên miền khác nhau được sử dụng chung trên cùng một máy chủ.
@@ -12,13 +20,16 @@ Mục lục
 ```
 server_name <danh sách tên miền>;
 ```
-Block Directive này nằm trong Server Blocks
-## Lab:
+- Block Directive này nằm trong Server Blocks
+## II. Lab:
 
-### Mô hình mạng
+### 1. Mô hình mạng
 
+![](./image/mhmvhost.png)
 
-### Các bước thực hiện
+![](./image/ipplanning1.png)
+
+### 2. Các bước thực hiện
 
 #### Bước 1: Cài đặt Nginx
 
@@ -84,12 +95,14 @@ server {
     index   index.html;
 }' > /etc/nginx/conf.d/congvhost1.world.conf
 ```
-- Tạo thư mục chứa website cho virtual host này:
+
+Tạo thư mục chứa website cho virtual host này:
 ```
 mkdir /usr/share/nginx/congvhost1.world
 chown nginx:nginx -R /usr/share/nginx/congvhost1.world
 ```
-- Tạo một file index.html để kiểm tra kết quả:
+
+Tạo một file index.html để kiểm tra kết quả:
 ```
 echo '<DOCTYPE html>
 <html>
@@ -119,12 +132,14 @@ server {
     index   index.html;
 }' > /etc/nginx/conf.d/congvhost2.world.conf
 ```
-- Tạo thư mục chứa website cho virtual host này:
+
+Tạo thư mục chứa website cho virtual host này:
 ```
 mkdir /usr/share/nginx/congvhost2.world
 chown nginx:nginx -R /usr/share/nginx/congvhost2.world
 ```
-- Tạo một file index.html để kiểm tra kết quả:
+
+Tạo một file index.html để kiểm tra kết quả:
 ```
 echo '<DOCTYPE html>
 <html>
@@ -142,13 +157,22 @@ echo '<DOCTYPE html>
 
 Thêm tên miền vào /etc/hosts
 ```
-sudo echo '#congvhost1.world
+sudo vi /etc/hosts
+```
+Them 2 dòng sau vào cuối file:
+```
 192.168.92.21 congvhost2.world www.congvhost2.world
-192.168.92.21 congvhost1.world www.congvhost1.world' >> /etc/hosts
+192.168.92.21 congvhost1.world www.congvhost1.world
 ```
 
 Truy cập: congvhost1.world hoặc www.congvhost1.world
 
-
+![](./image/kqVhost1.png)
 
 Truy cập: congvhost2.world hoặc www.congvhost2.world
+
+![](./image/kqvhost2.png)
+
+# Tài liệu tham khảo
+
+1. https://github.com/hocchudong/ghichep-nginx/blob/master/docs/nginx-virtualhost.md

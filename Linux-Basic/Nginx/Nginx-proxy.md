@@ -60,6 +60,7 @@ Khởi động dịch vụ:
 systemctl start nginx
 systemctl enable nginx
 ```
+
 Backup file cấu hình `/etc/nginx/nginx.conf`
 ```
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
