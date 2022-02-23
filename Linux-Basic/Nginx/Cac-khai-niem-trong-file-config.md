@@ -83,9 +83,10 @@ Các lệnh sau dấu `#` gọi là 1 `comment`. Các `comment` không ảnh hư
 
 ## II. Chi tiết về file cấu hình
 ### 1. Main Block
+Cấu hình áp dụng cho tất cả các block, trong đó:
 - `User nginx;` : Cấu hình quy định worker processes được chạy với tài khoản nào , ở đây là nginx.
 
-- `worker_processes auto;` : Cấu hình chỉ ra rằng web server được xử lý bằng 1 CPU core (processor) , giá trị này tương ứng với số CPU Core có trên máy chủ. Để kiểm tra số lượng CPU Core trên máy chủ chúng ta dùng lệnh :
+- `worker_processes auto;` :Số lượng work process nginx sử dụng, giá trị này tương ứng với số CPU Core có trên máy chủ. Cấu hình ở đây là web server được xử lý bằng auto CPU core (processor). Để kiểm tra số lượng CPU Core trên máy chủ chúng ta dùng lệnh :
 
     ```sh
     nproc
@@ -93,15 +94,15 @@ Các lệnh sau dấu `#` gọi là 1 `comment`. Các `comment` không ảnh hư
     cat /proc/cpuinfo
     ```
 
-- `error_log /var/log/nginx/error.log;` Đường dẫn đến file log của nginx.
+- `error_log /var/log/nginx/error.log;` Đường dẫn đến file log của nginx. Được sử dụng để Debug.
 
-- `pid /run/nginx.pid;` số PID của master process , nginx sử dụng master process để quản lý worker process
+- `pid /run/nginx.pid;` số PID (**P**rocess **id**entification) của master process , nginx sử dụng master process để quản lý worker process
 
 ### 2. Events Block
-- `worker_connections 1024;` Giá trị này liên quan đến worker processes, 1024 có nghĩa là mỗi worker process sẽ chịu tải là 1024 kết nối cùng lúc . Nếu chúng ta có 2 worker process thì khả năng chịu tải của server là 2048 kết nối tại một thời điểm. Giá trị này chúng ta có thể tùy thuộc vào phần cứng của máy chủ (giá trị 1024/worker process không phải là mặc định).
+- `worker_connections 1024;` Số lượng kết nối mà worker_process có thể xử lý. Giá trị này liên quan đến worker processes, 1024 có nghĩa là mỗi worker process sẽ chịu tải là 1024 kết nối cùng lúc . Nếu chúng ta có 2 worker process thì khả năng chịu tải của server là 2048 kết nối tại một thời điểm. Giá trị này chúng ta có thể tùy thuộc vào phần cứng của máy chủ (giá trị 1024/worker process không phải là mặc định).
 
 ### 3. HTTP Block
-
+HTTP Block giúp Nginx xử lý các kết nối HTTP, HTTPS:
 - Định nghĩa một mẫu log có tên là `main` được sử dụng bởi `access_log `, các thông tin được đưa vào file tương ứng với các 
     biến như `$remote_addr`, `$remote_user` ,....
 ```
@@ -120,25 +121,25 @@ access_log  /var/log/nginx/access.log  main;
 sendfile on;
 ``` 
 
-- `tcp_nopush on;` 
+- `tcp_nopush on;` Tuỳ chọn này được bật khi sendfile đc sử dụng.
 
-- `tcp_nodelay on;`
+- `tcp_nodelay on;` : duy trì kết nối
 
 - Xác định thời gian chờ trước khi đóng 1 kết nối, ở đây là 65s.
 
 ```
 keepalive_timeout   65;
 ```
--  Gọi tới file chứa danh sách các file extension trong nginx
+-  Gọi tới file chứa danh sách các file extension trong nginx (Thêm 1 file khác vào cấu hình của nginx. được hiểu là bất kỳ file nào đc viết trong mime.types đc hiểu là nó được viết bên trong khối HTTP)
 ```
 include /etc/nginx/mime.types;
    default_type        application/octet-stream;
 ```
 
-- `types_hash_max_size 2048;`
+- `types_hash_max_size 2048;`: kích thước tối đa hàm băm `hash`
 
 # Tài liệu tham khảo
 
 1. https://www.linode.com/docs/guides/how-to-configure-nginx/
 2. http://nginx.org/en/docs/beginners_guide.html
-3. 
+3. http://nginx.org/en/docs/http/ngx_http_core_module.html

@@ -20,7 +20,7 @@ Mục lục
 ```
 server_name <danh sách tên miền>;
 ```
-- Block Directive này nằm trong Server Blocks
+- Block Directive để đặt tên Virtual host, nó nằm trong Server Blocks
 ## II. Lab:
 
 ### 1. Mô hình mạng
@@ -91,8 +91,8 @@ server {
     access_log      /var/log/nginx/access-congvhost1.world.log;
     error_log       /var/log/nginx/error-congvhost1.world.log;
 
-    root    /usr/share/nginx/congvhost1.world;
-    index   index.html;
+    root    /usr/share/nginx/congvhost1.world;# Document root là thư mục /usr/share/nginx/congvhost1.world
+    index   index.html; # trang mặc định nginx sử dụng nếu không có tập tin nào yêu cầu.
 }' > /etc/nginx/conf.d/congvhost1.world.conf
 ```
 
