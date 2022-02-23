@@ -67,6 +67,10 @@ location /cong/ {
 }' > /etc/nginx/conf.d/test1.conf
 ```
 
+Kiểm tra cú pháp và khởi động lại tệp cấu hình nginx:
+```
+nginx -t && nginx -s reload
+```
 ## 3. Kiểm tra:
 **Truy cập:** http://192.168.30.72
 

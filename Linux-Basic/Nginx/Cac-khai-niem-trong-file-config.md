@@ -7,7 +7,6 @@ Mục lục
     - [1. Main Block](#1-main-block)
     - [2. Events Block](#2-events-block)
     - [3. HTTP Block](#3-http-block)
-    - [4. Server Blocks](#4-server-blocks)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 Bài viết này giải thích cấu trúc của  tệp cấu hình mặc định của NGINX.
@@ -103,39 +102,41 @@ Các lệnh sau dấu `#` gọi là 1 `comment`. Các `comment` không ảnh hư
 
 ### 3. HTTP Block
 
-- log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+- Định nghĩa một mẫu log có tên là `main` được sử dụng bởi `access_log `, các thông tin được đưa vào file tương ứng với các 
+    biến như `$remote_addr`, `$remote_user` ,....
+```
+log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
+```
 
-    ```sh
-    Định nghĩa một mẫu log có tên là main được sử dụng bởi access_log , các thông tin được đưa vào file tương ứng với các 
-    biến như $remote_addr, $remote_user ,....
-    ```
+- Chỉ ra đường dẫn tới file log .
+```
+access_log  /var/log/nginx/access.log  main;
+```
 
-- access_log  /var/log/nginx/access.log  main;
-
-    ```sh
-    Chỉ ra đường dẫn tới file log .
-    ```
-
-- `sendfile on;` Cấu hình này gọi đến function sendfile để xử lý việc truyền file .
+- Cấu hình này gọi đến function sendfile để xử lý việc truyền file
+```
+sendfile on;
+``` 
 
 - `tcp_nopush on;` 
 
 - `tcp_nodelay on;`
 
-- `keepalive_timeout   65;` Xác định thời gian chờ trước khi đóng 1 kết nối, ở đây là 65s.
+- Xác định thời gian chờ trước khi đóng 1 kết nối, ở đây là 65s.
 
--  include /etc/nginx/mime.types;
+```
+keepalive_timeout   65;
+```
+-  Gọi tới file chứa danh sách các file extension trong nginx
+```
+include /etc/nginx/mime.types;
    default_type        application/octet-stream;
-
-    ```sh
-    Gọi tới file chứa danh sách các file extension trong nginx
-    ```
+```
 
 - `types_hash_max_size 2048;`
 
-### 4. Server Blocks
 # Tài liệu tham khảo
 
 1. https://www.linode.com/docs/guides/how-to-configure-nginx/
