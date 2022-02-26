@@ -9,7 +9,7 @@
 
 Tăng thêm thời gian hệ thốg;
 ```
-date -s '+1 minutes'
+date -s '+10 minutes'
 ```
 
 Cài đặt Chrony:
@@ -43,12 +43,6 @@ server 3.asia.pool.ntp.org iburst
 ```
 echo 'allow 192.168.92.0/24' >> /etc/chrony.conf
 ```
-
-- Thêm nhật ký vào cuối file
-```
-echo 'logfile /var/log/chrony.log` >> /etc/chrony.conf
-```
-
 Khởi động dịch vụ:
 ```
 systemctl start chronyd
@@ -63,10 +57,12 @@ firewall-cmd --reload
 Kiểm tra hoạt động:
 ```
 [root@localhost etc]# chronyc sources
-     remote           refid      st t when poll reach   delay   offset  jitter
-==============================================================================
-+time.cloudflare 10.177.8.4       3 u   66   64  377    3.689    6.279   2.042
-*210.23.25.77    .GPS.            1 u   62   64  377   37.529   13.763   2.243
+210 Number of sources = 3
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* time.cloudflare.com           3   6    17    22  +6109us[  +20ms] +/-   58ms
+^+ 202.28.116.236                1   6    17    22  -4831us[+8773us] +/-   45ms
+^- ip-186.108.123.103.unima>     2   6    17    21    -71ms[  -71ms] +/-  223ms
 ```
 ### Cài đặt NTP trên Client
 
@@ -87,10 +83,7 @@ sed -i 's|server 1.centos.pool.ntp.org iburst|#|g' /etc/chrony.conf
 sed -i 's|server 2.centos.pool.ntp.org iburst|#|g' /etc/chrony.conf
 sed -i 's|server 3.centos.pool.ntp.org iburst|#|g' /etc/chrony.conf
 ```
-- Thêm nhật ký vào cuối file
-```
-echo 'logfile /var/log/chrony.log' >> /etc/chrony.conf
-```
+
 
 Khởi động dịch vụ:
 ```
@@ -106,14 +99,15 @@ firewall-cmd --reload
 Kiểm tra hoạt động:
 ```
 [root@localhost ~]# chronyc sources
-     remote           refid      st t when poll reach   delay   offset  jitter
-==============================================================================
- 192.168.92.20   210.23.25.77     2 u   41   64    1    0.391  12715.4   0.000
+210 Number of sources = 1
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* 192.168.92.20                 2   6    17    39  +2736ns[-5588ns] +/-   46ms
+
 ```
 
 
 # Tài liệu tham khảo
 
-1. https://www.server-world.info/en/note?os=CentOS_7&p=ntp&f=1
-2. https://www.liquidweb.com/kb/how-to-install-and-configuring-ntp-on-centos-and-ubuntu/
+1. https://www.server-world.info/en/note?os=CentOS_7&p=ntp&f=3
 
