@@ -60,7 +60,11 @@ firewall-cmd --reload
 
 Kiểm tra hoạt động:
 ```
-ntpq -p
+[root@localhost etc]# ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
++time.cloudflare 10.177.8.4       3 u   66   64  377    3.689    6.279   2.042
+*210.23.25.77    .GPS.            1 u   62   64  377   37.529   13.763   2.243
 ```
 ### Cài đặt NTP trên Client
 
@@ -83,7 +87,7 @@ sed -i 's|server 3.centos.pool.ntp.org iburst|#|g' /etc/ntp.conf
 ```
 - Thêm nhật ký vào cuối file
 ```
-echo 'logfile /var/log/ntp.log` >> /etc/ntp.conf
+echo 'logfile /var/log/ntp.log' >> /etc/ntp.conf
 ```
 
 Khởi động dịch vụ:
@@ -99,7 +103,10 @@ firewall-cmd --reload
 
 Kiểm tra hoạt động:
 ```
-ntpq -p
+[root@localhost ~]# ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ 192.168.92.20   210.23.25.77     2 u   41   64    1    0.391  12715.4   0.000
 ```
 
 
