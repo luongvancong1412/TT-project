@@ -7,6 +7,10 @@
 
 ### Cài đặt NTP Server
 
+Tăng thêm thời gian hệ thốg;
+```
+date -s '+1 minutes'
+```
 
 Cài đặt Chrony:
 ```
