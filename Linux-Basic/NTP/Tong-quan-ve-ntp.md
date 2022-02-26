@@ -98,8 +98,45 @@ Tóm lại, 1 thiết bị NTP có thể thuộc 1 hoặc nhiều vai trò sau:
 
 ## II. Phân tích gói tin
 ### 1. Bắt gói tin
+Bắt gói tin đồng bộ giữa local server với ntp server:
+> Trên server:
+```
+tcpdump -i ens33 port 123 -w chrony0bat-tu-3-ntp-server.pcap
+```
+
+Bắt gói tin đồng bộ giữa local server và client:
+> Trên server:
+```
+tcpdump -i ens37 port 123 -w chrony1client.pcap
+```
+
+Để tải 2 gói tin ở trên [tại đây](./Tcpdump-ntp/)
 
 ### 2. Phân tích
+**Phân tích gói tin đồng bộ giữa local server với ntp server:**
+Dùng wireshark mở gói tin:`chrony0bat-tu-3-ntp-server.pcap`
+- Server đồng bộ với 3 NTP server:
+
+![](./image/pt1.png)
+
+- Phân tích gói tin request thứ 7:
+
+![](./image/pt2.png)
+
+- Phân tích gói tin reply thứ 8:
+
+![](./image/pt3.png)
+
+**Phân tích gói tin đồng bộ giữa local server và client:**
+Dùng wireshark mở gói tin:`chrony1client.pcap`
+- Phân tích gói tin request thứ 1:
+
+![](./image/pt4.png)
+
+- Phân tích gói tin reply thứ 2:
+
+![](./image/pt5.png)
+
 
 # Tài liệu tham khảo
 
