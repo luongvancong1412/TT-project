@@ -3,6 +3,11 @@
 
 
 ## 1. Mô hình mạng
+
+![](./../NTP/image/nginxproxynginx.png)
+
+![](./../NTP/image/ipnginxfornginx.png)
+
 ## 2. Các bước thực hiện
 
 ### 1. Cài đặt Web server: Nginx
@@ -51,6 +56,52 @@ Khởi động dịch vụ:
 ```
 systemctl start nginx
 systemctl enable nginx
+```
+
+> Trên node 1:
+Tạo 1 trang web đơn giản
+```
+vi /usr/share/nginx/html/index.html
+```
+Cấu hình:
+```
+<!DOCTYPE html>
+<html>
+<head>
+<title>Luong Van Cong</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Nginx server 1</h1>
+</body>
+</html>
+```
+> Tương tự trên node 2
+
+Tạo 1 trang web đơn giản
+```
+vi /usr/share/nginx/html/index.html
+```
+Cấu hình:
+```
+<!DOCTYPE html>
+<html>
+<head>
+<title>Luong Van Cong</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Nginx server 2</h1>
+</body>
+</html>
 ```
 
 
@@ -105,23 +156,43 @@ Backup file cấu hình `/etc/nginx/nginx.conf`
 ```
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 ```
-Tạo 1 file `cong1.world.conf` trong thư mục : `/etc/nginx/conf.d/`
+
+Tạo 1 block server trong block http của tệp /etc/nginx/nginx.conf
 ```
-echo 'server {
+server {
+        server_name www.hostcong.world hostcong.world;
+        listen      [::]:80;
         listen      80;
-        #listen      [::]:80;
-        server_name cong1.world www.cong1.world;
+
+        include /etc/nginx/conf.d/*.conf;
+}
+```
+Tạo 1 file `cong1.world.conf` trong thư mục : `/etc/nginx/conf.d/` cho trang web thứ 1.
+```
+echo 'location / {
 
         proxy_redirect           off;
         proxy_set_header         X-Real-IP $remote_addr;
         proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header         Host $http_host;
 
-        location / {
-            proxy_pass http://192.168.77.70/;
-        }
+        proxy_pass http://192.168.77.70/;
 
-    }' >> /etc/nginx/conf.d/cong1.world.conf
+}' >> /etc/nginx/conf.d/cong1.world.conf
+```
+
+Tạo thêm 1 file `cong2.world.conf` trong thư mục : `/etc/nginx/conf.d/` cho trang web thứ 2.
+```
+echo 'location /cong {
+
+        proxy_redirect           off;
+        proxy_set_header         X-Real-IP $remote_addr;
+        proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header         Host $http_host;
+
+        proxy_pass http://192.168.77.71/;
+
+}' >> /etc/nginx/conf.d/cong1.world.conf
 ```
 
 Kiểm tra cú pháp (syntax) cấu hình:
@@ -151,16 +222,12 @@ nginx -t && nginx -s reload
 ```
 
 ### 5. Kiểm tra:
-**Truy cập:** http://
+**Truy cập:** http://hostcong.world
 
 - Kết quả:
 
-![](../image/kqproxy1.png)
-- Log:
 
-![](./../image/realip70.png)
-
-**Truy cập:** http://
+**Truy cập:** http://hostcong.world/cong
 
 # Tài liệu tham khảo:
 
