@@ -192,7 +192,7 @@ echo 'location /cong {
 
         proxy_pass http://192.168.77.71/;
 
-}' >> /etc/nginx/conf.d/cong1.world.conf
+}' >> /etc/nginx/conf.d/cong2.world.conf
 ```
 
 Kiểm tra cú pháp (syntax) cấu hình:
