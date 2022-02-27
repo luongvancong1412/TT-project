@@ -1,5 +1,14 @@
 # Cài đặt NTP trên Centos 7 64bit
 
+Mục lục
+
+- [Cài đặt NTP trên Centos 7 64bit](#cài-đặt-ntp-trên-centos-7-64bit)
+  - [1. Mô hình mạng](#1-mô-hình-mạng)
+  - [2. Các bước thực hiện](#2-các-bước-thực-hiện)
+    - [2.1 Cài đặt NTP Server](#21-cài-đặt-ntp-server)
+    - [2.2 Cài đặt NTP trên Client](#22-cài-đặt-ntp-trên-client)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
+
 ## 1. Mô hình mạng
 
 ![](./image/mhm.png)
