@@ -37,9 +37,13 @@ Một số khái niệm cơ bản cần biết: Clock strata levels và đồng 
 **Stratum 1**
 - Thiết bị tầng Stratum 1 (**primary time servers**), thời gian hệ thống được đồng bộ (microseconds - micro giây) với thiết bị của tầng Stratum 0.
 - Thời gian của các server tầng Stratum 1 kiểm tra chéo đồng hồ bằng NTP, để giảm thiểu lỗi do thiết bị hoặc đường truyền và để phân phối thông tin thời gian tới các **local secondary time server** (Stratum 2).
+
+
 **Stratum 2**
 - Thiết bị tầng **Stratum 2** đồng bộ hoá thời gian hệ thống thông qua gói request NTP từ tầng **Stratum 1** (Thường thì 1 máy tính tầng Stratum 2 sẽ query 1 số server tầng 1).
 - Thiết bị tầng có thể được sử dụng làm **nguồn thời gian (time source)**  và làm thiết bị kết với tầng khác (trừ các thiết bị tầng 2).
+
+
 **Stratum 3 trở lên**
 - Thiết bị tầng 3 được đồng bộ hoá với server **stratum 2**. Cũng sử dụng các thuật toán giống nhau cho việc kiểm tra chéo và lấy dữ liệu từ **stratum 2**.
 - Tương tự chúng cũng là nguồn tham chiếu cho các cấp thấp hơn.
