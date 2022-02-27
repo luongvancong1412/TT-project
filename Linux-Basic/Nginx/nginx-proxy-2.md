@@ -1,6 +1,14 @@
 # Cấu hình Nginx làm Reverse Proxy cho Nginx. 
 
+Mục lục
 
+- [Cấu hình Nginx làm Reverse Proxy cho Nginx.](#cấu-hình-nginx-làm-reverse-proxy-cho-nginx)
+  - [1. Mô hình mạng](#1-mô-hình-mạng)
+  - [2. Các bước thực hiện](#2-các-bước-thực-hiện)
+    - [1. Cài đặt Web server: Nginx](#1-cài-đặt-web-server-nginx)
+    - [3.Cài đặt Nginx proxy](#3cài-đặt-nginx-proxy)
+    - [5. Kiểm tra:](#5-kiểm-tra)
+- [Tài liệu tham khảo:](#tài-liệu-tham-khảo)
 
 ## 1. Mô hình mạng
 
@@ -105,7 +113,7 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 ```
 
 
-### 3.Cài đặt Nginx
+### 3.Cài đặt Nginx proxy
 
 > Trên node 3
 
