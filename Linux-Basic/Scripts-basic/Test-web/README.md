@@ -67,7 +67,8 @@ Lan 13 : 503
 Lan 14 : 503
 Lan 15 : 503
 ```
-
+Mã :200 OK - kết nối thành công
+Mã :`503 (Service Temporarily Unavailable)`- dịch vụ tạm thời không khả dụng
 # Tài liệu tham khảo:
 
 1. https://codefather.tech/blog/curl-bash-script/
