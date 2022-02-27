@@ -46,7 +46,28 @@ bash Reload_url.sh
 
 Output:
 ```
-
+[root@localhost ~]# bash Reload_url.sh
+Nhap url trang web:
+congvhost1.world
+Nhap so lan tai lai trang nay:
+15
+Lan 1 : 200
+Lan 2 : 200
+Lan 3 : 200
+Lan 4 : 200
+Lan 5 : 200
+Lan 6 : 200
+Lan 7 : 200
+Lan 8 : 503
+Lan 9 : 503
+Lan 10 : 503
+Lan 11 : 503
+Lan 12 : 503
+Lan 13 : 503
+Lan 14 : 503
+Lan 15 : 503
 ```
 
 # Tài liệu tham khảo:
+
+1. https://codefather.tech/blog/curl-bash-script/

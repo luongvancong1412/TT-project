@@ -129,12 +129,46 @@ nginx -t && nginx -s reload
 ```
 **Kiểm tra**:
 
-Trong ví dụ này, khi truy cập thành công vào trang web: http://congvhost1.world:
-- Thực hiện F5 `5` lần liên tục trong 5s thì lần request thứ **5** bị lỗi:
+Sử dụng Bash shell để kiểm tra kết quả (xem nội dung script [tại đây](./../Scripts-basic/Test-web/README.md))
 
-![](./image/loi.png).
+Kiểm tra với cấu hình:
+```
+limit_req_zone $binary_remote_addr zone=congvhost1:10m rate=5r/m;
 
-- Bỏ `burst=5` và `nodelay` thì F5 lần thứ **2** thì bị lỗi.
+server {
+    listen 80;
+    server_name     congvhost1.world www.congvhost1.world;
+
+    limit_req zone=congvhost1 burst=5 nodelay;
+    ...
+}
+```
+Kết quả:
+```
+[root@localhost ~]# bash Reload_url.sh
+Nhap url trang web:
+congvhost1.world
+Nhap so lan tai lai trang nay:
+17
+Lan 1 : 200
+Lan 2 : 200
+Lan 3 : 200
+Lan 4 : 200
+Lan 5 : 200
+Lan 6 : 200
+Lan 7 : 503
+Lan 8 : 503
+Lan 9 : 503
+Lan 10 : 503
+Lan 11 : 503
+Lan 12 : 503
+Lan 13 : 503
+Lan 14 : 503
+Lan 15 : 503
+Lan 16 : 503
+Lan 17 : 503
+```
+
 # Tài liệu tham khảo
 
 1. https://ubiq.co/tech-blog/block-ip-address-nginx/
