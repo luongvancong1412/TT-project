@@ -226,9 +226,11 @@ nginx -t && nginx -s reload
 
 - Kết quả:
 
+![](./image/nginx11.png)
 
 **Truy cập:** http://hostcong.world/cong
 
+![](./image/nginx22.png)
 # Tài liệu tham khảo:
 
 1. https://www.server-world.info/en/note?os=CentOS_7&p=nginx&f=6
