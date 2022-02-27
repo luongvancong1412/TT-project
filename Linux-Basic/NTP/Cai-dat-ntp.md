@@ -1,11 +1,14 @@
-# Cài đặt NTP
+# Cài đặt NTP trên Centos 7 64bit
 
-## Mô hình mạng
+## 1. Mô hình mạng
 
+![](./image/mhm.png)
 
-## Các bước thực hiện
+![](./image/ipplanning.png)
 
-### Cài đặt NTP Server
+## 2. Các bước thực hiện
+
+### 2.1 Cài đặt NTP Server
 
 
 Cài đặt NTPd:
@@ -44,7 +47,7 @@ restrict 192.168.92.0 mask 255.255.255.0 nomodify notrap
 
 - Thêm nhật ký vào cuối file
 ```
-echo 'logfile /var/log/ntp.log` >> /etc/ntp.conf
+echo 'logfile /var/log/ntp.log' >> /etc/ntp.conf
 ```
 
 Khởi động dịch vụ:
@@ -66,7 +69,10 @@ Kiểm tra hoạt động:
 +time.cloudflare 10.177.8.4       3 u   66   64  377    3.689    6.279   2.042
 *210.23.25.77    .GPS.            1 u   62   64  377   37.529   13.763   2.243
 ```
-### Cài đặt NTP trên Client
+
+![](./image/dongbo3.png)
+
+### 2.2 Cài đặt NTP trên Client
 
 Cài đặt NTPd:
 ```
@@ -109,6 +115,7 @@ Kiểm tra hoạt động:
  192.168.92.20   210.23.25.77     2 u   41   64    1    0.391  12715.4   0.000
 ```
 
+![](./image/dongbo4.png)
 
 # Tài liệu tham khảo
 

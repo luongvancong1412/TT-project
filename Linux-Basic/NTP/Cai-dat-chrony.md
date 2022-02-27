@@ -1,11 +1,22 @@
-# Cài đặt Chrony
+# Cài đặt Chrony trên Centos 7 64bit
 
-## Mô hình mạng
+Mục lục
+- [Cài đặt Chrony trên Centos 7 64bit](#cài-đặt-chrony-trên-centos-7-64bit)
+  - [1. Mô hình mạng](#1-mô-hình-mạng)
+  - [2. Các bước thực hiện](#2-các-bước-thực-hiện)
+    - [2.1 Cài đặt NTP Server](#21-cài-đặt-ntp-server)
+    - [2.2 Cài đặt NTP trên Client](#22-cài-đặt-ntp-trên-client)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
+## 1. Mô hình mạng
 
-## Các bước thực hiện
+![](./image/mhm.png)
 
-### Cài đặt NTP Server
+![](./image/ipplanning.png)
+
+## 2. Các bước thực hiện
+
+### 2.1 Cài đặt NTP Server 
 
 Tăng thêm thời gian hệ thốg;
 ```
@@ -56,6 +67,11 @@ firewall-cmd --reload
 
 Kiểm tra hoạt động:
 ```
+chronyc sources
+```
+
+Out:
+```
 [root@localhost etc]# chronyc sources
 210 Number of sources = 3
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -64,9 +80,11 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ^+ 202.28.116.236                1   6    17    22  -4831us[+8773us] +/-   45ms
 ^- ip-186.108.123.103.unima>     2   6    17    21    -71ms[  -71ms] +/-  223ms
 ```
-### Cài đặt NTP trên Client
 
-Cài đặt NTPd:
+![](image/dongbo.png)
+### 2.2 Cài đặt NTP trên Client
+
+Cài đặt chronyd:
 ```
 yum -y install chrony
 ```
@@ -75,7 +93,7 @@ Backup file cấu hình:
 ```
 cp /etc/chrony.conf /etc/chrony.conf.bak
 ```
-Chỉnh sửa file cấu hình:
+Chỉnh sửa file cấu hình, lấy thông tin thời gian từ server ntp:
 
 ```
 sed -i 's|server 0.centos.pool.ntp.org iburst|server 192.168.92.20 iburst|g' /etc/chrony.conf
@@ -106,6 +124,7 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 
 ```
 
+![](./image/dongbo2.png)
 
 # Tài liệu tham khảo
 
