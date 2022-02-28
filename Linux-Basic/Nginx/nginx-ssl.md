@@ -6,20 +6,20 @@ Bài này tiếp tục thực hiện từ bài lab: [Cấu hình nginx proxy](./
 Mục lục
 
 - [Cấu hình ssl self-signed cho nginx](#cấu-hình-ssl-self-signed-cho-nginx)
-  - [Mô hình mạng](#mô-hình-mạng)
-  - [Tạo chứng chỉ ssl self-signed](#tạo-chứng-chỉ-ssl-self-signed)
-  - [Cấu hình Nginx sử dụng SSL](#cấu-hình-nginx-sử-dụng-ssl)
-  - [Kiểm tra kết quả](#kiểm-tra-kết-quả)
+  - [1. Mô hình mạng](#1-mô-hình-mạng)
+  - [2. Tạo chứng chỉ ssl self-signed](#2-tạo-chứng-chỉ-ssl-self-signed)
+  - [3. Cấu hình Nginx sử dụng SSL](#3-cấu-hình-nginx-sử-dụng-ssl)
+  - [4. Kiểm tra kết quả](#4-kiểm-tra-kết-quả)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 
-## Mô hình mạng
+## 1. Mô hình mạng
 
 ![](./../NTP/image/nginxproxynginx.png)
 
 ![](./../NTP/image/ipnginxfornginx.png)
 
-## Tạo chứng chỉ ssl self-signed
+## 2. Tạo chứng chỉ ssl self-signed
 
 > Trên nginx proxy
 
@@ -111,7 +111,7 @@ Trong đó:
 
 Khoá riêng và chứng chỉ đã được đặt trong thư mục con của thư mục:`/etc/pki/tls/certs`
 
-## Cấu hình Nginx sử dụng SSL
+## 3. Cấu hình Nginx sử dụng SSL
 
 Cấu hình trong file config : `/etc/nginx/nginx.conf`
 
@@ -160,7 +160,7 @@ firewall-cmd --add-service=https --permanent
 firewall-cmd --reload
 ```
 
-## Kiểm tra kết quả
+## 4. Kiểm tra kết quả
 Truy cập: https://hostcong.world
 
 ![](./image/kqssl.png)
