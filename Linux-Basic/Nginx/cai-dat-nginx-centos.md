@@ -49,3 +49,22 @@ Bắt đầu cài đặt Nginx Open Source
 ```
 yum install nginx -y
 ```
+## Khởi động Nginx web server và đặt tự động khởi động dịch vụ khi server được bật
+
+Khởi động Nginx:
+```
+systemctl nginx start
+```
+
+Dừng Nginx:
+```
+systemctl nginx stop
+```
+Set tự động khởi động dịch vụ khi server được bật:
+```
+systemctl nginx enable
+```
+Set tắt tự động khởi động dịch vụ khi server được bật:
+```
+systemctl nginx disable
+```
