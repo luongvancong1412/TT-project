@@ -1,11 +1,19 @@
-# Hướng dẫn cài đặt Nginx trên Centos 7
+<h1> Hướng dẫn cài đặt Nginx trên Centos 7 </h1>
 
 Nginx Open Source có 2 version:
 - Mainline - Bao gồm các tính năng và bản vá mới nhất, luôn được cập nhật, đáng tin cậy. Nhưng có thể bao gồm 1 số mô-đun thử nghiệm và có thể có 1 số lỗi mới.
 - Stable - Không có các tính năng mới nhất, nhưng luôn có các bản vá quang trọng. Đề xuất cho `production servers`.
 
 ![](./image/NGINX-logo.png)
-## Khởi tạo Nginx Repo
+
+<h2>Mục lục</h2>
+
+- [Khởi tạo Nginx Repo](#1-khởi-tạo-nginx-repo)
+- [Thực hiện cài đặt NGINX](#2-thực-hiện-cài-đặt-nginx)
+- [Khởi động Nginx web server và đặt tự động khởi động dịch vụ khi server được bật](#3-khởi-động-nginx-web-server-và-đặt-tự-động-khởi-động-dịch-vụ-khi-server-được-bật)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
+
+## 1. Khởi tạo Nginx Repo
 Thiết lập kho lưu trữ cho Centos bằng cách tạo tệp `nginx.repo` trong `/etc/yum.repos.d`
 
 ```
@@ -38,7 +46,7 @@ gpgcheck=0
 enabled=1' > /etc/yum.repos.d/nginx.repo
 ```
 
-## Thực hiện cài đặt NGINX
+## 2. Thực hiện cài đặt NGINX
 
 Cập nhật thông tin mới nhất cho repo:
 ```
@@ -49,22 +57,52 @@ Bắt đầu cài đặt Nginx Open Source
 ```
 yum install nginx -y
 ```
-## Khởi động Nginx web server và đặt tự động khởi động dịch vụ khi server được bật
+## 3. Khởi động Nginx web server và đặt tự động khởi động dịch vụ khi server được bật
 
 Khởi động Nginx:
 ```
-systemctl nginx start
+systemctl start nginx
 ```
 
 Dừng Nginx:
 ```
-systemctl nginx stop
+systemctl stop nginx
 ```
 Set tự động khởi động dịch vụ khi server được bật:
 ```
-systemctl nginx enable
+systemctl enable nginx
 ```
 Set tắt tự động khởi động dịch vụ khi server được bật:
 ```
-systemctl nginx disable
+systemctl disable nginx
 ```
+
+Kiểm tra Nginx đã hoạt động chưa:
+```
+systemctl nginx status
+```
+hoặc
+```
+curl -I 127.0.0.1
+#kết quả:
+HTTP/1.1 200 OK
+Server: nginx/1.20.2
+```
+Kiểm tra version:
+```
+nginx -v
+```
+
+Lưu ý: Nếu xuất hiện lỗi:`nginx[75718]: nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+`
+- Có nghĩa là có 1 dịch vụ khác đang chạy trên cùng một cổng. (Không thể có nhiều dịch vụ cùng nghe trên cùng 1 cổng)
+- Dịch vụ đã nghe trên cổng 80 có thể là Apache hoặc bất kỳ máy chủ web nào khác đang nghe trên cổng 80.
+- Để kiểm tra:
+```
+netstat -plant | grep 80
+```
+- Để khởi động có thể thay đổi port trên Nginx (xem [tại đây](Cau-hinh-port.md)) hoặc dừng dịch vụ đang chạy trên port 80.
+
+# Tài liệu tham khảo
+
+1. https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/
