@@ -103,6 +103,21 @@ netstat -plant | grep 80
 ```
 - Để khởi động có thể thay đổi port trên Nginx (xem [tại đây](Cau-hinh-port.md)) hoặc dừng dịch vụ đang chạy trên port 80.
 
+## 4. Cấu hình firewall:
+Cho phép port 80:
+```
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+```
+Cho phép port 443 và có thể cho phép các port khác.
+```
+firewall-cmd --zone=public --permanent --add-port=443/tcp
+```
+
+
+Cuối cùng Reload lại firewalld:
+```
+firewall-cmd --reload
+```
 # Tài liệu tham khảo
 
 1. https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/
