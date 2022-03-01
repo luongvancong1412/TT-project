@@ -104,6 +104,8 @@ Trong đó:
 - **openssl** : Đây là câu lệnh lệnh cơ bản để tạo và quản lý chứng chỉ OpenSSL, khóa và các tệp khác.
 - **-x509** : Đây là tiêu chuẩn cơ sở hạ tầng khóa công khai mà SSL và TLS tuân thủ để quản lý khóa và chứng chỉ của nó.
 - **-days 3650** : Tùy chọn đặt khoảng thời gian mà chứng chỉ sẽ được coi là hợp lệ. Ở đây là 10 năm.
+- **-req**: viết tắt của request. yêu cầu tạo chứng chỉ
+- **-signkey**
 - **rsa** :  yêu cầu nó tạo một khóa **RSA**
 - **-keyout** : Nơi đặt tệp khóa riêng private đã tạo.
 - **-out** : Nơi đặt chứng chỉ đang tạo.

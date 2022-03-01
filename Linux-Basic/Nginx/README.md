@@ -1,5 +1,8 @@
 # NGINX
 
+Nginx (Engine X) là một máy chủ web server mã nguồn mở rất được ưa chuộng sử dụng trên các hệ thống máy chủ Web HTTP/HTTPS trên thế giới.
+
+Nginx có các chức năng nổi bật như: HTTP Reverse proxy, Load Balancing,...
 ## Sumary
 1. [Các khái niệm trong file cấu hình](Cac-khai-niem-trong-file-config.md)
 2. [Cấu hìn port](Cau-hinh-port.md)
