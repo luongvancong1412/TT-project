@@ -15,14 +15,14 @@ Bài này thực hiện chuyển hướng các kết nối đến đường link
 
 Ở block server dành cho kết nối HTTP "listen 80" của tên miền muốn redirect, thêm dòng:
 ```
-return 301 https://$host$request_uri
+return 301 $scheme://$host$request_uri;
 ```
 
 Sau khi chỉnh sửa, tất cả lưu lượng truy cập cho máy chủ mặc định HTTP sẽ chuyển hướng đến HTTPS.
 
 `301 redirect` là một phương pháp chuyển tiếp thông báo các trình duyệt rằng website đã được chuyển dời tới một địa chỉ mới, không cần đến sự can thiệp của người dùng.
-`https://$host$request_uri` là url được viết lại (rewritten URL)
-- - Lệnh `return` yêu cầu NGINX ngừng xử lý yêu cầu và ngay lập tức gửi mã 301 (Moved Permanently) và url được viết lại cho client.
+`$scheme://$host$request_uri` là url được viết lại (rewritten URL)
+- Lệnh `return` yêu cầu NGINX ngừng xử lý yêu cầu và ngay lập tức gửi mã 301 (Moved Permanently) và url được viết lại cho client.
 - `rewritten URL` sử dụng 3 [biến NGINX](https://nginx.org/en/docs/varindex.html?_ga=2.206714007.507550558.1646032305-319433364.1644219864&_gac=1.57395800.1646115905.CjwKCAiAgvKQBhBbEiwAaPQw3GcwyKFSsqWz0z3mM3ADaRzk2opfcAdTuWYME_OK9HvZ9OwZtTiguxoCSscQAvD_BwE) để bắt và sao chép các giá trị từ URL yêu cầu gốc của client:
   - `$scheme` là giao thức (`http` hoặc `https`)
   - `$host` là tên miền máy chủ mới, tên miền máy chủ được chuyển đến.
@@ -99,3 +99,4 @@ Ta thấy có dòng `HTTP/1.1 301 Moved Permanently` và `Location: https://host
 
 1. https://www.nginx.com/blog/creating-nginx-rewrite-rules/
 2. https://phoenixnap.com/kb/redirect-http-to-https-nginx
+3. https://nginx.org/en/docs/http/ngx_http_core_module.html
