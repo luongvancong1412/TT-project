@@ -36,7 +36,7 @@ Các bước mở System Setup:
 ![Imgur](https://i.imgur.com/LlM54gD.jpg)
 
 |Option|Description|
-|---|---|---|
+|---|---|
 System Information|Cung cấp thông tin về hệ thống như: the system model name (tên kiểu hệ thống), BIOS version và Service Tag.
 Memory Settings|Cung cấp thông tin và các tùy chọn liên quan đến bộ nhớ (Memory) đã cài đặt.
 Processor Settings|Cung cấp thông tin và các tùy chọn liên quan đến bộ xử lý (processor) như speed (tốc độ) và cache size (kích thước bộ nhớ đệm).
@@ -55,8 +55,7 @@ Miscellaneous Settings|Cung cấp các tùy chọn để thay đổi system date
 
 ![Imgur](https://i.imgur.com/fiZ6Rrf.jpg)
 
-Option|
-Description|
+Option|Description|
 |---|---|
 System Model Name|Hiển thị tên server.
 System BIOS Version|Hiển thị phiên bản BIOS được cài đặt trên hệ thống.
@@ -72,8 +71,7 @@ UEFI Compliance Version|Hiển thị phiên bản của UEFI compliance.
 ![Imgur](https://i.imgur.com/mzZcAA9.jpg)
 
 
-Option|
-Description|
+Option|Description|
 |---|---|
 System Memory Size|Hiển thị kích thước bộ nhớ trong hệ thống.
 System Memory Type|Hiển thị loại bộ nhớ được cài đặt trong hệ thống.
