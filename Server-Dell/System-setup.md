@@ -83,15 +83,17 @@ Dram Refresh Delay|**Performance** - Cho phép `CPU memory controller` delay vi�
 
 Memory Operating Mode| Chọn các mode memory operating (chế độ vận hành bộ nhớ). Các option có sẵn là **Optimizer Mode** (chế độ tối ưu hoá), **Single Rank Spare Mode** (Chế độ dự phòng xếp hạng đơn), **Multi Rank Spare Mode** (Chế độ dự phòng nhiều hạng) và Mirror Mode (Chế độ phản chiếu - bản sao). **Cấu hình mặc định** là **Optimizer Mode**.|
 Current State of Memory Operating Mode|Hiển thị trạng thái hiện tại của **memory operating mode**.
-Node Interleaving|
-Specifies if Non-Uniform Memory Architecture (NUMA) is supported. If this field is set to Enabled, memory interleaving is supported if a symmetric memory configuration is installed. If this field is set to Disabled, the system supports NUMA (asymmetric) memory configurations. This option is set to Disabled by default.
-ADDDC Setting|
-Enables or disables ADDDC Setting feature. When Adaptive Double DRAM Device Correction (ADDDC) is enabled, failing DRAMs are dynamically mapped out. When set to Enabled it can have some impact to system performance under certain workloads. This feature is applicable for x4 DIMMs only. This option is set to Enabled by default.
+Node Interleaving|Hiển thị  **Non-Uniform Memory Architecture (NUMA)** có hỗ trợ không. Nếu trường này là **Enabled**, **memory interleaving** (tính năng xen kẽ bộ nhớ) được hỗ trợ nếu **symmetric memory configuration** (cấu hình bộ nhớ đối xứng) được cài đặt. Nếu trường này là **Disabled**, Hệ thống hỗ trợ cấu hình bộ nhớ NUMA (asymmetric - không đối xứng). Option này mặc định là **Disable**
+ADDDC Setting|Enables hoặc disables tính năng **ADDDC Setting**. Khi enabled  tính năng Adaptive Double DRAM Device Correction (ADDDC), failing DRAMs are dynamically mapped out (các DRAM lỗi sẽ được ánh xạ động). Khi được đặt thành Enabled nó có thể có một số tác động đến hiệu suất hệ thống (system performance) trong một số khối lượng công việc nhất định (certain workloads). Tính năng chỉ áp dụng cho các DIMM x4. Option này mặc định là **Enabled**.
 Native tRFC Timing for 16Gb DIMMs|
-Enables 16 Gb density DIMMs to operate at their programmed Row Refresh Cycle Time (tRFC). Enabling this feature may improve system performance for some configurations. However, enabling this feature has no effect on configurations with 16 Gb 3DS/TSV DIMMs. This option is set to Enabled by default.
+Enables 16 Gb density DIMMs hoạt động ở Row Refresh Cycle Time (tRFC) được lập trình. Bật tính năng này có thể cải thiện hiệu suất hệ thống đối với 1 số cấu hình. Tuy nhiên, việc bật tính năng này không ảnh hưởng đến cấu hình với 16 Gb 3DS/TSV DIMMs. Option mặc định là **Enabled**.
 Opportunistic Self-Refresh|
 Enables or disables opportunistic self-refresh feature. This option is set to Disabled by default and is not supported when DCPMMs are in the system.
 Correctable Error logging|
 Enables or disables logging of correctable memory threshold error. This option is set to Disabled by default.
 DIMM Self Healing (Post Package Repair) on Uncorrectable Memory Error|
 Enable/Disable Post Package Repair (PPR) on Uncorrectable Memory Error. This option is set to Enabled by default.
+
+
+# Tài liệu tham khảo
+1. https://www.dell.com/support/manuals/en-vn/poweredge-r440/per440_bios_pub/system-setup?guid=guid-d926fd8d-a977-4289-b1e7-45d0fe546139&lang=en-us
