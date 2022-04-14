@@ -2,8 +2,16 @@
 
 <h2> Mục lục </h2>
 
-- [1. Các bước vào system setup](#1-các-bước-vào-system-setup)
-- [2. System BIOS](#2-system-bios)
+- [I. System Setup](#i-system-setup)
+- [II. System BIOS](#ii-system-bios)
+  - [1. Chi tiết System BIOS](#1-chi-tiết-system-bios)
+    - [1.1 System Information](#11-system-information)
+    - [1.2 Memory Settings](#12-memory-settings)
+    - [1.3 Processor Settings](#13-processor-settings)
+    - [1.4 SATA settings](#14-sata-settings)
+    - [1.5 NVMe Settings](#15-nvme-settings)
+    - [1.6 Boot Settings](#16-boot-settings)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 # I. System Setup
 
@@ -131,6 +139,58 @@ Level 3 Cache|Hiển thị tổng L3 cache. (22MB)
 Number of Cores|Hiển thị số cores trên mỗi processor. (16)
 Maximum Memory Capacity|Hiển thị dung lượng bộ nhớ tối đa (**maximum memory capacity**) cho mỗi processor. (0.75 TB)
 Microcode|Hiển thị mã vĩ mô (microcode). (0x2006B06)
+
+### 1.4 SATA settings
+
+![Imgur](https://i.imgur.com/FlmrauC.jpg)
+
+![Imgur](https://i.imgur.com/WRserly.jpg)
+
+
+|Option|Description|
+|---|---|
+|Embedded SATA|Bật tuỳ chọn embedded SATA (SATA được nhúng) thành **AHCI Mode**, or **RAID Mode**. This option is set to **AHCI Mode** by **default**.|
+|Security Freeze Lock|Cho phép gửi lệnh khoá đóng băng bảo mật (Security Freeze Lock) đến các ổ đĩa SATA được nhúng trong khi POST. Option này chỉ áp dụng cho **AHCI mode**. This option is set to **Enabled** by **default**.|
+Write Cache|Enables or disables lệnh cho các ổ đĩa SATA được nhúng trong khi POST. This option is set to **Disabled** by **default**.|
+Port n|Cho phép đặt loại ổ đĩa (drive type) của thiết bị đã chọn.Đối với **AHCI Mode** or **RAID Mode**, **BIOS support** luôn được bật **enabled**.|
+
+Option|Description
+|---|---|
+Model|Hiển thị kiểu ổ đĩa (drive model) của thiết bị đã chọn (selected device).
+Drive Type|Hiển thị loại ổ đĩa (type of drive) được gắn vào SATA port.
+Capacity|Hiển thị tổng dung lượng của drive. Trường này không đực xác định cho các thiết bị phương tiện di động (removable media devices) như ổ đĩa quang (optical drives).
+
+### 1.5 NVMe Settings
+
+![Imgur](https://i.imgur.com/JJW3kut.jpg)
+
+Option|Description
+|---|---|
+NVMe Mode|Cho phép đặt NVMe mode. This option is set to **Non RAID** by **default**.
+
+### 1.6 Boot Settings
+Có thể sử Boot Settings để đặt chế độ khởi động thành BIOS hoặc UEFI . Nó cũng cho phép chỉ định thứ tự khởi động.
+
+- **UEFI** : Giao diện chương trình cơ sở mở rộng hợp nhất (UEFI) là một giao diện mới giữa hệ điều hành và chương trình cơ sở nền tảng. Giao diện bao gồm các bảng dữ liệu với thông tin liên quan đến nền tảng, các lệnh gọi dịch vụ khởi động và thời gian chạy có sẵn cho hệ điều hành và bộ tải của nó. Các lợi ích sau đây khả dụng khi Chế độ khởi động được đặt thành UEFI :
+  - Hỗ trợ các phân vùng ổ đĩa lớn hơn 2 TB.
+  - Bảo mật nâng cao (ví dụ: UEFI Secure Boot).
+  - Thời gian khởi động nhanh hơn.
+
+- **BIOS** : Chế độ khởi động BIOS là chế độ khởi động kế thừa. Nó được duy trì để tương thích ngược.
+
+![Imgur](https://i.imgur.com/bxoAq3A.jpg)
+
+|Option|Description|
+|---|---|
+Boot Mode|Cho phép thiết lập chế độ khởi động của hệ thống.*THẬN TRỌNG: Việc chuyển đổi chế độ khởi động có thể ngăn hệ thống khởi động nếu OS không được cài đặt ở cùng một chế độ.*Nếu OS hỗ trợ UEFI, bạn có thể đặt tuỳ chọn này thành UEFI. Đặt trường này thành BIOS cho phép tương thích với các hệ điều hành non-UEFI . This option is set to **UEFI** by **default**. NOTE Đặt trường này thành UEFI sẽ tắt menu **BIOS Boot Settings**.
+Boot Sequence Retry|Cho phép bật hoặc tắt tính năng Boot Sequence Retry. Nếu option này là Enabled và hệ thống không khởi động được, Hệ thống sẽ thử lại trình tự khởi động sau 30s. This option is set to **Enabled** by **default**.
+Hard-Disk Failover|Chỉ định ổ đĩa được khởi động trong trường hợp ổ đĩa bị lỗi. Các thiết bị được chọn trong Trình tự ổ đĩa cứng (Hard-Disk Drive Sequence) trên menu Cài đặt tùy chọn khởi động (Boot Option Setting). Khi tùy chọn này được đặt thành Disable , chỉ ổ đĩa đầu tiên trong danh sách được cố gắng khởi động. Khi tùy chọn này được đặt thành Enabled , tất cả các ổ đĩa sẽ được cố gắng khởi động theo thứ tự đã chọn trong Hard-Disk Drive Sequence . Tùy chọn này không được bật cho Chế độ khởi động UEFI. This option is set to **Disabled** by **default**.
+Generic USB Boot| Bật hoặc tắt tùy chọn khởi động USB. This option is set to **Disabled** by **default**.
+Hard-disk Drive Placeholder|Bật hoặc tắt tùy chọn trình giữ chỗ ổ đĩa cứng (Hard-disk drive placeholder). This option is set to **Disabled** by **default**.
+BIOS Boot Settings|Bật hoặc tắt các tùy chọn khởi động BIOS.LƯU Ý Tùy chọn này chỉ được bật nếu chế độ khởi động là BIOS.
+UEFI Boot Settings|Bật hoặc tắt tùy chọn Khởi động UEFI.Các tùy chọn Khởi động bao gồm IPv4 PXE và IPv6 PXE.  This option is set to IPv4 by default. LƯU Ý Tùy chọn này chỉ được bật nếu chế độ khởi động là UEFI.
+UEFI Boot Sequence|Cho phép bạn thay đổi thứ tự thiết bị khởi động.
+Boot Options Enable/Disable|Cho phép bạn chọn thiết bị khởi động được bật hoặc tắt.|
 
 # Tài liệu tham khảo
 1. https://www.dell.com/support/manuals/en-vn/poweredge-r440/per440_bios_pub/system-setup?guid=guid-d926fd8d-a977-4289-b1e7-45d0fe546139&lang=en-us
