@@ -11,6 +11,7 @@
     - [1.4 SATA settings](#14-sata-settings)
     - [1.5 NVMe Settings](#15-nvme-settings)
     - [1.6 Boot Settings](#16-boot-settings)
+    - [1.7 Integrated Devices](#17-integrated-devices)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 # I. System Setup
@@ -191,6 +192,21 @@ BIOS Boot Settings|Bật hoặc tắt các tùy chọn khởi động BIOS.LƯU 
 UEFI Boot Settings|Bật hoặc tắt tùy chọn Khởi động UEFI.Các tùy chọn Khởi động bao gồm IPv4 PXE và IPv6 PXE.  This option is set to IPv4 by default. LƯU Ý Tùy chọn này chỉ được bật nếu chế độ khởi động là UEFI.
 UEFI Boot Sequence|Cho phép bạn thay đổi thứ tự thiết bị khởi động.
 Boot Options Enable/Disable|Cho phép bạn chọn thiết bị khởi động được bật hoặc tắt.|
+
+### 1.7 Integrated Devices
+
+![Imgur](https://i.imgur.com/TBLWP2h.jpg)
+
+![Imgur](https://i.imgur.com/v3zAlFf.jpg)
+
+![Imgur](https://i.imgur.com/yJtf1c3.jpg)
+
+![Imgur](https://i.imgur.com/8to9F3a.jpg)
+
+Option|Description|
+|---|---|
+User Accessible USB Ports|  Cấu hình các cổng USB mà người dùng có thể truy cập. Chọn Only Back Ports On sẽ tắt các cổng USB phía trước; chọn All Ports Off (Tắt tất cả các cổng) sẽ tắt tất cả các cổng USB phía trước và phía sau.Bàn phím và chuột USB vẫn hoạt động ở một số cổng USB nhất định trong quá trình khởi động, tùy thuộc vào lựa chọn. Sau khi quá trình khởi động hoàn tất, các cổng USB sẽ được bật hoặc tắt tùy theo cài đặt.
+Internal USB Port|Bật hoặc tắt cổng USB bên trong. This option is set to On by default. NOTE The Internal SD Card Port trên cổng PCIe được điều khiển bởi Internal USB Port.
 
 # Tài liệu tham khảo
 1. https://www.dell.com/support/manuals/en-vn/poweredge-r440/per440_bios_pub/system-setup?guid=guid-d926fd8d-a977-4289-b1e7-45d0fe546139&lang=en-us
