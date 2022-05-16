@@ -25,7 +25,7 @@ Chat /newbot vào khung chat với BotFather để tạo:
     ![](/Linux-Basic/image/namebot.png)
 - Nhận được mã token:
 
-    ![](../../image/token.png)
+    ![Imgur](https://i.imgur.com/reXGGHz.png)
 
 ## 2. Thêm Bot vào 1 Group
 - Tạo group mới:
@@ -76,7 +76,7 @@ printf "========================================================================
 echo "Nhap noi dung:"
 read noidung
 
-token=5074962515:AAFkjHSKmX2nfQ6_Ge2y2c8Zvv-3LUfU5Og
+token=5074962515:AAFkjHSKmX2nfQ************-3LUfU5Og
 ID=-604968007
 url=https://api.telegram.org/bot${token}/sendMessage
 
