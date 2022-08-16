@@ -4,7 +4,6 @@
 
 - [Chuẩn bị](#chuẩn-bị)
 - [Cài đặt phần mềm mã nguồn mở Zimbra](#cài-đặt-phần-mềm-mã-nguồn-mở-zimbra)
-  - [https://www.zimbra.com/license/zimbra-public-eula-2-6.html](#httpswwwzimbracomlicensezimbra-public-eula-2-6html)
 
 
 # Chuẩn bị
@@ -56,6 +55,7 @@ cd zcs-8.8.15_GA_3869.RHEL7_64.20190918004220/
 ```
 
 Quá trình chạy:
+
 ````
 Operations logged to /tmp/install.log.c63RSW7C
 Checking for existing installation...
@@ -84,8 +84,6 @@ Checking for existing installation...
     zimbra-archiving...NOT FOUND
     zimbra-core...NOT FOUND
 
-
-----------------------------------------------------------------------
 PLEASE READ THIS AGREEMENT CAREFULLY BEFORE USING THE SOFTWARE.
 SYNACOR, INC. ("SYNACOR") WILL ONLY LICENSE THIS SOFTWARE TO YOU IF YOU
 FIRST ACCEPT THE TERMS OF THIS AGREEMENT. BY DOWNLOADING OR INSTALLING
@@ -95,8 +93,6 @@ AGREEMENT, THEN DO NOT DOWNLOAD, INSTALL OR USE THE PRODUCT.
 
 License Terms for this Zimbra Collaboration Suite Software:
 https://www.zimbra.com/license/zimbra-public-eula-2-6.html
-----------------------------------------------------------------------
-
 
 
 Do you agree with the terms of the software license agreement? [N] Y
@@ -158,7 +154,8 @@ Checking required space for zimbra-core
 Checking space for zimbra-store
 Checking required packages for zimbra-store
 zimbra-store package check complete.
-
+```
+```
 Installing:
     zimbra-core
     zimbra-ldap
@@ -177,9 +174,12 @@ Installing:
     zimbra-mta-patch
     zimbra-proxy-patch
     zimbra-chat
-
-The system will be modified.  Continue? [N] y
 ```
+The system will be modified.  Continue? [N] y
+
+```
+
+
 
 Sau khi cài đặt hoàn tất tiến hành mở port
 
