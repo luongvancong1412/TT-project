@@ -179,6 +179,67 @@ REDIS = {
 ```
 - SECRET_KEY:
 
+Tạo key:
+```
+python3 ../generate_secret_key.py
+```
+
+```
+SECRET_KEY = '+9Z#eR8KAGIP5e^Q2LbPKEt+(rg)^-pSlHhyvmtiqLl5&7txig'
+```
+
+Lưu file lại
+
+## Chạy tập lệnh nâng cấp
+
+Chúng ta sẽ chạy tập lệnh nâng cấp đóng gói ( upgrade.sh) để thực hiện các hành động sau:
+
+- Tạo môi trường ảo Python
+- Cài đặt tất cả các gói Python bắt buộc
+- Chạy di chuyển giản đồ cơ sở dữ liệu
+- Tạo tài liệu cục bộ (để sử dụng ngoại tuyến)
+- Tổng hợp các tệp tài nguyên tĩnh trên đĩa
+
+```
+sudo /opt/netbox/upgrade.sh
+```
+
+## Tạo Super User
+NetBox không đi kèm với bất kỳ tài khoản người dùng nào được xác định trước. Vì vậy ta cần tạo một Super User (tài khoản quản trị) để có thể đăng nhập vào NetBox. 
+
+- Đầu tiên, hãy nhập môi trường ảo Python được tạo bởi tập lệnh nâng cấp:
+```
+source /opt/netbox/venv/bin/activate
+```
+
+Chúng ta sẽ tạo một tài khoản superuser bằng `createsuperuser` lệnh quản lý Django (qua manage.py). (Địa chỉ email cho người dùng không bắt buộc)
+
+```
+cd /opt/netbox/netbox
+python3 manage.py createsuperuser
+```
 
 
+## Kiểm tra ứng dụng
+
+Chạy máy chủ NetBox để test:
+
+```
+cd /opt/netbox/netbox
+source /opt/netbox/venv/bin/activate
+python3 manage.py runserver 0.0.0.0:8000 --insecure
+```
+
+Thành công:
+```
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 16, 2022 - 10:03:21
+Django version 3.2.6, using settings 'netbox.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+```
+
+Trên giao diện web truy cập địa chỉ http://ip_netbox:8000
 
