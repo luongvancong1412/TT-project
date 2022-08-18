@@ -187,4 +187,3 @@ Sau khi cài đặt hoàn tất tiến hành mở port
 firewall-cmd --permanent --add-port={25,80,110,143,443,465,587,993,995,5222,5223,9071,7071}/tcp
 firewall-cmd –reload
 ```
-

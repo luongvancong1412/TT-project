@@ -7,6 +7,10 @@
   - [1. Cài đặt Database PostgreSQL](#1-cài-đặt-database-postgresql)
   - [2. Cài đặt Redis](#2-cài-đặt-redis)
   - [3. Cài đặt NetBox](#3-cài-đặt-netbox)
+  - [4. Chạy tập lệnh nâng cấp](#4-chạy-tập-lệnh-nâng-cấp)
+  - [5. Tạo Super User](#5-tạo-super-user)
+  - [6. Kiểm tra ứng dụng](#6-kiểm-tra-ứng-dụng)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 
 # Yêu cầu
@@ -114,7 +118,9 @@ Tải xuống bản phát hành:
 ```
 sudo wget https://github.com/netbox-community/netbox/archive/v3.0.0.tar.gz
 sudo tar -xzf v3.0.0.tar.gz -C /opt
-sudo ln -s /opt/netbox-3.0.0/ /opt/netbox
+cd /opt/
+mv netbox-3.0.0/ netbox
+cd /opt/netbox/
 ```
 
 Tạo người dùng
@@ -126,7 +132,7 @@ sudo chown --recursive netbox /opt/netbox/netbox/media/
 Tạo tệp cấu hình cục bộ:
 ```
 cd /opt/netbox/netbox/netbox/
-sudo cp configuration_example.py configuration.py
+sudo cp configuration.example.py configuration.py
 ```
 
 Sửa tệp `configuration.py`:
@@ -190,7 +196,7 @@ SECRET_KEY = '+9Z#eR8KAGIP5e^Q2LbPKEt+(rg)^-pSlHhyvmtiqLl5&7txig'
 
 Lưu file lại
 
-## Chạy tập lệnh nâng cấp
+## 4. Chạy tập lệnh nâng cấp
 
 Chúng ta sẽ chạy tập lệnh nâng cấp đóng gói ( upgrade.sh) để thực hiện các hành động sau:
 
@@ -204,7 +210,7 @@ Chúng ta sẽ chạy tập lệnh nâng cấp đóng gói ( upgrade.sh) để t
 sudo /opt/netbox/upgrade.sh
 ```
 
-## Tạo Super User
+## 5. Tạo Super User
 NetBox không đi kèm với bất kỳ tài khoản người dùng nào được xác định trước. Vì vậy ta cần tạo một Super User (tài khoản quản trị) để có thể đăng nhập vào NetBox. 
 
 - Đầu tiên, hãy nhập môi trường ảo Python được tạo bởi tập lệnh nâng cấp:
@@ -220,9 +226,9 @@ python3 manage.py createsuperuser
 ```
 
 
-## Kiểm tra ứng dụng
+## 6. Kiểm tra ứng dụng
 
-Chạy máy chủ NetBox để test:
+Chạy máy chủ NetBox để có thể vào từ web:
 
 ```
 cd /opt/netbox/netbox
@@ -241,5 +247,8 @@ Starting development server at http://0.0.0.0:8000/
 Quit the server with CONTROL-C.
 ```
 
-Trên giao diện web truy cập địa chỉ http://ip_netbox:8000
+Sau đó, trên giao diện web truy cập địa chỉ http://ip_netbox:8000
 
+# Tài liệu tham khảo
+
+1. https://docs.netbox.dev/en/stable/installation/
